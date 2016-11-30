@@ -6,14 +6,6 @@ class Home extends React.Component {
         return (
             <div className="container">
                 <Layout style={{background: 'url(./img/IMG_7962.png) center / cover'}}>
-                    <Header transparent title="BANDIT" style={{color: 'white'}}>
-                        <Navigation>
-                        <a href="">Board</a>
-                        <a href="">Search</a>
-                        <a href="">Inbox</a>
-                        <a href="">Profile</a>
-                        </Navigation>
-                    </Header>
                     <div className="welcome-msg">
                         <p className="welcome-title">band together</p>
                         <p>find your next gig, band, or collaboration</p>
