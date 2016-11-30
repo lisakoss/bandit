@@ -1,5 +1,5 @@
 import React from 'react';
-import {Layout, Header, Navigation, Textfield} from 'react-mdl';
+import {Layout, Textfield} from 'react-mdl';
 
 class Home extends React.Component {
     render() {

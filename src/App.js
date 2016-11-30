@@ -1,13 +1,13 @@
 import React from 'react';
 import './index.css';
-import { Layout, Header, Navigation, Drawer, Content, Textfield } from 'react-mdl';
+import { Layout, Header, Navigation, Drawer, Content } from 'react-mdl';
 
 class App extends React.Component {
   render() {
     return (
       <div style={{height: '100%'}}>
           <Layout fixedHeader>
-              <Header title={<span><a href="/" className="header-link">BANDIT</a></span>}>
+              <Header transparent title={<span><a href="/" className="header-link">BANDIT</a></span>}>
                   <Navigation>
                       <a href="/#/board">Board</a>
                       <a href="/#/search">Search</a>

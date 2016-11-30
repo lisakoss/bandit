@@ -15,7 +15,7 @@ import CreatePost from './CreatePost';
 
 
 /* import material design lite */
-import 'react-mdl/extra/css/material.blue_grey-red.min.css';
+import 'react-mdl/extra/css/material.grey-red.min.css';
 import 'react-mdl/extra/material.js';
 
 // Initialize Firebase
@@ -34,7 +34,7 @@ ReactDOM.render(
   <Router history={hashHistory}>
     <Route path="/" component={App}>
       <IndexRedirect to="/home"/>
-      <Route path ="/home" component={Home}/>
+      <Route path="/home" component={Home}/>
       <Route path="/board" component={Board}/>
       <Route path="/createpost" component={CreatePost}/>
       <Route path="/search" component={Search}/>
