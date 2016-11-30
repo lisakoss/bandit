@@ -9,7 +9,7 @@ class App extends React.Component {
           <Header transparent title="BANDIT" style={{color: 'white'}}>
             <Navigation>
               <a href="">Board</a>
-              <a href="">Manage</a>
+              <a href="">Search</a>
               <a href="">Inbox</a>
               <a href="">Profile</a>
             </Navigation>
