@@ -1,9 +1,10 @@
 import React from 'react';
+import './index.css';
 
 class Board extends React.Component {
     render() {
         return (
-            <div><h1>board</h1></div>
+            <div className="content-container"><h1>board</h1></div>
         );
     }
 }
