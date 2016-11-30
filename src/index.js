@@ -15,7 +15,7 @@ import CreatePost from './CreatePost';
 
 
 /* import material design lite */
-import 'react-mdl/extra/css/material.blue_grey-red.min.css';
+import 'react-mdl/extra/css/material.grey-red.min.css';
 import 'react-mdl/extra/material.js';
 
 // Initialize Firebase
