@@ -1,18 +1,20 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import {Layout, Header, Navigation} from 'react-mdl';
 
-class App extends Component {
+class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="container">
+        <Layout style={{background: 'url(./img/IMG_7962.png) center / cover'}}>
+          <Header transparent title="BANDIT" style={{color: 'white'}}>
+            <Navigation>
+              <a href="">Board</a>
+              <a href="">Manage</a>
+              <a href="">Inbox</a>
+              <a href="">Profile</a>
+            </Navigation>
+          </Header>
+        </Layout>
       </div>
     );
   }

@@ -1,13 +1,17 @@
 {
   "name": "bandit",
+  "author": "Lisa Koss, Alexis Koss, Jason Peacher-Ton, and Kathryn Brusewitz",
+  "homepage": "https://lisakoss.github.io/bandit/build",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
     "react-scripts": "0.7.0"
   },
   "dependencies": {
+    "material-design-lite": "^1.2.1",
     "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react-dom": "^15.4.1",
+    "react-mdl": "^1.9.0"
   },
   "scripts": {
     "start": "react-scripts start",
