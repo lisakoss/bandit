@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import firebase from 'firebase';
-import {Router, Route, hashHistory, IndexRedirect} from 'react-router';
+import {Router, Route, hashHistory, IndexRoute} from 'react-router';
 import Home from './Home';
 import Board from './Board';
 import Search from './Search';
@@ -33,8 +33,7 @@ firebase.initializeApp(config);
 ReactDOM.render(
   <Router history={hashHistory}>
     <Route path="/" component={App}>
-      <IndexRedirect to="/home"/>
-      <Route path="/home" component={Home}/>
+      <IndexRoute component={Home}/>
       <Route path="/board" component={Board}/>
       <Route path="/createpost" component={CreatePost}/>
       <Route path="/search" component={Search}/>
