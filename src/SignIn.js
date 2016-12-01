@@ -89,7 +89,7 @@ class SignInForm extends React.Component {
   render() {
     //field validation
     var emailErrors = this.validate(this.state.email, {required:true, email:true});
-    var passwordErrors = this.validate(this.state.password, {required:true, minLength:6});
+    var passwordErrors = this.validate(this.state.password, {required:true, minLength:8});
 
     //button validation
     var signInEnabled = (emailErrors.isValid && passwordErrors.isValid);
@@ -106,7 +106,7 @@ class SignInForm extends React.Component {
 
           <div className="form-group sign-up-buttons">
             <p><Button raised accent ripple disabled={!signInEnabled} onClick={(e) => this.signIn(e)}>Sign In</Button></p>
-            <p>Don't have an account yet? <a href="/#/join">Sign Up!</a></p>
+            <p>Don't have an account yet? <a href="/signup">Sign Up!</a></p>
           </div>
         </form>
       </div>
@@ -146,7 +146,7 @@ class ValidationErrors extends React.Component {
     return (
       <div>
         {this.props.errors.required &&
-          <span className="help-block">Required!</span>
+          <span className="help-block">Required! </span>
         }
         {this.props.errors.email &&
           <span className="help-block">Not an email address!</span>

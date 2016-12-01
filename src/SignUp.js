@@ -39,7 +39,7 @@ class SignUp extends React.Component {
   }
   
   //A callback function for registering new users
-  signUp(email, password, displayName) {
+  signUp(email, password, displayName, avatar) {
     /* Create a new user and save their information */
     var thisComponent = this;
     thisComponent.setState({spinnerDisplay: true});
@@ -49,13 +49,15 @@ class SignUp extends React.Component {
         //include information (for app-level content)
         thisComponent.setState({spinnerDisplay: 'hidden'})
         firebaseUser.updateProfile({
-          displayName: displayName
+          displayName: displayName,
+          photoURL: avatar
         });
 
         //create new entry in the Cloud DB (for others to reference)
 		var userRef = firebase.database().ref('users/'+firebaseUser.uid); 
         var userData = {
-          displayName: displayName
+          displayName: displayName,
+          avatar: avatar
         }
         userRef.set(userData); //update entry in JOITC, return promise for chaining
       })

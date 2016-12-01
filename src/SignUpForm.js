@@ -18,7 +18,7 @@ class SignUpForm extends React.Component {
       'password': undefined,
       'displayName': undefined,
       'passwordConfirm': undefined,
-      'avatar': undefined
+      'avatar': ''
     }; 
 
     //function binding
@@ -38,7 +38,7 @@ class SignUpForm extends React.Component {
   //handle signUp button
   signUp(event) {
     event.preventDefault(); //don't submit
-    this.props.signUpCallback(this.state.email, this.state.password, this.state.displayName);
+    this.props.signUpCallback(this.state.email, this.state.password, this.state.displayName, this.state.avatar);
   }
 
   /**
@@ -121,9 +121,24 @@ class SignUpForm extends React.Component {
 
           <ValidatedInput field="passwordConfirm" type="password" label="confirm your password" changeCallback={this.handleChange} errors={passwordConfirmErrors} />
 
+          {/* full html for the URL (because image) */}
+          <div className="avatar-field">
+            <img className="avatar" src={this.state.avatar || './img/blank-user.jpg'} alt="avatar preview" />
+            <Textfield
+              onChange={this.handleChange}
+              label="Avatar Image URL"
+              id="avatar"
+              type="text"
+              name="avatar"
+              placeholder="http://www.test.com/picture.jpg"
+              floatingLabel
+              style={{width:"245px"}}
+            />
+          </div>
+
           <div className="form-group sign-up-buttons">
             <p><Button raised accent ripple disabled={!signUpEnabled} onClick={(e) => this.signUp(e)}>Sign Up</Button></p>
-            <p>Already have an account? <a href="/#/login">Sign In!</a></p>
+            <p>Already have an account? <a href="/login">Sign In!</a></p>
           </div>
         </form>
       </div>
