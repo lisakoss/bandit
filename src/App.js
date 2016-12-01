@@ -7,7 +7,7 @@ import firebase from 'firebase';
 class App extends React.Component {
 	constructor(props){
 			super(props);
-			this.state = {}
+			this.state = {};
 		}
 	//Lifecycle callback executed when the component appears on the screen.
   //It is cleaner to use this than the constructor for fetching data
@@ -15,10 +15,9 @@ class App extends React.Component {
     /* Add a listener and callback for authentication events */
     this.unregister = firebase.auth().onAuthStateChanged(user => {
       if(user) {
-        this.setState({userId:user.uid});
-				this.setState({displayName:firebase.auth().currentUser.displayName});
-				this.setState({avatar:firebase.auth().currentUser.photoURL});
-				console.log(this.state.avatar);
+        this.setState({userId: user.uid});
+				this.setState({displayName: firebase.auth().currentUser.displayName});
+				this.setState({avatar: firebase.auth().currentUser.photoURL});
       }
       else{
         this.setState({userId: null}); //null out the saved state
@@ -37,10 +36,28 @@ class App extends React.Component {
 
 	render() {
 		var profileImg = null;
+		var drawerContent = null;
 
 		if(this.state.userId !== null) {
-			profileImg = <img src={this.state.avatar} alt="avatar" className="profile-img" />;
+			profileImg = <img src={this.state.avatar} alt="avatar" />;
+			drawerContent = (
+												<Navigation>
+													<div className="profile-drawer nav-container">
+														{profileImg}
+													</div>
+													<a href="">Link</a>
+													<a href="">Link</a>
+													<a href="">Link</a>
+													<a href="">Link</a>
+													<div className="nav-container">
+														<SignOut/>
+													</div>
+												</Navigation>
+											);
+		} else {
+			drawerContent = (<Navigation><span>You must <a href="/#/login">login</a> or <a href="/#/signup">sign up</a> to view this content.</span></Navigation>);
 		}
+
     return (
       <div style={{height: '100%'}}>
         <Layout fixedHeader>
@@ -49,25 +66,17 @@ class App extends React.Component {
 							<a href="/#/board">Board</a>
 							<a href="/#/search">Search</a>
 							<a href="/#/inbox">Inbox</a>
-							<a href={this.state.userId !== null ? "/#/profile" : "/#/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} {profileImg}</a> 
+							<a href={this.state.userId !== null ? "/#/profile" : "/#/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} <span className="profile-nav">{profileImg}</span></a> 
 						</Navigation>
           </Header>
-          <Drawer title="Title">
-						<Navigation >
-							<a href="">Link</a>
-							<a href="">Link</a>
-							<a href="">Link</a>
-							<a href="">Link</a>
-							<div className="content-container">
-								<SignOut/>
-							</div>
-						</Navigation>
-          </Drawer>
-						<Content role="main">
-							{this.props.children}
-						</Content>
-          </Layout>
-      </div>
+					<Drawer title={this.state.displayName}>
+						{drawerContent}
+					</Drawer>
+					<Content role="main">
+						{this.props.children}
+					</Content>
+				</Layout>
+			</div>
     );
   }
 }

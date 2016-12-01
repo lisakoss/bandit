@@ -12,8 +12,12 @@ body {
 
 .content-container {
   padding-top: 20px;
-  margin: auto;
+  margin: 0 auto;
   width: 90%;
+}
+
+.nav-container {
+  text-align: center;
 }
 
 .header-link {
@@ -27,14 +31,34 @@ body {
   margin-left: 25%;
   margin-right: 25%;
   position: absolute;
-  top: 38%;
+  top: 35%;
   width: 50%;
   text-align: center;
 }
 
-.welcome-msg p {
+.welcome-msg-text {
   font-size: 20pt;
   margin-bottom: 0;
+}
+
+.sign-up-msg {
+  font-size: 10pt;
+  font-variant: normal;
+  font-style: italic;
+}
+
+/* sticky footer code: http://stackoverflow.com/questions/9383163/how-do-i-position-a-div-at-the-bottom-center-of-the-screen */
+.bottom-sign-up {
+  background:#323232;
+  color: #ffffff;
+  position: absolute;
+  width: 300px;
+  bottom: 0px;
+  right: 25%;
+  left: 50%;
+  margin-left: -150px;
+  padding: 20px 20px 0 20px;
+  text-align: center;
 }
 
 .welcome-title {
@@ -80,7 +104,20 @@ body {
   padding-top: 20px;
 }
 
-.profile-img {
+.profile-nav img {
   width: 25px;
   padding-left: 3px;
+}
+
+.profile-drawer img {
+  width: 150px;
+  padding: 0;
+}
+
+.mdl-navigation {
+  padding-top: 0 !important;
+}
+
+.hidden {
+  display: none;
 }
