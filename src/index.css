@@ -106,11 +106,13 @@ body {
 
 .profile-nav img {
   width: 25px;
+  border-radius: 50%;
   padding-left: 3px;
 }
 
 .profile-drawer img {
   width: 150px;
+  border-radius: 50%;
   padding: 0;
 }
 
