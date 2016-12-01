@@ -4,6 +4,20 @@ body {
   font-family: sans-serif;
 }
 
+@media (min-width: 768px) {
+    .content-container { width: 750px; } 
+}
+@media (min-width: 992px) {
+    .content-container { width: 970px; } 
+}
+@media (min-width: 1200px) {
+    .content-container { width: 1170px; } 
+}
+
+h1 {
+  font-variant: small-caps;
+}
+
 .container {
   margin-left: auto;
   margin-right: auto;
@@ -11,7 +25,6 @@ body {
 
 .content-container {
   margin: auto;
-  width: 90%;
 }
 
 .header-link {
@@ -40,6 +53,22 @@ body {
   margin-bottom: 20px !important;
 }
 
+.category-flex {
+	display: flex;
+  flex-wrap: wrap;
+}
+
+.card-column {
+	flex-basis: 100%;
+	display: flex;
+}
+
+.item {
+	border-radius: 3px;
+	margin-bottom: 1em;
+  width: 100%;
+}
+
 .mdl-textfield__label {
   text-align: center !important;
   color: #ffffff !important;
@@ -49,4 +78,78 @@ body {
   border-bottom: 1px solid #ffffff !important;
   text-align: center !important;
   font-variant: small-caps;
+}
+
+/* ----------------------------------------- */
+
+.msg-input {
+    width: 100%;
+    position:fixed;
+    left:0;
+    bottom:0;
+    background-color: white;
+}
+
+.msg-list {
+    margin-bottom: 10%;
+}
+
+.edit {
+    float: right;
+    margin: 4px !important;
+}
+
+.avatar, .image {
+	width:50px;
+	height:50px;
+	border-radius: 30%;
+}
+
+.image {
+	margin:10px;
+	float:left;
+}
+
+li {
+	padding-bottom:10px;
+	margin-bottom:10px;
+	margin-top:10px;
+	border-bottom:1px solid #d3d3d3;
+}
+
+.time {
+	color: #9d9d9d;
+}
+
+.handle {
+	font-size:1.25em;
+	font-weight: 700;
+}
+
+.message {
+	font-size: 1.5em;
+}
+
+.message-box {
+	border-bottom:1px solid #d3d3d3;
+	padding:20px;
+	margin-left:100px;
+	margin-right:100px;
+	background-color: white;
+}
+
+.message-box:hover{
+	background-color:rgba(211, 211, 211, 0.27);
+}
+
+@media (min-width: 992px) {
+	.card-column {
+		flex-basis:50%;
+	}
+}
+
+@media (min-width: 1200px) {
+	.card-column {
+		flex-basis:33%;
+	}
 }
