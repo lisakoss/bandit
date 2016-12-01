@@ -79,3 +79,8 @@ body {
 .avatar-field {
   padding-top: 20px;
 }
+
+.profile-img {
+  width: 25px;
+  padding-left: 3px;
+}
