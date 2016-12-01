@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  background:rgba(245,248,250,1);
+  font-family: 'Roboto', sans-serif;
 }
 
 @media (min-width: 768px) {
@@ -19,12 +22,17 @@ h1 {
 }
 
 .container {
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 
 .content-container {
-  margin: auto;
+  padding-top: 20px;
+  margin: 0 auto;
+  width: 90%;
+}
+
+.nav-container {
+  text-align: center;
 }
 
 .header-link {
@@ -38,19 +46,45 @@ h1 {
   margin-left: 25%;
   margin-right: 25%;
   position: absolute;
-  top: 38%;
+  top: 35%;
   width: 50%;
   text-align: center;
 }
 
-.welcome-msg p {
+.welcome-msg-text {
   font-size: 20pt;
+  letter-spacing: 1.5pt;
   margin-bottom: 0;
 }
 
+.sign-up-msg {
+  font-size: 10pt;
+  font-variant: normal;
+  font-style: italic;
+}
+
+/* sticky footer code: http://stackoverflow.com/questions/9383163/how-do-i-position-a-div-at-the-bottom-center-of-the-screen */
+.bottom-sign-up {
+  background:#323232;
+  color: #ffffff;
+  position: absolute;
+  width: 300px;
+  bottom: 0px;
+  right: 25%;
+  left: 50%;
+  margin-left: -150px;
+  padding: 20px 20px 0 20px;
+  text-align: center;
+}
+
 .welcome-title {
+  font-weight: bold;
   font-size: 40pt !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 30px !important;
+}
+
+.welcome-msg .fa-search {
+  font-size: 12pt !important;
 }
 
 .category-flex {
@@ -69,19 +103,64 @@ h1 {
   width: 100%;
 }
 
-.mdl-textfield__label {
-  text-align: center !important;
-  color: #ffffff !important;
+.mdl-textfield__input, .mdl-textfield__label {
+  font-size: 16pt !important;
 }
 
-.mdl-textfield__input {
+.mdl-layout__header-row {
+  background-color: #ffffff;
+}
+
+.search label {
+  text-align: center !important;
+  color: #ffffff !important;
+  line-height: normal;
+}
+
+.search input {
   border-bottom: 1px solid #ffffff !important;
   text-align: center !important;
   font-variant: small-caps;
 }
 
-/* ----------------------------------------- */
+.mdl-spinner {
+  margin-left: 100px !important;
+  margin-right: 100px !important;
+}
 
+.help-block {
+  font-size: 9pt;
+  color: #d50000;
+  margin: -10px 0 0 0;
+}
+
+.avatar {
+  width:50px;
+	height:50px;
+	border-radius: 50%;
+  padding-right: 5px;
+  margin-bottom: 10px;
+}
+
+.avatar-field {
+  padding-top: 20px;
+}
+
+.profile-nav img {
+  width: 25px;
+  padding-left: 3px;
+}
+
+.profile-drawer img {
+  width: 150px;
+  padding: 0;
+}
+
+.mdl-navigation {
+  padding-top: 0 !important;
+}
+
+/* message board */
 .msg-input {
     width: 100%;
     position:fixed;
@@ -97,12 +176,6 @@ h1 {
 .edit {
     float: right;
     margin: 4px !important;
-}
-
-.avatar, .image {
-	width:50px;
-	height:50px;
-	border-radius: 30%;
 }
 
 .image {
@@ -142,6 +215,7 @@ li {
 	background-color:rgba(211, 211, 211, 0.27);
 }
 
+/* screen sizing */
 @media (min-width: 992px) {
 	.card-column {
 		flex-basis:50%;
@@ -152,4 +226,3 @@ li {
 	.card-column {
 		flex-basis:33%;
 	}
-}
