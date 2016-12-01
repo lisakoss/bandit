@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background:rgba(245,248,250,1);
 }
 
 .container {
@@ -10,6 +11,7 @@ body {
 }
 
 .content-container {
+  padding-top: 20px;
   margin: auto;
   width: 90%;
 }
@@ -40,13 +42,29 @@ body {
   margin-bottom: 20px !important;
 }
 
-.mdl-textfield__label {
+.mdl-layout__header-row {
+  background-color: #ffffff;
+}
+
+.search label {
   text-align: center !important;
   color: #ffffff !important;
 }
 
-.mdl-textfield__input {
+.search input {
   border-bottom: 1px solid #ffffff !important;
   text-align: center !important;
   font-variant: small-caps;
+}
+
+.mdl-spinner {
+  margin-left: 100px !important;
+  margin-right: 100px !important;
+}
+
+.help-block {
+  font-size: 9pt;
+  color: #d50000;
+  margin-top: -10px;
+  margin-bottom: 0;
 }

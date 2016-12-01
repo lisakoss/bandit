@@ -12,6 +12,7 @@ class Home extends React.Component {
                         <p>breakthrough locally or worldwide</p>
                         <i className="fa fa-search" aria-hidden="true"></i>
                         <Textfield
+                            className="search"
                             onChange={() => {}}
                             label="search"
                             style={{width: '200px'}}
