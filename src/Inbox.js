@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, List, ListItem, ListItemContent, ListItemAction, Icon } from 'react-mdl';
+import firebase from 'firebase';
 
 class Inbox extends React.Component {
     render() {
