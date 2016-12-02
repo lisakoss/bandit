@@ -1,7 +1,7 @@
 import React from 'react';
 import Time from 'react-time';
 import firebase from 'firebase';
-import {Textfield, Button, Dialog, DialogTitle, DialogContent, DialogActions} from 'react-mdl';
+import {Textfield, Button, Dialog, DialogTitle, DialogContent, DialogActions, Card, CardTitle, CardText, CardActions} from 'react-mdl';
 
 /* A form the user can use to post a channel message. */
 export class MessageBox extends React.Component {
@@ -9,7 +9,7 @@ export class MessageBox extends React.Component {
     super(props);
     this.state = {
         "post":'',
-        "email": "hidden"
+        //"email": "hidden"
     };
   }
 	
@@ -20,11 +20,12 @@ export class MessageBox extends React.Component {
 
   /* Posts a new channel message to the database. */
   postMessage(event){
-    if(event.key === 'Enter' && this.state.post.length !== 0 && this.state.email === "hidden") {
+    //&& this.state.email === "hidden"
+    if(event.key === 'Enter' && this.state.post.length !== 0) {
         event.preventDefault(); // don't submit like usual
 
         /* Add a new channel message to the database */
-        var messagesRef = firebase.database().ref('messages/' + this.props.channel);
+        var messagesRef = firebase.database().ref('posts');
         var newMessage = {
             text: this.state.post,
             userId: firebase.auth().currentUser.uid, 
@@ -40,25 +41,25 @@ export class MessageBox extends React.Component {
   /* Lifecycle callback:
   executed when the component appears on the screen. */
 	componentDidMount() {
-		var thisComponent = this;
-		firebase.auth().onAuthStateChanged(function(user) {
-			if(!user.emailVerified) { // displays an error message if email is not verified
-				thisComponent.setState({email:"show"});
-			}
-		})
+		//var thisComponent = this;
+		//firebase.auth().onAuthStateChanged(function(user) {
+			//if(!user.emailVerified) { // displays an error message if email is not verified
+				//thisComponent.setState({email:"show"});
+			//}
+		//})
 	}
 
   render() {
     return (
 			<div className="write-msg">
-				<div className={this.state.email}>Please verifiy email</div>
+				{/*<div className={this.state.email}>Please verifiy email</div>*/}
 
 				<form role="form">
 					<Textfield
 						onChange={(e) => this.updatePost(e)}
 						label="what would you like to say?"
 						value={this.state.post}
-						rows={1}
+						rows={6}
 						className="msg-input"
 						onKeyPress={(e) => this.postMessage(e)}
 					/>
@@ -88,7 +89,7 @@ export class MessageList extends React.Component {
 
     /* Add a listener for changes to the chirps object, and save in the state.
 		Limit displayed messages to 100 in each channel. */
-    var messagesRef = firebase.database().ref('messages/' + this.props.channel).limitToLast(100);
+    var messagesRef = firebase.database().ref('posts');
     messagesRef.on('value', (snapshot) => {
       var messageArray = []; 
       snapshot.forEach(function(child){
@@ -104,7 +105,7 @@ export class MessageList extends React.Component {
   componentWillUnmount() {
     //unregister listeners
     firebase.database().ref('users').off();
-    firebase.database().ref('messages').off();
+    firebase.database().ref('posts').off();
   }
 
 	/* Update component with new props. */
@@ -116,7 +117,7 @@ export class MessageList extends React.Component {
             });
 
         /* Add a listener for changes to the chirps object, and save in the state */
-        var messagesRef = firebase.database().ref('messages/' + nextProps.channel).limitToLast(100);
+        var messagesRef = firebase.database().ref('posts');
         messagesRef.on('value', (snapshot) => {
             var messageArray = []; 
             snapshot.forEach(function(child){
@@ -138,13 +139,12 @@ export class MessageList extends React.Component {
     var messageItems = this.state.messages.map((message) => {
 			return (
 				<MessageItem message={message} 
-                    user={this.state.users[message.userId]} 
-                    key={message.key}
-                    channel={this.props.channel} />
+                     user={this.state.users[message.userId]} 
+                     key={message.key}/>
 			);
     })
 
-    return (<div>{messageItems}</div>);
+    return (<div className="category-flex">{messageItems}</div>);
   }
 }
 
@@ -190,7 +190,7 @@ class MessageItem extends React.Component {
         event.preventDefault(); // don't submit like usual
 
         /* Add a new channel message to the database. */
-        var messageRef = firebase.database().ref('messages/' + this.props.channel + '/' + this.props.message.key);
+        var messageRef = firebase.database().ref('posts/' + this.props.message.key);
         messageRef.child('text').set(newMessage);
         messageRef.child('timeEdited').set(firebase.database.ServerValue.TIMESTAMP);
         this.setState({edit:false});
@@ -209,14 +209,14 @@ class MessageItem extends React.Component {
 
 	/* Removes the specified message from the database. */
 	deleteMessage() {
-		var messageRef = firebase.database().ref('messages/' + this.props.channel + '/' + this.props.message.key);
+		var messageRef = firebase.database().ref('posts/' + this.props.message.key);
 		messageRef.remove();
 	}
 
 	/* Shows edit and delete buttons for each individual post. */
 	showControls() {
         var thisComponent = this;
-        var userRef = firebase.database().ref('messages/' + this.props.channel + '/' + this.props.message.key);
+        var userRef = firebase.database().ref('posts/' + this.props.message.key);
         userRef.once("value")
             .then(function(snapshot) {
                 var childKey = snapshot.child('userId').val();
@@ -232,64 +232,66 @@ class MessageItem extends React.Component {
 	}
     
     render() {
-        var avatar = (this.props.user.avatar);
-		var editContent = null;
-		var lastEdited = '';
+      var avatar = (this.props.user.avatar);
+      var userName = (this.props.user.displayName);
+      var editContent = null;
+      var lastEdited = '';
 
-		if(!this.state.edit) { // show regular msg if not being edited
-			editContent = this.props.message.text;
-		} else if(this.state.edit) { // if being edited, show new text submit area 
-			editContent =       (
-        <form role="form">
-					<Textfield
-							onChange={(e) => this.updatePost(e)}
-							label='edit message'
-							value={this.state.post}
-							rows={1}
-							onKeyPress={(e) => this.postMessage(e)}
-					/>
-        </form>);
+      if(!this.state.edit) { // show regular msg if not being edited
+        editContent = this.props.message.text;
+      } else if(this.state.edit) { // if being edited, show new text submit area 
+        editContent =       (
+          <form role="form">
+            <Textfield
+                onChange={(e) => this.updatePost(e)}
+                label='edit message'
+                value={this.state.post}
+                rows={1}
+                onKeyPress={(e) => this.postMessage(e)}
+            />
+          </form>);
 		} 
 
 		/* Show last edit time. */
 		if(this.props.message.timeEdited !== '') {
-			lastEdited = <span className="time">(edited <Time value={this.props.message.timeEdited} relative/>)</span>;
+			lastEdited = <span>(edited <Time value={this.props.message.timeEdited} relative/>)</span>;
 		}
 
     return (
-        <div>
-            <div className="message-box" onMouseEnter={() => this.showControls()} onMouseLeave={() => this.hideControls()}>
-                <div>
-                    {/* This image's src should be the user's avatar */}
-                    <img className="image" src={avatar} role="presentation" />
-                    
-                    {/* Show the user's handle */}
-                    <span className="handle">{this.props.user.handle} {/*space*/}</span>
-
-                    {/* Show the time of the message */}
-                    <span className="time"><Time value={this.props.message.time} relative/> </span>
-                    {lastEdited}
-
-                    <div className={this.state.showControls}>
-                        <span className="edit {edited}" onClick={this.handleOpenDialog}><i className="fa fa-trash-o" aria-hidden="true"></i></span>
-                        <Dialog open={this.state.openDialog}>
-                            <DialogTitle>Delete Message?</DialogTitle>
-                            <DialogContent>
-                                <p>Are you sure you want to permanently delete this message?</p>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button type='button' onClick={() => this.deleteMessage()}>Delete</Button>
-                                <Button type='button' onClick={this.handleCloseDialog}>Cancel</Button>
-                            </DialogActions>
-                        </Dialog>
-                        <span className="edit {edited}" onClick={() => this.editMessage()}><i className="fa fa-pencil" aria-hidden="true"></i></span>
-                    </div>
-                </div>
-
-                {/* Show the text of the message */}
-                <div className="message">{editContent}</div>
-            </div>  
-        </div>    
+      <div className="card-column">
+        <div className="item" onMouseEnter={() => this.showControls()} onMouseLeave={() => this.hideControls()}>
+          <Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
+            <CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/welcome_card.jpg) center / cover'}}>Post Title</CardTitle>
+              <span className="time"><Time value={this.props.message.time} relative/> {lastEdited}</span>
+            
+            <CardText>
+              <div className="message">{editContent}</div>
+            </CardText>
+            <div className="posted-by">
+              posted by: {/* This image's src should be the user's avatar */}
+              <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle">{this.props.user.displayName}</span>
+            </div>
+            <CardActions border>
+              <Button colored>Read</Button><Button colored>Contact</Button>
+            
+              <div className={this.state.showControls}>
+                <span className="edit {edited}" onClick={this.handleOpenDialog}><i className="fa fa-trash-o" aria-hidden="true"></i></span>
+                <Dialog open={this.state.openDialog}>
+                  <DialogTitle>Delete Message?</DialogTitle>
+                  <DialogContent>
+                    <p>Are you sure you want to permanently delete this message?</p>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button type='button' onClick={() => this.deleteMessage()}>Delete</Button>
+                    <Button type='button' onClick={this.handleCloseDialog}>Cancel</Button>
+                  </DialogActions>
+                </Dialog>
+                <span className="edit {edited}" onClick={() => this.editMessage()}><i className="fa fa-pencil" aria-hidden="true"></i></span>
+              </div>
+            </CardActions>
+          </Card>
+        </div>
+      </div>      
     );
   }
 }

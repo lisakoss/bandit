@@ -7,14 +7,14 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-@media (min-width: 768px) {
-    .content-container { width: 750px; } 
+@media (min-width: 568px) {
+    .board-container { width: 550px; } 
 }
-@media (min-width: 992px) {
-    .content-container { width: 970px; } 
+@media (min-width: 792px) {
+    .board-container { width: 770px; } 
 }
-@media (min-width: 1200px) {
-    .content-container { width: 1170px; } 
+@media (min-width: 1100px) {
+    .board-container { width: 1070px; } 
 }
 
 h1 {
@@ -29,6 +29,11 @@ h1 {
   padding-top: 20px;
   margin: 0 auto;
   width: 90%;
+}
+
+.board-container { 
+  padding-top: 20px;
+  margin: 0 auto;
 }
 
 .nav-container {
@@ -117,7 +122,7 @@ h1 {
   line-height: normal;
 }
 
-.search input {
+.search input, .write-msg {
   border-bottom: 1px solid #ffffff !important;
   text-align: center !important;
   font-variant: small-caps;
@@ -162,15 +167,34 @@ h1 {
 
 /* message board */
 .msg-input {
-    width: 100%;
+    width: 100% !important;
     position:fixed;
     left:0;
     bottom:0;
     background-color: white;
 }
 
+.write-msg {
+	margin-left:100px;
+	margin-right:100px;
+}
+
+.write-msg .mdl-textfield__input, .write-msg .mdl-textfield__label {
+  border-bottom: 1px solid #ffffff !important;
+  font-variant: small-caps;
+  padding-left: 25px !important;
+  padding-right: 25px !important;
+  
+}
+
+.mdl-textfield__input {
+  	max-width: 88% !important;
+    margin: 10px;
+}
+
 .msg-list {
     margin-bottom: 10%;
+    min-width: 300px;
 }
 
 .edit {
@@ -192,6 +216,9 @@ li {
 
 .time {
 	color: #9d9d9d;
+  text-align: right;
+  font-size: 10pt;
+  margin: 3px 10px;
 }
 
 .handle {
@@ -215,14 +242,27 @@ li {
 	background-color:rgba(211, 211, 211, 0.27);
 }
 
+.avatar-post {
+  width: 20px;
+	height: 20px;
+	border-radius: 50%;
+}
+
+.posted-by {
+  color: #9d9d9d;
+  font-size: 9pt;
+  text-align: right;
+  margin: 10px;
+}
+
 /* screen sizing */
-@media (min-width: 992px) {
+@media (min-width: 792px) {
 	.card-column {
 		flex-basis:50%;
 	}
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1100px) {
 	.card-column {
 		flex-basis:33%;
 	}
