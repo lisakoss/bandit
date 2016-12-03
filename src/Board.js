@@ -1,7 +1,8 @@
 import React from 'react';
-import {MessageBox, MessageList} from './BoardMessages';
+import {MessageList} from './BoardMessages';
 import firebase from 'firebase';
 import {hashHistory} from 'react-router';
+import {Button} from 'react-mdl';
 
 class MessageBoard extends React.Component {
     constructor(props){
@@ -35,7 +36,10 @@ class MessageBoard extends React.Component {
     return (
       <div className="board-container">
 				<h1>board</h1>
-        <div><MessageList/><MessageBox/></div>
+				<Button ripple className="create-button">Create Listing</Button>
+				<Button ripple className="create-button">Manage Posts</Button>
+				<Button ripple className="create-button">Bookmarks</Button>
+        <div><MessageList/></div>
       </div>
     );
   }

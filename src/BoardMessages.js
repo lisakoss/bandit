@@ -1,7 +1,7 @@
 import React from 'react';
 import Time from 'react-time';
 import firebase from 'firebase';
-import {Textfield, Button, Dialog, DialogTitle, DialogContent, DialogActions, Card, CardTitle, CardText, CardActions} from 'react-mdl';
+import {Textfield, Button, Dialog, DialogTitle, DialogContent, DialogActions, Card, CardTitle, CardText, CardActions, Tooltip} from 'react-mdl';
 
 /* A form the user can use to post a channel message. */
 export class MessageBox extends React.Component {
@@ -10,6 +10,13 @@ export class MessageBox extends React.Component {
     this.state = {
         "post":'',
         //"email": "hidden"
+        "title": '',
+        "summary": '',
+        "location": '',
+        "instrument": '',
+        "job": '',
+        "image": '',
+        "tags": ''
     };
   }
 	
@@ -18,23 +25,65 @@ export class MessageBox extends React.Component {
     this.setState({post: event.target.value});
   }
 
+  /* Tracks changes in message input field. */
+  updateTitle(event) {
+    this.setState({title: event.target.value});
+  }
+
+  /* Tracks changes in message input field. */
+  updateSummary(event) {
+    this.setState({summary: event.target.value});
+  }
+
+  /* Tracks changes in message input field. */
+  updateLocation(event) {
+    this.setState({location: event.target.value});
+  }
+
+  /* Tracks changes in message input field. */
+  updateInstrument(event) {
+    this.setState({instrument: event.target.value});
+  }
+
+  /* Tracks changes in message input field. */
+  updateJob(event) {
+    this.setState({job: event.target.value});
+  }
+
+  /* Tracks changes in message input field. */
+  updateImage(event) {
+    this.setState({image: event.target.value});
+  }
+
+  /* Tracks changes in message input field. */
+  updateTags(event) {
+    this.setState({tags: event.target.value});
+  }
+
   /* Posts a new channel message to the database. */
   postMessage(event){
     //&& this.state.email === "hidden"
-    if(event.key === 'Enter' && this.state.post.length !== 0) {
+    if(this.state.post.length !== 0) {
         event.preventDefault(); // don't submit like usual
 
         /* Add a new channel message to the database */
         var messagesRef = firebase.database().ref('posts');
         var newMessage = {
             text: this.state.post,
+            title: this.state.title,
+            summary: this.state.summary,
+            location: this.state.location,
+            instrument: this.state.instrument,
+            job: this.state.job,
+            image: this.state.image,
+            tags: this.state.tags,
             userId: firebase.auth().currentUser.uid, 
             time: firebase.database.ServerValue.TIMESTAMP,
             timeEdited: ''
         };
         messagesRef.push(newMessage); // upload msg to database
 
-        this.setState({post:''}); // empty out post so that message field is blank
+        this.setState({post:'', title:'', summary:'', location:'', instrument:'', job:'', image:'', tags:''}); // empty out post so that message field is blank
     }
   }
 
@@ -49,20 +98,84 @@ export class MessageBox extends React.Component {
 		//})
 	}
 
+
+
   render() {
     return (
 			<div className="write-msg">
 				{/*<div className={this.state.email}>Please verifiy email</div>*/}
 
 				<form role="form">
-					<Textfield
+          <Textfield
+            onChange={(e) => this.updateTitle(e)}
+            label="listing title"
+            floatingLabel
+            value={this.state.title}
+            className="msg-input"
+          />
+          <Textfield
+            onChange={(e) => this.updateSummary(e)}
+            label="short summary (displayed on outside of listing)"
+            floatingLabel
+            value={this.state.summary}
+            className="msg-input"
+          />
+          <Textfield
+            onChange={(e) => this.updateLocation(e)}
+            label="zip code"
+            floatingLabel
+            value={this.state.location}
+            className="msg-input-type"
+            style={{width: '33%'}}
+          />
+          <Textfield
+            onChange={(e) => this.updateInstrument(e)}
+            label="instrument"
+            floatingLabel
+            value={this.state.instrument}
+            className="msg-input-type"
+            style={{width: '33%'}}
+          />
+          <Textfield
+            onChange={(e) => this.updateJob(e)}
+            label="job title"
+            floatingLabel
+            value={this.state.job}
+            className="msg-input-type"
+            style={{width: '33%'}}
+          />
+          <div className="post-img" style={ {backgroundImage: "url(" + this.state.image + ")"}} />
+          <Textfield
+            onChange={(e) => this.updateImage(e)}
+            label="post image url"
+            type="text"
+            name="avatar"
+            placeholder="http://www.test.com/picture.jpg"
+            floatingLabel
+            value={this.state.image}
+            className="msg-input-type"
+            style={{width:"50%"}}
+          />
+          <Textfield
+            onChange={(e) => this.updateTags(e)}
+            label="listing tags"
+            floatingLabel
+            value={this.state.tags}
+            className="msg-input-type"
+            style={{width: '50%'}}
+          />
+          <Textfield
 						onChange={(e) => this.updatePost(e)}
 						label="what would you like to say?"
 						value={this.state.post}
 						rows={6}
 						className="msg-input"
-						onKeyPress={(e) => this.postMessage(e)}
 					/>
+
+          <Button ripple className="create-button" onClick={(e) => this.postMessage(e)}>Post Listing</Button>
+          <Tooltip label={<span>Need Help?<br/><strong>Title</strong>: blah<br/><strong>Short SUmmary</strong>: blah</span>}>
+            <i className="fa fa-question fa-2x" aria-hidden="true"></i>
+          </Tooltip>
 				</form>
 			</div>
     );
@@ -267,19 +380,21 @@ class MessageItem extends React.Component {
             <CardText>
               <div className="message">{editContent}</div>
             </CardText>
+
             <div className="posted-by">
               posted by: {/* This image's src should be the user's avatar */}
               <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle">{this.props.user.displayName}</span>
             </div>
+
             <CardActions border>
               <Button colored>Read</Button><Button colored>Contact</Button>
             
               <div className={this.state.showControls}>
                 <span className="edit {edited}" onClick={this.handleOpenDialog}><i className="fa fa-trash-o" aria-hidden="true"></i></span>
                 <Dialog open={this.state.openDialog}>
-                  <DialogTitle>Delete Message?</DialogTitle>
+                  <DialogTitle>Delete Post?</DialogTitle>
                   <DialogContent>
-                    <p>Are you sure you want to permanently delete this message?</p>
+                    <p>Are you sure you want to permanently delete this post?</p>
                   </DialogContent>
                   <DialogActions>
                     <Button type='button' onClick={() => this.deleteMessage()}>Delete</Button>
