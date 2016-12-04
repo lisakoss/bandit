@@ -81,9 +81,17 @@ export class MessageBox extends React.Component {
             time: firebase.database.ServerValue.TIMESTAMP,
             timeEdited: ''
         };
-        messagesRef.push(newMessage); // upload msg to database
+        var listing = messagesRef.push(newMessage); // upload msg to database
+        var listingId = listing.key;
+        console.log(listingId);
 
-        this.setState({post:'', title:'', summary:'', location:'', instrument:'', job:'', image:'', tags:''}); // empty out post so that message field is blank
+        /* Add listing to user's id */
+        var currUser = firebase.auth().currentUser.uid;
+        var usersRef = firebase.database().ref('users/' + currUser + '/posts');
+        usersRef.push(listingId);
+
+        /* empty out post so that message field is blank. */
+        this.setState({post:'', title:'', summary:'', location:'', instrument:'', job:'', image:'', tags:''});
     }
   }
 
@@ -97,8 +105,6 @@ export class MessageBox extends React.Component {
 			//}
 		//})
 	}
-
-
 
   render() {
     return (
@@ -120,6 +126,9 @@ export class MessageBox extends React.Component {
             value={this.state.summary}
             className="msg-input"
           />
+          {this.state.summary.length > 100 &&
+            <p className="help-block">100 character limit!</p>
+          }
           <Textfield
             onChange={(e) => this.updateLocation(e)}
             label="zip code"
@@ -173,7 +182,7 @@ export class MessageBox extends React.Component {
 					/>
 
           <Button ripple className="create-button" onClick={(e) => this.postMessage(e)}>Post Listing</Button>
-          <Tooltip label={<span>Need Help?<br/><strong>Title</strong>: blah<br/><strong>Short SUmmary</strong>: blah</span>}>
+          <Tooltip label={<span>Need Help?<br/><strong>Title</strong>: blah<br/><strong>Short Summary</strong>: blah</span>}>
             <i className="fa fa-question fa-2x" aria-hidden="true"></i>
           </Tooltip>
 				</form>
@@ -223,23 +232,23 @@ export class MessageList extends React.Component {
 
 	/* Update component with new props. */
 	componentWillReceiveProps(nextProps) {
-        /* Add a listener for changes to the user details object, and save in the state */
-        var usersRef = firebase.database().ref('users');
-        usersRef.on('value', (snapshot) => {
-            this.setState({users:snapshot.val()});
-            });
-
-        /* Add a listener for changes to the chirps object, and save in the state */
-        var messagesRef = firebase.database().ref('posts');
-        messagesRef.on('value', (snapshot) => {
-            var messageArray = []; 
-            snapshot.forEach(function(child){
-                var message = child.val();
-                message.key = child.key;
-                messageArray.push(message);
-            });
-            this.setState({messages:messageArray});
+    /* Add a listener for changes to the user details object, and save in the state */
+    var usersRef = firebase.database().ref('users');
+    usersRef.on('value', (snapshot) => {
+        this.setState({users:snapshot.val()});
         });
+
+    /* Add a listener for changes to the chirps object, and save in the state */
+    var messagesRef = firebase.database().ref('posts');
+    messagesRef.on('value', (snapshot) => {
+        var messageArray = []; 
+        snapshot.forEach(function(child){
+            var message = child.val();
+            message.key = child.key;
+            messageArray.push(message);
+        });
+        this.setState({messages:messageArray});
+    });
 	}
 
   render() {
@@ -252,11 +261,15 @@ export class MessageList extends React.Component {
     var messageItems = this.state.messages.map((message) => {
 			return (
 				<MessageItem message={message} 
+                     title={message.title}
+                     summary={message.summary}
+                     tags={message.tags}
+                     image={message.image}
                      user={this.state.users[message.userId]} 
-                     key={message.key}/>
+                     key={message.key}
+                     />
 			);
     })
-
     return (<div className="category-flex">{messageItems}</div>);
   }
 }
@@ -300,24 +313,24 @@ class MessageItem extends React.Component {
   postMessage(event){
     var newMessage = this.state.post;
     if(event.key === 'Enter' && this.state.post.length !== 0) {
-        event.preventDefault(); // don't submit like usual
+      event.preventDefault(); // don't submit like usual
 
-        /* Add a new channel message to the database. */
-        var messageRef = firebase.database().ref('posts/' + this.props.message.key);
-        messageRef.child('text').set(newMessage);
-        messageRef.child('timeEdited').set(firebase.database.ServerValue.TIMESTAMP);
-        this.setState({edit:false});
-        this.setState({post:''}); // empty out post (controlled input)
+      /* Add a new channel message to the database. */
+      var messageRef = firebase.database().ref('posts/' + this.props.message.key);
+      messageRef.child('text').set(newMessage);
+      messageRef.child('timeEdited').set(firebase.database.ServerValue.TIMESTAMP);
+      this.setState({edit:false});
+      this.setState({post:''}); // empty out post (controlled input)
     }
   }
 
 	/* Determines if the user is the creator of the original post and allows
 	them to edit it if true. */
 	editMessage() {
-        var userId = firebase.auth().currentUser.uid
-        if(userId === this.props.message.userId) {
-            this.setState({edit:true});
-        }	
+    var userId = firebase.auth().currentUser.uid
+    if(userId === this.props.message.userId) {
+        this.setState({edit:true});
+    }	
 	}
 
 	/* Removes the specified message from the database. */
@@ -328,15 +341,15 @@ class MessageItem extends React.Component {
 
 	/* Shows edit and delete buttons for each individual post. */
 	showControls() {
-        var thisComponent = this;
-        var userRef = firebase.database().ref('posts/' + this.props.message.key);
-        userRef.once("value")
-            .then(function(snapshot) {
-                var childKey = snapshot.child('userId').val();
-                if(childKey === firebase.auth().currentUser.uid) { // only shows controls on a user's own posts'
-                    thisComponent.setState({showControls: 'show'});
-                }
-            });
+    var thisComponent = this;
+    var userRef = firebase.database().ref('posts/' + this.props.message.key);
+    userRef.once("value")
+      .then(function(snapshot) {
+        var childKey = snapshot.child('userId').val();
+        if(childKey === firebase.auth().currentUser.uid) { // only shows controls on a user's own posts'
+            thisComponent.setState({showControls: 'show'});
+        }
+      });
 	}
 
 	/* Hides edit and delete buttons for each individual post. */
@@ -374,16 +387,21 @@ class MessageItem extends React.Component {
       <div className="card-column">
         <div className="item" onMouseEnter={() => this.showControls()} onMouseLeave={() => this.hideControls()}>
           <Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
-            <CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/welcome_card.jpg) center / cover'}}>Post Title</CardTitle>
+            <CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(' + this.props.image + ') center / cover'}}>{this.props.title}</CardTitle>
               <span className="time"><Time value={this.props.message.time} relative/> {lastEdited}</span>
             
             <CardText>
-              <div className="message">{editContent}</div>
+              <div className="message">{this.props.summary}</div>
             </CardText>
 
             <div className="posted-by">
+
+              <span className="tags">
+                {this.props.tags}
+              </span>
               posted by: {/* This image's src should be the user's avatar */}
               <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle">{this.props.user.displayName}</span>
+          
             </div>
 
             <CardActions border>

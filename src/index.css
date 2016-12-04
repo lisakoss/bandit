@@ -263,6 +263,10 @@ li {
   margin: 10px;
 }
 
+.tags {
+  float: left;
+}
+
 .post-img {
   width: 300px;
 	height: 150px;
