@@ -36,7 +36,7 @@ class MessageBoard extends React.Component {
     return (
       <div className="board-container">
 				<h1>board</h1>
-				<Button ripple className="create-button">Create Listing</Button>
+				<a href="/#/createpost"><Button ripple className="create-button">Create Listing</Button></a>
 				<Button ripple className="create-button">Manage Posts</Button>
 				<Button ripple className="create-button">Bookmarks</Button>
         <div><MessageList/></div>

@@ -18,6 +18,24 @@ export class MessageBox extends React.Component {
         "image": '',
         "tags": ''
     };
+
+    // bind functions 
+    this.handleOpenDialog = this.handleOpenDialog.bind(this);
+    this.handleCloseDialog = this.handleCloseDialog.bind(this);
+  }
+  	
+  /* Dialog box open rendering. */
+  handleOpenDialog() {
+    this.setState({
+      openDialog: true
+    });
+  }
+
+	/* Dialog box close rendering. */
+  handleCloseDialog() {
+    this.setState({
+      openDialog: false
+    });
   }
 	
   /* Tracks changes in message input field. */
@@ -121,7 +139,7 @@ export class MessageBox extends React.Component {
           />
           <Textfield
             onChange={(e) => this.updateSummary(e)}
-            label="short summary (displayed on outside of listing)"
+            label="short summary"
             floatingLabel
             value={this.state.summary}
             className="msg-input"
@@ -156,9 +174,8 @@ export class MessageBox extends React.Component {
           <div className="post-img" style={ {backgroundImage: "url(" + this.state.image + ")"}} />
           <Textfield
             onChange={(e) => this.updateImage(e)}
-            label="post image url"
+            label="listing image url"
             type="text"
-            name="avatar"
             placeholder="http://www.test.com/picture.jpg"
             floatingLabel
             value={this.state.image}
@@ -175,16 +192,32 @@ export class MessageBox extends React.Component {
           />
           <Textfield
 						onChange={(e) => this.updatePost(e)}
-						label="what would you like to say?"
+						label="description"
 						value={this.state.post}
 						rows={6}
 						className="msg-input"
 					/>
 
           <Button ripple className="create-button" onClick={(e) => this.postMessage(e)}>Post Listing</Button>
-          <Tooltip label={<span>Need Help?<br/><strong>Title</strong>: blah<br/><strong>Short Summary</strong>: blah</span>}>
-            <i className="fa fa-question fa-2x" aria-hidden="true"></i>
-          </Tooltip>
+          <i onClick={this.handleOpenDialog} className="fa fa-question fa-2x" aria-hidden="true"></i>
+          <Dialog open={this.state.openDialog}>
+            <DialogTitle>Need Help?</DialogTitle>
+            <DialogContent>
+              <div className="help">
+                <p><strong>Listing Title</strong>: a few words advertising what you're offering or looking for.</p>
+                <p><strong>Short Summary</strong>: a small blurb that gives a few details about your listing. <em>Displayed on outside of listing on board.</em></p>
+                <p><strong>Zip Code</strong>: 5 digits only; your location.</p>
+                <p><strong>Instrument</strong>: the instrument your listing is about; <em>optional</em>.</p>
+                <p><strong>Job Title</strong>: the title of the job with skills you're offering or looking for.</p>
+                <p><strong>Listing Image</strong>: image displayed on the outside of your listing; <em>optional</em>.</p>
+                <p><strong>Tags</strong>: tag your listing with relevenat words to make it easier for others to find your listing via searching.</p>
+                <p><strong>Description</strong>: describe in detail what you can offer or what you're looking from someone else.</p>
+              </div>
+            </DialogContent>
+            <DialogActions fullWidth>
+              <Button type='button' onClick={this.handleCloseDialog}>Close</Button>
+            </DialogActions>
+          </Dialog>
 				</form>
 			</div>
     );

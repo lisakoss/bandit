@@ -32,8 +32,8 @@ h1 {
 }
 
 .board-container { 
-  padding-top: 20px;
   margin: 0 auto;
+  margin-bottom: 24px;
 }
 
 .nav-container {
@@ -283,6 +283,22 @@ li {
 .fa-question {
   float: right;
   color: gray;
+}
+
+.help p {
+  margin: 0;
+}
+
+.mdl-dialog {
+  width: 600px !important;
+}
+
+.mdl-dialog__content {
+  padding-bottom: 0 !important;
+}
+
+.mdl-dialog__actions {
+  padding-top: 10px !important;
 }
 
 /* screen sizing */
