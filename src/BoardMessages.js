@@ -125,6 +125,14 @@ export class MessageBox extends React.Component {
 	}
 
   render() {
+    var listingImage = '';
+
+    if(this.state.image === '') {
+      listingImage = './img/defaultboardimage.jpg';
+    } else {
+      listingImage = this.state.image;
+    }    
+
     return (
 			<div className="write-msg">
 				{/*<div className={this.state.email}>Please verifiy email</div>*/}
@@ -171,7 +179,7 @@ export class MessageBox extends React.Component {
             className="msg-input-type"
             style={{width: '33%'}}
           />
-          <div className="post-img" style={ {backgroundImage: "url(" + this.state.image + ")"}} />
+          <div className="post-img" style={{background: 'url(' + listingImage + ') center / cover'}} />
           <Textfield
             onChange={(e) => this.updateImage(e)}
             label="listing image url"
@@ -274,13 +282,13 @@ export class MessageList extends React.Component {
     /* Add a listener for changes to the chirps object, and save in the state */
     var messagesRef = firebase.database().ref('posts');
     messagesRef.on('value', (snapshot) => {
-        var messageArray = []; 
-        snapshot.forEach(function(child){
-            var message = child.val();
-            message.key = child.key;
-            messageArray.push(message);
-        });
-        this.setState({messages:messageArray});
+      var messageArray = []; 
+      snapshot.forEach(function(child){
+          var message = child.val();
+          message.key = child.key;
+          messageArray.push(message);
+      });
+      this.setState({messages:messageArray});
     });
 	}
 
@@ -395,6 +403,15 @@ class MessageItem extends React.Component {
       var userName = (this.props.user.displayName);
       var editContent = null;
       var lastEdited = '';
+      var listingImage = '';
+
+      if(this.props.image === '') {
+        console.log(this.props.image);
+        listingImage = './img/defaultboardimage.jpg';
+      } else {
+        console.log(this.props.image);
+        listingImage = this.props.image;
+      }
 
       if(!this.state.edit) { // show regular msg if not being edited
         editContent = this.props.message.text;
@@ -420,7 +437,7 @@ class MessageItem extends React.Component {
       <div className="card-column">
         <div className="item" onMouseEnter={() => this.showControls()} onMouseLeave={() => this.hideControls()}>
           <Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
-            <CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(' + this.props.image + ') center / cover'}}>{this.props.title}</CardTitle>
+            <CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(' + listingImage + ') center / cover'}}>{this.props.title}</CardTitle>
               <span className="time"><Time value={this.props.message.time} relative/> {lastEdited}</span>
             
             <CardText>
