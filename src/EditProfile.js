@@ -21,12 +21,18 @@ class EditProfile extends React.Component {
       if(user) {
         this.setState({userId: user.uid});
 				this.setState({displayName: firebase.auth().currentUser.displayName});
-				this.setState({avatar: firebase.auth().currentUser.photoURL});
+				//this.setState({avatar: firebase.auth().currentUser.photoURL});
 				var profileRef = firebase.database().ref('users/' + this.state.userId);
 				profileRef.once("value")
 					.then(snapshot => {
+						this.setState({avatar: snapshot.child("avatar").val()});
 						this.setState({jobTitle: snapshot.child("jobTitle").val()});
 						this.setState({coverPhoto: snapshot.child("coverPhoto").val()});
+						this.setState({instruments: snapshot.child("instruments").val()});
+						this.setState({genre: snapshot.child("genre").val()});
+						this.setState({location: snapshot.child("location").val()});
+						this.setState({about: snapshot.child("about").val()});
+						this.setState({experience: snapshot.child("experience").val()});
 					});
       }
       else{
@@ -35,6 +41,11 @@ class EditProfile extends React.Component {
 				this.setState({avatar: null}); //null out the saved state
 				this.setState({jobTitle: null}); //null out the saved state
 				this.setState({coverPhoto: null}); //null out the saved state
+				this.setState({instruments: null}); //null out the saved state
+				this.setState({genre: null}); //null out the saved state
+				this.setState({location: null}); //null out the saved state
+				this.setState({about: null}); //null out the saved state
+				this.setState({experience: null}); //null out the saved state
       }
     })
   }
@@ -42,6 +53,7 @@ class EditProfile extends React.Component {
   //when component will be removed
   componentWillUnmount() {
   	//unregister listeners
+		firebase.database().ref('users/' + this.state.userId).off();
     if(this.unregister){ //if have a function to unregister with
       this.unregister(); //call that function!
     }
@@ -81,13 +93,23 @@ class EditProfile extends React.Component {
 		userRef.child('jobTitle').set(this.state.jobTitle); //sets their job title
 		userRef.child('coverPhoto').set(this.state.coverPhoto); //sets their cover photo
 		userRef.child('avatar').set(this.state.avatar); //sets their avatar
+		userRef.child('instruments').set(this.state.instruments); //sets their avatar
+		userRef.child('genre').set(this.state.genre); //sets their avatar
+		userRef.child('location').set(this.state.location); //sets their avatar
+		userRef.child('about').set(this.state.about); //sets their about
+		userRef.child('experience').set(this.state.experience); //sets their experience
 
 
 		user.updateProfile({
 			displayName: this.state.displayName, //sets display name
 			jobTitle: this.state.jobTitle, //sets job title
 			coverPhoto: this.state.coverPhoto, //sets cover photo
-			avatar: this.state.avatar //sets avatar
+			avatar: this.state.avatar, //sets avatar
+			instruments: this.state.instruments, //sets intruments
+			genre: this.state.genre, //sets genre
+			location: this.state.location, //sets location
+			about: this.state.about, //sets about
+			experience: this.state.experience //sets experience
 		});
 
 
@@ -116,6 +138,31 @@ class EditProfile extends React.Component {
 	//when the text in the avatar field changes
 	updateAvatar(event) {
 		this.setState({avatar: event.target.value});
+	}
+
+	//when the text in the instruments field changes
+	updateInstruments(event) {
+		this.setState({instruments: event.target.value});
+	}
+
+	//when the text in the genre field changes
+	updateGenre(event) {
+		this.setState({genre: event.target.value});
+	}
+
+	//when the text in the location field changes
+	updateLocation(event) {
+		this.setState({location: event.target.value});
+	}
+
+	//when the text in the location field changes
+	updateAbout(event) {
+		this.setState({about: event.target.value});
+	}
+
+	//when the text in the location field changes
+	updateExperience(event) {
+		this.setState({experience: event.target.value});
 	}
 
 	render() {
@@ -173,8 +220,10 @@ class EditProfile extends React.Component {
 							className="profile-cover"
 						/>
 
-						<div className="profile-avatar"> 
-							<img src={this.state.avatar || './img/blank-user.jpg'} alt="avatar" />
+						<div>
+							<div className="profile-avatar"> 
+								<img src={this.state.avatar || './img/blank-user.jpg'} alt="avatar" />
+							</div>
 
 							<Textfield
 								onChange={(e) => this.updateAvatar(e)}
@@ -184,6 +233,48 @@ class EditProfile extends React.Component {
 								className="profile-avatar-text"
 							/>
 						</div>
+
+						<Textfield
+							onChange={(e) => this.updateInstruments(e)}
+							label="Instrument(s) and/or skills"
+							value={this.state.instruments || ''}
+							floatingLabel
+							className="profile-instruments"
+						/>
+
+						<Textfield
+							onChange={(e) => this.updateGenre(e)}
+							label="Genre"
+							value={this.state.genre || ''}
+							floatingLabel
+							className="profile-genre"
+						/>
+
+						<Textfield
+							onChange={(e) => this.updateLocation(e)}
+							label="Location (city, state/providence, and/or zip code)"
+							value={this.state.location || ''}
+							floatingLabel
+							className="profile-location"
+						/>
+
+						<Textfield
+							rows={6}
+							onChange={(e) => this.updateAbout(e)}
+							label="About"
+							value={this.state.about || ''}
+							floatingLabel
+							className="profile-about"
+						/>
+
+						<Textfield
+							rows={6}
+							onChange={(e) => this.updateExperience(e)}
+							label="Experience"
+							value={this.state.experience || ''}
+							floatingLabel
+							className="profile-experience"
+						/>
 
 						<div className="profile-submit">
 							<Button raised accent ripple onClick={(e)=>this.updateProfile(e)}>Update Profile</Button>
