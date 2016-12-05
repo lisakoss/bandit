@@ -204,6 +204,7 @@ h1 {
 
 .msg-input .mdl-textfield__label, .msg-input-type .mdl-textfield__label {
   font-variant: small-caps;
+    font-size: 14pt !important;
 }
 
 .listing {
@@ -357,6 +358,10 @@ li {
 
 .wanted {
   background-color: #FFB3B3;
+}
+
+.show {
+  padding: 0 30px 30px 30px;
 }
 
 .mdl-radio {

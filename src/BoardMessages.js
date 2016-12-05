@@ -165,7 +165,7 @@ export class MessageBox extends React.Component {
           }
           <Textfield
             onChange={(e) => this.updateLocation(e)}
-            label="zip code"
+            label="location (city, state, &amp; zip code)"
             floatingLabel
             value={this.state.location}
             className="msg-input-type"
@@ -173,7 +173,7 @@ export class MessageBox extends React.Component {
           />
           <Textfield
             onChange={(e) => this.updateInstrument(e)}
-            label="instrument/skills"
+            label="instrument(s) and/or skills"
             floatingLabel
             value={this.state.instrument}
             className="msg-input-type"
@@ -290,8 +290,8 @@ export class MessageList extends React.Component {
     /* Add a listener for changes to the user details object, and save in the state */
     var usersRef = firebase.database().ref('users');
     usersRef.on('value', (snapshot) => {
-        this.setState({users:snapshot.val()});
-        });
+      this.setState({users:snapshot.val()});
+    });
 
     /* Add a listener for changes to the chirps object, and save in the state */
     var messagesRef = firebase.database().ref('posts');
@@ -337,87 +337,12 @@ class MessageItem extends React.Component {
     super(props);
     this.state = {
         'post':'',
-        'showControls': 'hidden'
     };
-
-    // bind functions
-    this.postMessage = this.postMessage.bind(this);
-    this.updatePost = this.updatePost.bind(this);
-    this.handleOpenDialog = this.handleOpenDialog.bind(this);
-    this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
-
-	/* Dialog box open rendering. */
-  handleOpenDialog() {
-    this.setState({
-      openDialog: true
-    });
-  }
-
-	/* Dialog box close rendering. */
-  handleCloseDialog() {
-    this.setState({
-      openDialog: false
-    });
-  }
-
-	/* Determines the current message typed in the edit box. */
-  updatePost(event) {
-    this.setState({post: event.target.value});
-  }
-
-  /* Resubmit the edited message to the database. */
-  postMessage(event){
-    var newMessage = this.state.post;
-    if(event.key === 'Enter' && this.state.post.length !== 0) {
-      event.preventDefault(); // don't submit like usual
-
-      /* Add a new channel message to the database. */
-      var messageRef = firebase.database().ref('posts/' + this.props.message.key);
-      messageRef.child('text').set(newMessage);
-      messageRef.child('timeEdited').set(firebase.database.ServerValue.TIMESTAMP);
-      this.setState({edit:false});
-      this.setState({post:''}); // empty out post (controlled input)
-    }
-  }
-
-	/* Determines if the user is the creator of the original post and allows
-	them to edit it if true. */
-	editMessage() {
-    var userId = firebase.auth().currentUser.uid
-    if(userId === this.props.message.userId) {
-        this.setState({edit:true});
-    }	
-	}
-
-	/* Removes the specified message from the database. */
-	deleteMessage() {
-		var messageRef = firebase.database().ref('posts/' + this.props.message.key);
-		messageRef.remove();
-	}
-
-	/* Shows edit and delete buttons for each individual post. */
-	showControls() {
-    var thisComponent = this;
-    var userRef = firebase.database().ref('posts/' + this.props.message.key);
-    userRef.once("value")
-      .then(function(snapshot) {
-        var childKey = snapshot.child('userId').val();
-        if(childKey === firebase.auth().currentUser.uid) { // only shows controls on a user's own posts'
-            thisComponent.setState({showControls: 'show'});
-        }
-      });
-	}
-
-	/* Hides edit and delete buttons for each individual post. */
-	hideControls() {
-		this.setState({showControls: 'hidden'});
-	}
     
     render() {
       var avatar = (this.props.user.avatar);
       var userName = (this.props.user.displayName);
-      var editContent = null;
       var lastEdited = '';
       var listingImage = '';
       var id = "/#/posts/" + this.props.id;
@@ -430,21 +355,6 @@ class MessageItem extends React.Component {
         listingImage = this.props.image;
       }
 
-      if(!this.state.edit) { // show regular msg if not being edited
-        editContent = this.props.message.text;
-      } else if(this.state.edit) { // if being edited, show new text submit area 
-        editContent =       (
-          <form role="form">
-            <Textfield
-              onChange={(e) => this.updatePost(e)}
-              label='edit message'
-              value={this.state.post}
-              rows={1}
-              onKeyPress={(e) => this.postMessage(e)}
-            />
-          </form>);
-		} 
-
 		/* Show last edit time. */
 		if(this.props.message.timeEdited !== '') {
 			lastEdited = <span>(edited <Time value={this.props.message.timeEdited} relative/>)</span>;
@@ -452,7 +362,7 @@ class MessageItem extends React.Component {
 
     return (
       <div className="card-column">
-        <div className="item" onMouseEnter={() => this.showControls()} onMouseLeave={() => this.hideControls()}>
+        <div className="item">
           <Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
             <CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(' + listingImage + ') center / cover'}}>{this.props.title}</CardTitle>
             <span className="time"><span className={this.props.type}>{this.props.type}</span><Time value={this.props.message.time} relative/> {lastEdited}</span>
@@ -471,22 +381,7 @@ class MessageItem extends React.Component {
             </div>
 
             <CardActions border>
-              <a href={id}><Button colored>Read</Button></a><Button colored>Contact</Button>
-            
-              <div className={this.state.showControls}>
-                <span className="edit {edited}" onClick={this.handleOpenDialog}><i className="fa fa-trash-o" aria-hidden="true"></i></span>
-                <Dialog open={this.state.openDialog}>
-                  <DialogTitle>Delete Post?</DialogTitle>
-                  <DialogContent>
-                    <p>Are you sure you want to permanently delete this post?</p>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button type='button' onClick={() => this.deleteMessage()}>Delete</Button>
-                    <Button type='button' onClick={this.handleCloseDialog}>Cancel</Button>
-                  </DialogActions>
-                </Dialog>
-                <span className="edit {edited}" onClick={() => this.editMessage()}><i className="fa fa-pencil" aria-hidden="true"></i></span>
-              </div>
+              <a href={id}><Button colored>Read</Button></a><Button colored>Contact</Button><Button colored>Bookmark</Button>
             </CardActions>
           </Card>
         </div>
