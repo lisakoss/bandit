@@ -7,6 +7,7 @@ class Home extends React.Component {
 		super(props);
 		this.state = {};
 	}
+	
 	//Lifecycle callback executed when the component appears on the screen.
   //It is cleaner to use this than the constructor for fetching data
   componentDidMount() {
@@ -31,6 +32,7 @@ class Home extends React.Component {
       this.unregister(); //call that function!
     }
   }
+
 	render() {
 		var signUpMessage = null;
 
