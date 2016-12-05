@@ -110,7 +110,7 @@ class Profile extends React.Component {
 							<span><Tooltip label="Instruments and Skills" position="top"><i className="fa fa-music display-icon" aria-hidden="true"></i></Tooltip><p> {this.state.instruments}</p></span>
 							<span><Tooltip label="Genre" position="top"><i className="fa fa-headphones display-icon" aria-hidden="true"></i></Tooltip><p className="quick-info"> {this.state.genre}</p></span>
 							<span><Tooltip label="Location" position="top"><i className="fa fa-map-marker display-icon" aria-hidden="true"></i></Tooltip><p className="quick-info"> {this.state.location}</p></span>
-							<span><Tooltip label="Contact" position="top"><i className="fa fa-comments display-icon" aria-hidden="true"></i></Tooltip><p className="quick-info"> Contact {this.state.displayName}</p></span>
+							<span><Tooltip label="Contact" position="top"><i className="fa fa-comments display-icon" aria-hidden="true"></i></Tooltip><p className="quick-info"> <a href="/#/inbox">Contact {this.state.displayName}</a></p></span>
 						</div>
 					</div>
 					<div className="profile-tabs">
