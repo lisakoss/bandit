@@ -109,7 +109,7 @@ class SignUpForm extends React.Component {
 
     return (
       <div>
-        <h1>Sign Up</h1>
+        <h1>sign up</h1>
 
         <form role="form" className="sign-up-form">
 

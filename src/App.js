@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css';
-import { Layout, Header, Navigation, Drawer, Content } from 'react-mdl';
+import { Layout, Header, Navigation, Drawer, Content, Tooltip, Icon } from 'react-mdl';
 import SignOut from './SignOut';
 import firebase from 'firebase';
 
@@ -8,7 +8,7 @@ class App extends React.Component {
 	constructor(props){
 			super(props);
 			this.state = {};
-		}
+	}
 	//Lifecycle callback executed when the component appears on the screen.
   //It is cleaner to use this than the constructor for fetching data
   componentDidMount() {
@@ -17,7 +17,13 @@ class App extends React.Component {
       if(user) {
         this.setState({userId: user.uid});
 				this.setState({displayName: firebase.auth().currentUser.displayName});
-				this.setState({avatar: firebase.auth().currentUser.photoURL});
+				//this.setState({avatar: firebase.auth().currentUser.photoURL});
+				//console.log(firebase.auth().currentUser);
+				var profileRef = firebase.database().ref('users/' + this.state.userId);
+				profileRef.once("value")
+					.then(snapshot => {
+						this.setState({avatar: snapshot.child("avatar").val()});
+					});
       }
       else{
         this.setState({userId: null}); //null out the saved state
@@ -34,26 +40,42 @@ class App extends React.Component {
     }
   }
 
+
 	render() {
 		var profileImg = null;
 		var drawerContent = null;
+		var drawerTitle = null;
 
+		//console.log(this.state);
+		
 		if(this.state.userId !== null) {
+			
 			profileImg = <img src={this.state.avatar} alt="avatar" />;
 			drawerContent = (
-												<Navigation>
-													<div className="profile-drawer nav-container">
-														{profileImg}
-													</div>
-													<a href="">Link</a>
-													<a href="">Link</a>
-													<a href="">Link</a>
-													<a href="">Link</a>
+												<div>
 													<div className="nav-container">
-														<SignOut/>
+														<p className="profile-drawer">
+															{profileImg}
+														</p>
+														<p className="links">Quick Links</p>
 													</div>
-												</Navigation>
+													<Navigation>
+														<a href="/#/profileedit">Edit profile</a>
+														<a href="/#/createpost">Create a post</a>
+														<a href="">Manage posts</a>
+														<a href="">Saved bookmarks</a>
+														<div className="nav-container">
+															<SignOut/>
+														</div>
+													</Navigation>
+												</div>
 											);
+			drawerTitle = (<div className="drawer-title">
+											{this.state.displayName}
+										 	<Tooltip label="go to profile" position="right">
+    										<a href={"/#/profile/" + this.state.userId}><Icon name="arrow_forward" /></a>
+											</Tooltip>
+										 </div>);
 		} else {
 			drawerContent = (<Navigation><span>You must <a href="/#/login">login</a> or <a href="/#/signup">sign up</a> to view this content.</span></Navigation>);
 		}
@@ -66,10 +88,10 @@ class App extends React.Component {
 							<a href="/#/board">Board</a>
 							<a href="/#/search">Search</a>
 							<a href="/#/inbox">Inbox</a>
-							<a href={this.state.userId !== null ? "/#/profile" : "/#/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} <span className="profile-nav">{profileImg}</span></a> 
+							<a href={this.state.userId !== null ? "/#/profile/" + this.state.userId : "/#/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} <p className="profile-nav">{profileImg}</p></a> 
 						</Navigation>
           </Header>
-					<Drawer title={this.state.displayName}>
+					<Drawer title={drawerTitle}>
 						{drawerContent}
 					</Drawer>
 					<Content role="main">
