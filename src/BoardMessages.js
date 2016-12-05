@@ -165,7 +165,7 @@ export class MessageBox extends React.Component {
           />
           <Textfield
             onChange={(e) => this.updateInstrument(e)}
-            label="instrument"
+            label="instrument/skills"
             floatingLabel
             value={this.state.instrument}
             className="msg-input-type"
@@ -215,11 +215,11 @@ export class MessageBox extends React.Component {
                 <p><strong>Listing Title</strong>: a few words advertising what you're offering or looking for.</p>
                 <p><strong>Short Summary</strong>: a small blurb that gives a few details about your listing. <em>Displayed on outside of listing on board.</em></p>
                 <p><strong>Zip Code</strong>: 5 digits only; your location.</p>
-                <p><strong>Instrument</strong>: the instrument your listing is about; <em>optional</em>.</p>
+                <p><strong>Instrument/Skills</strong>: the instrument or skills required for your listing.</p>
                 <p><strong>Job Title</strong>: the title of the job with skills you're offering or looking for.</p>
                 <p><strong>Listing Image</strong>: image displayed on the outside of your listing; <em>optional</em>.</p>
-                <p><strong>Tags</strong>: tag your listing with relevenat words to make it easier for others to find your listing via searching.</p>
-                <p><strong>Description</strong>: describe in detail what you can offer or what you're looking from someone else.</p>
+                <p><strong>Tags</strong>: tag your listing with relevant words to make it easier for others to find your listing via searching.</p>
+                <p><strong>Description</strong>: describe in detail what you can offer or what you're looking for from someone else.</p>
               </div>
             </DialogContent>
             <DialogActions fullWidth>
@@ -308,6 +308,7 @@ export class MessageList extends React.Component {
                      image={message.image}
                      user={this.state.users[message.userId]} 
                      key={message.key}
+                     id={message.key}
                      />
 			);
     })
@@ -404,6 +405,7 @@ class MessageItem extends React.Component {
       var editContent = null;
       var lastEdited = '';
       var listingImage = '';
+      var id = "/#/posts/" + this.props.id;
 
       if(this.props.image === '') {
         console.log(this.props.image);
@@ -419,11 +421,11 @@ class MessageItem extends React.Component {
         editContent =       (
           <form role="form">
             <Textfield
-                onChange={(e) => this.updatePost(e)}
-                label='edit message'
-                value={this.state.post}
-                rows={1}
-                onKeyPress={(e) => this.postMessage(e)}
+              onChange={(e) => this.updatePost(e)}
+              label='edit message'
+              value={this.state.post}
+              rows={1}
+              onKeyPress={(e) => this.postMessage(e)}
             />
           </form>);
 		} 
@@ -438,8 +440,8 @@ class MessageItem extends React.Component {
         <div className="item" onMouseEnter={() => this.showControls()} onMouseLeave={() => this.hideControls()}>
           <Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
             <CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(' + listingImage + ') center / cover'}}>{this.props.title}</CardTitle>
-              <span className="time"><Time value={this.props.message.time} relative/> {lastEdited}</span>
-            
+            <span className="time"><Time value={this.props.message.time} relative/> {lastEdited}</span>
+          
             <CardText>
               <div className="message">{this.props.summary}</div>
             </CardText>
@@ -451,11 +453,10 @@ class MessageItem extends React.Component {
               </span>
               posted by: {/* This image's src should be the user's avatar */}
               <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle">{this.props.user.displayName}</span>
-          
             </div>
 
             <CardActions border>
-              <Button colored>Read</Button><Button colored>Contact</Button>
+              <a href={id}><Button colored>Read</Button></a><Button colored>Contact</Button>
             
               <div className={this.state.showControls}>
                 <span className="edit {edited}" onClick={this.handleOpenDialog}><i className="fa fa-trash-o" aria-hidden="true"></i></span>
