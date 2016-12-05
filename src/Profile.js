@@ -1,6 +1,5 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Textfield } from 'react-mdl';
 
 class Profile extends React.Component {
   constructor(props){
@@ -8,157 +7,75 @@ class Profile extends React.Component {
 		this.state = {};
 	}
 
+
 	//Lifecycle callback executed when the component appears on the screen.
   //It is cleaner to use this than the constructor for fetching data
   componentDidMount() {
-		var profileRef = firebase.database().ref('users/' + this.props.params.profileID);
-		profileRef.once("value")
-			.then(snapshot => {
-				//this.setState({displayName: snapshot.child("displayName").val()});
-				//this.setState({avatar: snapshot.child("avatar").val()});
-				//var userName = snapshot.child("displayName").val();
-				this.setState({displayName: snapshot.child("displayName").val()});
-				this.setState({avatar: snapshot.child("avatar").val()});
-				this.setState({coverPhoto: snapshot.child("coverPhoto").val()});
-				console.log(snapshot.child("displayName").val())
-				//console.log("A");
-			});
+	this.unregister = firebase.auth().onAuthStateChanged(user => {
+		if(user) {
+			this.setState({userId: user.uid});
+			this.setState({displayName: firebase.auth().currentUser.displayName});
+			this.setState({avatar: firebase.auth().currentUser.photoURL});
+			var profileRef = firebase.database().ref('users/' + this.props.params.profileID);
+			profileRef.once("value")
+				.then(snapshot => {
+					//this.setState({displayName: snapshot.child("displayName").val()});
+					//this.setState({avatar: snapshot.child("avatar").val()});
+					this.setState({coverPhoto: snapshot.child("coverPhoto").val()});
+					this.setState({jobTitle: snapshot.child("jobTitle").val()});
+				});
+		}
+      else{
+        this.setState({userId: null}); //null out the saved state
+				this.setState({displayName: null}); //null out the saved state
+				this.setState({avatar: null}); //null out the saved state
+				this.setState({jobTitle: null}); //null out the saved state
+      }
+    })
   }
 
   //when component will be removed
   componentWillUnmount() {
   	//unregister listeners
   	firebase.database().ref('users/' + this.props.params.profileID).off();
+		if(this.unregister){ //if have a function to unregister with
+      this.unregister(); //call that function!
+    }
   }
 
 	componentWillReceiveProps(nextProps) {
 		var profileRef = firebase.database().ref('users/' + nextProps.params.profileID);
 		profileRef.once("value")
 			.then(snapshot => {
-				//this.setState({displayName: snapshot.child("displayName").val()});
-				//this.setState({avatar: snapshot.child("avatar").val()});
-				//var userName = snapshot.child("displayName").val();
 				this.setState({displayName: snapshot.child("displayName").val()});
 				this.setState({avatar: snapshot.child("avatar").val()});
 				this.setState({coverPhoto: snapshot.child("coverPhoto").val()});
-				console.log(snapshot.child("displayName").val())
-				//console.log("A");
+				this.setState({jobTitle: snapshot.child("jobTitle").val()});
 			});
   }
 
-	//edit display name if you're the respective owner of the profile
-	editDisplay() {
-		if(this.props.params.profileID === firebase.auth().currentUser.uid) {
-			this.setState({displayEdit: true});
-		} 
-
-		if(this.state.displayEdit === true) {
-			this.setState({displayEdit: false});
-		}
-		console.log(this.state);
-	}
-
-	//when the text in the form changes
-	updateDisplay(event) {
-		this.setState({displayName: event.target.value});
-	}
-
-	//post display name to the database
-	postDisplay(event){
-		if (event.key === 'Enter') {
-			var user = firebase.auth().currentUser;
-			event.preventDefault(); //don't submit
-
-			/* Add a new message to the database */
-			var userRef = firebase.database().ref('users/' + this.props.params.profileID); //the messages in the JOITC
-			userRef.child('displayName').set(this.state.displayName);
-
-			user.updateProfile({
-				displayName: this.state.displayName
-			});
-			//console.log(channelRef);
-			this.setState({displayEdit: false});
-		}
-	}
-
-	//edit cover photo if you're the respective owner of the profile
-	editCover() {
-		if(this.props.params.profileID === firebase.auth().currentUser.uid) {
-			this.setState({coverEdit: true});
-		} 
-
-		if(this.state.coverEdit === true) {
-			this.setState({coverEdit: false});
-		}
-		console.log(this.state);
-	}
-
-	//when the text in the form changes
-	updateCover(event) {
-		this.setState({coverPhoto: event.target.value});
-	}
-
-	//post cover photo to the database
-	postCover(event){
-		if (event.key === 'Enter') {
-			//var user = firebase.auth().currentUser;
-			event.preventDefault(); //don't submit
-
-			/* Add a new message to the database */
-			var userRef = firebase.database().ref('users/' + this.props.params.profileID); //the messages in the JOITC
-			userRef.child('coverPhoto').set(this.state.coverPhoto);
-
-			//user.updateProfile({
-				//coverPhoto: this.state.coverPhoto
-//});
-			//console.log(channelRef);
-			this.setState({coverEdit: false});
-		}
-	}
-
 	render() {
-		var userName = null;
-		var coverPhoto = '';
 		var divStyle = {
- 			backgroundImage: 'url(' + this.state.coverPhoto || ' )',
+ 			backgroundImage: 'url(' + this.state.coverPhoto || ' )'
 		};
+		var edit = null;
 
-		console.log(this.props.params);
-
-		if(this.state.displayEdit === true) {
-     userName =(<Textfield
-                  onChange={(e) => this.updateDisplay(e)}
-                  label="edit your name"
-                  rows={1}
-                  value={this.state.displayName}
-                  onKeyPress={(e) => this.postDisplay(e)}
-									floatingLabel
-                />);
+		if(this.props.params.profileID === this.state.userId) {
+			edit = "icon";
 		} else {
-			userName = this.state.displayName;
+			edit = "icon hidden"
 		}
 
-		if(this.state.coverEdit === true) {
-     coverPhoto =(<Textfield
-                  onChange={(e) => this.updateCover(e)}
-                  label="edit your cover photo"
-                  rows={1}
-                  value={this.state.coverPhoto || ''}
-                  onKeyPress={(e) => this.postCover(e)}
-									floatingLabel
-                />);
-		} 
-
-		console.log(this.state);
 		return (
 			<div id="profile">
 				<div className="profile-top" style={divStyle}>
-					{coverPhoto}<p className="icon"><a href="/#/profileedit"><i className="fa fa-pencil edit-profile" aria-hidden="true"> <span className="edit-profile-text">edit</span></i></a></p>
+					<p className={edit}><a href="/#/profileedit"><i className="fa fa-pencil edit-profile" aria-hidden="true"> <span className="edit-profile-text">edit</span></i></a></p>
 				</div>
 				<div className="profile-user">
 					<div className="content-container">
 						<img src={this.state.avatar || './img/blank-user.jpg'} alt="avatar" />
-						<h1 className="profile-heading">{userName}</h1>
+						<h1 className="profile-heading">{this.state.displayName}</h1>
+						<p className="job-title">{this.state.jobTitle}</p>
 					</div>
 				</div>
 			</div>

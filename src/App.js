@@ -18,7 +18,7 @@ class App extends React.Component {
         this.setState({userId: user.uid});
 				this.setState({displayName: firebase.auth().currentUser.displayName});
 				this.setState({avatar: firebase.auth().currentUser.photoURL});
-				console.log(firebase.auth().currentUser);
+				//console.log(firebase.auth().currentUser);
 
 				
       }
@@ -43,7 +43,7 @@ class App extends React.Component {
 		var drawerContent = null;
 		var drawerTitle = null;
 
-		console.log(this.state);
+		//console.log(this.state);
 		
 		if(this.state.userId !== null) {
 			

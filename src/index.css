@@ -147,6 +147,44 @@ body {
   padding-top: 0 !important;
 }
 
+#profile, .profile-content {
+  background-color: #ffffff;
+}
+
+.profile-content {
+  padding: 24px;
+}
+
+#profile img {
+  width: 175px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+}
+
+.profile-top {
+  background-image: url('');
+  background-color: #323232;
+  background-size: cover;                     
+  background-repeat: no-repeat;
+  background-position: center center; 
+  height: 300px;
+}
+
+.profile-user {
+  width: 100%;
+  top: 175px;
+  position: absolute;
+  margin: auto;
+  text-align: center;
+  display: inline;
+}
+
+.job-title {
+  color: #5C5C5C;
+  letter-spacing: 1px;
+  font-size: 18px;
+}
+
 .edit-profile {
   padding: 10px;
   margin: 5px 5px 0 0;
@@ -169,33 +207,6 @@ body {
   margin: 0;
 }
 
-#profile {
-  background-color: #ffffff;
-}
-
-#profile img {
-  width: 175px;
-  border-radius: 50%;
-  border: 3px solid #ffffff;
-}
-
-.profile-top {
-  background-image: url('');
-  background-color: #323232;
-  background-size:     cover;                     
-  background-repeat:   no-repeat;
-  background-position: center center; 
-  height: 300px;
-}
-.profile-user {
-  width: 100%;
-  top: 175px;
-  position: absolute;
-  margin: auto;
-  text-align: center;
-  display: inline;
-}
-
 .profile-alert {
   color: #5C5C5C;
   border-radius: 10px;
@@ -205,6 +216,7 @@ body {
 
 .profile-alert p {
   margin: 0;
+  text-align: center;
 }
 
 .red-discard {
@@ -217,8 +229,64 @@ body {
   border: 1px solid #33cc33;
 }
 
-.profile-display-name {
+.profile-spinner {
+  margin-left: 48% !important;
+}
+
+.profile-display-name, .profile-job-title {
+  width: 48% !important;
+}
+
+.profile-job-title {
+  float: right;
+}
+
+.profile-cover {
   width: 100% !important;
+}
+
+.cover-photo {
+  background-color: #323232;
+  width: 100%;
+  height: 300px;
+  background-size: cover;                     
+  background-repeat: no-repeat;
+  background-position: center center; 
+}
+
+.cover-preview {
+  text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.cover-photo p {
+  width: 50%;
+  padding: 10px;
+  border-radius: 10px;
+  margin: auto;
+  background-color: #323232;
+  color: #ffffff;
+  opacity: 0.6;
+}
+
+.profile-avatar img {
+  float: left;
+  width: 15%;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+}
+
+.profile-avatar-text {
+  width: 82% !important;
+  float: right;  
+  transform: translateY(55%);
+}
+
+.profile-submit {
+  text-align: center;
+  clear: both;
 }
 
 .hidden {
