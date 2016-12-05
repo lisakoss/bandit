@@ -1,5 +1,4 @@
 import React from 'react';
-import ListingItem from './ListingItem';
 import firebase from 'firebase';
 import {hashHistory} from 'react-router';
 import {Button} from 'react-mdl';
@@ -16,7 +15,7 @@ constructor(props){
 		.then(snapshot => {
       console.log(snapshot.val());
 			var listingContent = snapshot.val();
-			this.setState({title: listingContent.title, summary: listingContent.summary, location: listingContent.location, instrument: listingContent.instrument, job: listingContent.job, image: listingContent.image, tags: listingContent.tags, post: listingContent.text})
+			this.setState({title: listingContent.title, summary: listingContent.summary, location: listingContent.location, instrument: listingContent.instrument, job: listingContent.job, image: listingContent.image, tags: listingContent.tags, post: listingContent.text, type: listingContent.type})
     });
 
 		/* Add a listener and callback for authentication events */
@@ -59,7 +58,7 @@ constructor(props){
 						<Button colored>Contact</Button><Button colored>Profile</Button>
 					</span>
 					<span className="listing-text">
-						<p className="listing-alert green-confirm">WANTED</p>
+						<p className={this.state.type}>{this.state.type}</p>
 						<span><strong>Job</strong>: {this.state.job}</span>
 						<span><strong>Instruments/Skills Required</strong>: {this.state.instrument}</span>
 						<div className="listing-desc">

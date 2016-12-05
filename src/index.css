@@ -187,6 +187,12 @@ h1 {
   margin-right: 3% !important;
 }
 
+.form-para {
+  margin: 0;
+  font-variant: small-caps;
+  font-size: 14pt;
+}
+
 .msg-input {
   width: 100% !important;
   font-variant: small-caps;
@@ -323,32 +329,40 @@ li {
   margin-bottom: 0 !important;
 }
 
-.listing-alert {
-  color: #5C5C5C;
-  border-radius: 10px;
-  padding: 3px;
-  margin: 0 0 15px 0;
-  width: 75px;
-}
-
-.listing-alert {
-  margin: 0;
-  text-align: center;
-  float: left;
-}
-
 .listing-text span {
   padding-left: 10px;
   position: relative;
-  top: 4px;
+  top: 6px;
 }
 
 .listing-desc {
   margin-top: 20px;
 }
 
-.green-confirm {
+.offering, .wanted {
+  color: #5C5C5C;
+  border-radius: 10px;
+  float: left;
+  font-size: 14pt;
+  font-variant: small-caps;
+  padding: 3px;
+  margin: 0;
+  text-align: center;
+  width: 75px;
+}
+
+.offering {
   background-color: #C2F0C2;
+}
+
+.wanted {
+  background-color: #FFB3B3;
+}
+
+.mdl-radio {
+  font-variant: small-caps;
+  font-size: 14pt !important;
+  margin: 0 20px 20px 0 !important;
 }
 
 .mdl-card {

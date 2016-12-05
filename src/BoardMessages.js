@@ -1,7 +1,7 @@
 import React from 'react';
 import Time from 'react-time';
 import firebase from 'firebase';
-import {Textfield, Button, Dialog, DialogTitle, DialogContent, DialogActions, Card, CardTitle, CardText, CardActions, Tooltip} from 'react-mdl';
+import {Textfield, Button, Dialog, DialogTitle, DialogContent, DialogActions, Card, CardTitle, CardText, CardActions, Tooltip, Radio, RadioGroup} from 'react-mdl';
 
 /* A form the user can use to post a channel message. */
 export class MessageBox extends React.Component {
@@ -16,7 +16,8 @@ export class MessageBox extends React.Component {
         "instrument": '',
         "job": '',
         "image": '',
-        "tags": ''
+        "tags": '',
+        "type": 'wanted'
     };
 
     // bind functions 
@@ -78,6 +79,10 @@ export class MessageBox extends React.Component {
     this.setState({tags: event.target.value});
   }
 
+  listingType(event) {
+    this.setState({type: event.target.value});
+  }
+
   /* Posts a new channel message to the database. */
   postMessage(event){
     //&& this.state.email === "hidden"
@@ -95,6 +100,7 @@ export class MessageBox extends React.Component {
             job: this.state.job,
             image: this.state.image,
             tags: this.state.tags,
+            type: this.state.type,
             userId: firebase.auth().currentUser.uid, 
             time: firebase.database.ServerValue.TIMESTAMP,
             timeEdited: ''
@@ -132,6 +138,8 @@ export class MessageBox extends React.Component {
     } else {
       listingImage = this.state.image;
     }    
+
+    console.log(this.state);
 
     return (
 			<div className="write-msg">
@@ -205,6 +213,12 @@ export class MessageBox extends React.Component {
 						rows={6}
 						className="msg-input"
 					/>
+
+          <p className="form-para">choose listing type:</p>
+          <RadioGroup name="demo" value="wanted">
+            <Radio value="wanted" onClick={(e) => this.listingType(e)}>wanted</Radio>
+            <Radio value="offering" onClick={(e) => this.listingType(e)}>offering</Radio>
+          </RadioGroup>
 
           <Button ripple className="create-button" onClick={(e) => this.postMessage(e)}>Post Listing</Button>
           <i onClick={this.handleOpenDialog} className="fa fa-question fa-2x" aria-hidden="true"></i>
@@ -307,6 +321,7 @@ export class MessageList extends React.Component {
                      tags={message.tags}
                      image={message.image}
                      user={this.state.users[message.userId]} 
+                     type={message.type}
                      key={message.key}
                      id={message.key}
                      />
@@ -440,7 +455,7 @@ class MessageItem extends React.Component {
         <div className="item" onMouseEnter={() => this.showControls()} onMouseLeave={() => this.hideControls()}>
           <Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
             <CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(' + listingImage + ') center / cover'}}>{this.props.title}</CardTitle>
-            <span className="time"><Time value={this.props.message.time} relative/> {lastEdited}</span>
+            <span className="time"><span className={this.props.type}>{this.props.type}</span><Time value={this.props.message.time} relative/> {lastEdited}</span>
           
             <CardText>
               <div className="message">{this.props.summary}</div>
