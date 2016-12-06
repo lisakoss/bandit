@@ -26,13 +26,28 @@ class Search extends React.Component {
     });
   }
 
-  // Returns a boolean; Does post have searchTerm?
+  // Checks if post contains searchTerm
   hasSearchTerm(post, searchTerm) {
-    return post == searchTerm;
+    // Iterate through each key of the post
+    for (const key of Object.keys(post)) {
+      // Get value contained in key
+      var value = post[key];
+      // Only compare valid keys
+      if (key !== "time" &&
+          key !== "timeEdited" &&
+          key !== "wanted" &&
+          key !== "userId") {
+        if (value.includes(searchTerm)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   // Update state for specific field
   handleSearch(event) {
+    console.log("=================");
     var field = event.target.name; // search-field
     var searchTerm = event.target.value; // whatever is typed
     var posts = this.state.posts;
@@ -40,9 +55,12 @@ class Search extends React.Component {
     // Iterate through posts
     for (const key of Object.keys(posts)) {
       const post = posts[key];
-      // Does this post have a value that contains the search term?
-      var postHasTerm = this.hasSearchTerm("2", searchTerm);
-      console.log(postHasTerm);
+      // Does this post have a value containing the search term?
+      var postHasTerm = this.hasSearchTerm(post, searchTerm);
+      if (postHasTerm) {
+        // Render this post... Or update state?
+        console.log(post);
+      }
     }
 
   }
@@ -54,7 +72,7 @@ class Search extends React.Component {
           <form role="form" className="search-form">
             <Textfield
               onChange={this.handleSearch}
-              label="Search for a musician, gig or collaboration"
+              label="Search for your next gig or collaboration"
               id="search-field"
               type="text"
               name="search-field"
