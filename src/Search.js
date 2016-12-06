@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Textfield, Button } from 'react-mdl';
+import { Textfield } from 'react-mdl';
 
 class Search extends React.Component {
   constructor(props){
@@ -28,22 +28,23 @@ class Search extends React.Component {
 
   // Returns a boolean; Does post have searchTerm?
   hasSearchTerm(post, searchTerm) {
-    return true;
+    return post == searchTerm;
   }
 
   // Update state for specific field
   handleSearch(event) {
     var field = event.target.name; // search-field
     var searchTerm = event.target.value; // whatever is typed
-
     var posts = this.state.posts;
 
     // Iterate through posts
-    Object.keys(posts).forEach(function(key, index) {
-      var post = posts[key];
+    for (const key of Object.keys(posts)) {
+      const post = posts[key];
       // Does this post have a value that contains the search term?
+      var postHasTerm = this.hasSearchTerm("2", searchTerm);
+      console.log(postHasTerm);
+    }
 
-    });
   }
 
   render() {
