@@ -58,7 +58,7 @@ class SignUp extends React.Component {
         var userData = {
           displayName: displayName,
           avatar: avatar,
-          inbox: {}
+          inbox: ""
         }
         userRef.set(userData); //update entry in JOITC, return promise for chaining
       })
