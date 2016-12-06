@@ -270,6 +270,10 @@ li {
 	border-radius: 50%;
 }
 
+.listing-avatar {
+  border-radius: 50%;
+}
+
 .posted-by {
   color: #9d9d9d;
   font-size: 9pt;
@@ -368,10 +372,6 @@ li {
   font-variant: small-caps;
   font-size: 14pt !important;
   margin: 0 20px 20px 0 !important;
-}
-
-.mdl-card {
-  margin-left: 0 !important;
 }
 
 .fa-question {

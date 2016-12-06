@@ -21,21 +21,16 @@ constructor(props){
 
   componentDidMount() {
 		var messagesRef = firebase.database().ref('posts/' + this.props.params.listingName);
-		messagesRef.once("value")
-		.then(snapshot => {
+		messagesRef.once('value', (snapshot) => {
 			var listingContent = snapshot.val();
-			console.log(listingContent);
 			this.setState({title: listingContent.title, summary: listingContent.summary, location: listingContent.location, instrument: listingContent.instrument, job: listingContent.job, image: listingContent.image, tags: listingContent.tags, post: listingContent.text, type: listingContent.type, listingUser: listingContent.userId})
-    });
 
-		/* Add a listener and callback for authentication events */
-    this.unregister = firebase.auth().onAuthStateChanged(user => {
-      if(user) {
-        this.setState({userId: user.uid});
-				this.setState({displayName: firebase.auth().currentUser.displayName});
-				this.setState({avatar: firebase.auth().currentUser.photoURL});
-      }
-    })
+			var usersRef = firebase.database().ref('users/' + listingContent.userId);
+			usersRef.on('value', (snapshot) => {
+				this.setState({displayName: snapshot.child('displayName').val()});
+				this.setState({avatar: snapshot.child('avatar').val()});
+    	});
+    });
 	}
 
 	//when the component is unmounted, unregister using the saved function
@@ -119,7 +114,7 @@ constructor(props){
 					onKeyPress={(e) => this.postMessage(e)}
 					/>
 				</form>);
-		  } 
+		} 
 
     return (
       <div className="content-container">
@@ -130,7 +125,7 @@ constructor(props){
 
 				<div className="listing">
 					<span className="user-info">
-						<img src={this.state.avatar} alt="user avatar" />
+						<img className="listing-avatar" src={this.state.avatar} alt="user avatar" />
 						<p><strong>Name</strong>: {this.state.displayName}</p>
 						<p><strong>Location</strong>: {this.state.location}</p>
 						<Button colored>Contact</Button><Button colored>Profile</Button>
