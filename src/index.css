@@ -301,7 +301,7 @@ li {
 
 .listing-title {
   position: relative;
-  top: 110px;
+  top: 112px;
   color: #ffffff;
   display: inline;
   margin-top: 0;
@@ -311,10 +311,10 @@ li {
 .listing-tags {
   position: relative;
   top: 144px;
+  left: 142px;
   background-color: rgba(245,248,250,0.5);
   float: right;
   border-radius: 5px;
-  margin-right: 10px;
   padding: 3px;
 }
 
@@ -365,7 +365,14 @@ li {
 }
 
 .show {
-  padding: 0 30px 30px 30px;
+  color: #ffffff;
+  margin-right: 4px;
+  font-variant: small-caps;
+}
+
+.show .mdl-dialog__content p {
+  font-size: 12pt !important;
+  font-variant: normal;
 }
 
 .mdl-radio {
