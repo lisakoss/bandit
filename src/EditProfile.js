@@ -6,7 +6,7 @@ import { hashHistory } from 'react-router';
 class EditProfile extends React.Component {
   constructor(props){
 		super(props);
-		this.state = {cancelAlert: false, confirmAlert: false, hidden: 'hidden'};
+		this.state = {cancelAlert: false, confirmAlert: false, displayError: false, hidden: 'hidden', disable: false};
 		this.confirmProfile = this.confirmProfile.bind(this);
 		this.discardProfile = this.discardProfile.bind(this);
   }
@@ -117,6 +117,19 @@ class EditProfile extends React.Component {
 
 	//when the text in the display name field changes, updates state
 	updateDisplay(event) {
+		if(event.target.value.length === 0) {
+			this.setState({
+				disable: true,
+				displayError: true,
+				hidden: 'profile-alert red-discard'
+			});
+		} else {
+			this.setState({
+				disable: false,
+				displayError: false,
+				hidden: 'hidden'
+			});
+		}
 		this.setState({displayName: event.target.value});
 	}
 
@@ -161,6 +174,7 @@ class EditProfile extends React.Component {
 	}
 
 	render() {
+		var disableEnabled = this.state.disable;
 		var alert = null;
 		var divStyle = {
  			backgroundImage: 'url(' + this.state.coverPhoto || ' )'
@@ -172,6 +186,8 @@ class EditProfile extends React.Component {
 			alert = (<div><p>You have submitted your changes. Redirecting...</p>
 						 <Spinner className="profile-spinner" singleColor />
 					 </div>);
+		} else if(this.state.displayError === true) {
+			alert = (<div><p>Display name must be at least one character long.</p></div>);
 		}
 
 		return(
@@ -269,7 +285,7 @@ class EditProfile extends React.Component {
 					/>
 
 					<div className="profile-submit">
-						<Button raised accent ripple onClick={(e)=>this.updateProfile(e)}>Update Profile</Button>
+						<Button disabled={disableEnabled} raised accent ripple onClick={(e)=>this.updateProfile(e)}>Update Profile</Button>
 					</div>
 					<Dialog role="region" open={this.state.openDialog}>
 						<DialogTitle>Are you sure?</DialogTitle>
