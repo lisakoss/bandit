@@ -11,24 +11,25 @@ export class CommentList extends React.Component {
     }
 
     componentDidMount() {
-        var usersRef = firebase.database().ref('users');
+        var usersRef = firebase.database().ref('users'); //grabs users
         usersRef.on('value', (snapshot) => {
             this.setState({ users: snapshot.val() });
         });
         var postID = this.props.post;
-        var commentRef = firebase.database().ref('posts/' + postID + '/messages');
+        var commentRef = firebase.database().ref('posts/' + postID + '/messages'); //comment reference
         commentRef.on('value', (snapshot) => {
             var commentArray = [];
-            snapshot.forEach(function (child) {
-                var comment = child.val();
+            snapshot.forEach(function (child) { //goes through each comment
+                var comment = child.val(); 
                 comment.key = child.key;
                 commentArray.push(comment);
             });
-            commentArray.sort((a, b) => b.time - a.time);
+            commentArray.sort((a, b) => b.time - a.time); //sorts by most recent on top
             this.setState({ comments: commentArray });
         })
     }
-
+    
+    //turn off listeners when unmounting
     componentWillUnmount() {
         firebase.database().ref('users').off();
         firebase.database().ref('messages').off();
@@ -38,12 +39,11 @@ export class CommentList extends React.Component {
         if (!this.state.users) {
             return null;
         }
-        var commentItems = this.state.comments.map((message) => {
+        var commentItems = this.state.comments.map((message) => { //mapping array for one instance of comment
             return <CommentItem message={message}
                 user={this.state.users[message.userId]}
                 key={message.key} />
         });
-        console.log(commentItems);
         return (<div>{commentItems}</div>)
     }
 }

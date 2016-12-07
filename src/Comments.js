@@ -12,10 +12,11 @@ export class Comments extends React.Component {
     }
 
     componentDidMount() {
-        var titleRef = firebase.database().ref('posts/' + this.props.params.listingName);
+        var titleRef = firebase.database().ref('posts/' + this.props.params.listingName); //accessing post properties
         titleRef.once('value', (snapshot) => {
             var title = snapshot.child('title').val();
             var summary = snapshot.child('summary').val();
+            //saving properties in state
             this.setState({
                 title: title,
                 summary: summary
@@ -23,6 +24,7 @@ export class Comments extends React.Component {
         });
     }
 
+    //navigates user back to original post
     handleButton(event) {
         const path = '/posts/' + this.props.params.listingName;
         hashHistory.push(path);
@@ -50,14 +52,11 @@ export class CommentBox extends React.Component {
         super(props);
         this.state = { comment: '' };
 
+        //binding function
         this.postComment = this.postComment.bind(this);
-        this.getUserID = this.getUserID.bind(this);
     }
 
-    getUserID() {
-        return firebase.auth().currentUser;
-    }
-
+    //callback function for when user is typing a comment
     updateComment(event) {
         this.setState({ comment: event.target.value });
     }
@@ -66,20 +65,19 @@ export class CommentBox extends React.Component {
         event.preventDefault();
 
         var postId = this.props.post;
-        var commentRef = firebase.database().ref('posts/' + postId + '/messages');
-        var newComment = {
+        var commentRef = firebase.database().ref('posts/' + postId + '/messages'); //get reference
+        var newComment = { //build the message and relevant information
             text: this.state.comment,
             userId: firebase.auth().currentUser.uid,
             time: firebase.database.ServerValue.TIMESTAMP
         };
-        commentRef.push(newComment);
-        this.setState({ comment: '' });
-        document.getElementById('comment').value='';
+        commentRef.push(newComment); //push it to Firebase
+        this.setState({ comment: '' }); //reset state
+        document.getElementById('comment').value=''; //clear text field
         
     }
 
     render() {
-
         return (
             <div>
                 <div className="board-container comment-box">
