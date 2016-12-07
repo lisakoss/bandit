@@ -673,7 +673,7 @@ li {
 }
 
 .message-item:hover {
-  background-color: lightblue;
+  background-color: #8bb1ef;
 }
 
 .message-text {
@@ -700,4 +700,8 @@ li {
 
 .comment-desc {
   font-size: 25px;
+}
+
+.back-button {
+  margin-top: 20px;
 }

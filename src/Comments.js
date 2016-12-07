@@ -31,7 +31,7 @@ export class Comments extends React.Component {
     render() {
         return (
             <div className="board-container">
-                <Button raised onClick={(e) => { this.handleButton(e) } }>Back to post</Button>
+                <Button className="back-button" raised onClick={(e) => { this.handleButton(e) } }>Back to post</Button>
                 <div>
                     <h1>{this.state.title}</h1>
                     <p className="comment-desc">{this.state.summary}</p>
