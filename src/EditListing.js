@@ -124,7 +124,7 @@ class EditListing extends React.Component {
 			messageRef.child('tags').set(newTags);
       this.setState({edit:false});
 
-			const path = '/posts/' + this.props.params.listingName; // prompts user to login to see content
+			const path = '/posts/' + this.props.params.listingName; // redirects user back to listing after editing
 			hashHistory.push(path);
     }
   }
@@ -228,7 +228,7 @@ class EditListing extends React.Component {
 									<p><strong>Job Title</strong>: the title of the job with skills you're offering or looking for.</p>
 									<p><strong>Listing Image</strong>: image displayed on the outside of your listing; <em>optional</em>.</p>
 									<p><strong>Tags</strong>: tag your listing with relevant words to make it easier for others to find your listing via searching; <em>optional</em></p>
-									<p><strong>Description</strong>: describe in detail what you can offer or what you're looking for from someone else.</p>
+									<p><strong>Listing Description</strong>: describe in detail what you can offer or what you're looking for from someone else.</p>
 								</div>
 							</DialogContent>
 							<DialogActions fullWidth>
