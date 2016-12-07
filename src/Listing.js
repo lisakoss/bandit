@@ -140,20 +140,6 @@ constructor(props){
     return (
       <div className="content-container">
 			  <div className="listing-img" style={{background: 'url(' + listingImage + ') center / cover'}}>
-					<div className={this.state.showControls}>
-						<span className="edit {edited}" onClick={this.handleOpenDialog}><i className="fa fa-trash-o" aria-hidden="true"></i></span>
-						<Dialog open={this.state.openDialog}>
-							<DialogTitle>Delete Post?</DialogTitle>
-							<DialogContent>
-								<p>Are you sure you want to permanently delete this post?</p>
-							</DialogContent>
-							<DialogActions>
-								<Button type='button' onClick={() => this.deleteMessage()}>Delete</Button>
-								<Button type='button' onClick={this.handleCloseDialog}>Cancel</Button>
-							</DialogActions>
-						</Dialog>
-						<span className="edit {edited}" onClick={() => this.editMessage()}>editing controls: <i className="fa fa-pencil" aria-hidden="true"></i></span>
-					</div>
 					<h1 className="listing-title">{this.state.title}</h1>
 					<span className="listing-tags">{this.state.tags}</span>
 				</div>
@@ -164,6 +150,23 @@ constructor(props){
 						<p><strong>Name</strong>: {this.state.displayName}</p>
 						<p><strong>Location</strong>: {this.state.location}</p>
 						<Button colored>Contact</Button><Button colored>Profile</Button>
+											
+											
+						<div className={this.state.showControls}>
+						<h2 className="editing-heading">post controls</h2>
+							<span className="edit {edited}" onClick={() => this.editMessage()}><Button colored><i className="fa fa-pencil" aria-hidden="true"></i> Edit</Button></span>
+							<span className="edit {edited}" onClick={this.handleOpenDialog}><Button colored><i className="fa fa-trash-o" aria-hidden="true"></i> Delete</Button></span>
+							<Dialog open={this.state.openDialog}>
+								<DialogTitle>delete post?</DialogTitle>
+								<DialogContent>
+									<p>Are you sure you want to permanently delete this post?</p>
+								</DialogContent>
+								<DialogActions>
+									<Button type='button' onClick={() => this.deleteMessage()}>Delete</Button>
+									<Button type='button' onClick={this.handleCloseDialog}>Cancel</Button>
+								</DialogActions>
+							</Dialog>
+						</div>
 					</span>
 
 					<span className="listing-text">

@@ -270,10 +270,6 @@ h1 {
   min-width: 300px;
 }
 
-.edit {
-  float: right;
-  margin: 4px !important;
-}
 
 .image {
 	margin:10px;
@@ -355,24 +351,21 @@ li {
   top: 112px;
   color: #ffffff;
   display: inline;
-  margin-top: 0;
   padding-left: 10px;
 }
 
 .listing-tags {
-  position: relative;
-  top: 144px;
-  left: 142px;
   background-color: rgba(245,248,250,0.5);
   float: right;
   border-radius: 5px;
   padding: 3px;
+  margin-top: 144px;
+  margin-right: 6px;
 }
 
 .user-info {
   float: right;
   padding-left: 24px;
-  padding-bottom: 16px;
   width: 200px;
   text-align: center;
 }
@@ -416,7 +409,6 @@ li {
 }
 
 .show {
-  color: #ffffff;
   margin-right: 4px;
   font-variant: small-caps;
 }
@@ -424,6 +416,12 @@ li {
 .show .mdl-dialog__content p {
   font-size: 12pt !important;
   font-variant: normal;
+}
+
+.editing-heading {
+  font-size: 18pt !important;
+  margin: -16px;
+  margin-top: 4px;
 }
 
 .mdl-radio {

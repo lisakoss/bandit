@@ -113,7 +113,19 @@ export class MessageBox extends React.Component {
         var currUser = firebase.auth().currentUser.uid;
         var usersRef = firebase.database().ref('users/' + currUser + '/posts');
         var newListing = {
-          listingId: listingId
+          listingId: listingId,
+          text: this.state.post,
+          title: this.state.title,
+          summary: this.state.summary,
+          location: this.state.location,
+          instrument: this.state.instrument,
+          job: this.state.job,
+          image: this.state.image,
+          tags: this.state.tags,
+          type: this.state.type,
+          userId: firebase.auth().currentUser.uid, 
+          time: firebase.database.ServerValue.TIMESTAMP,
+          timeEdited: ''
         }
         usersRef.push(newListing);
 
