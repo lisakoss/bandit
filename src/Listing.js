@@ -9,12 +9,10 @@ constructor(props){
     this.state = {
 			'post':'',
 			'showControls': 'hidden',
-			'edit': false
 		}; 
 
 		// bind functions
 		this.postMessage = this.postMessage.bind(this);
-    this.updatePost = this.updatePost.bind(this);
 		this.handleOpenDialog = this.handleOpenDialog.bind(this);
     this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
@@ -60,11 +58,6 @@ constructor(props){
     });
   }
 
-	/* Determines the current message typed in the edit box. */
-  updatePost(event) {
-    this.setState({post: event.target.value});
-  }
-
 	/* Resubmit the edited message to the database. */
   postMessage(event){
     var newMessage = this.state.post;
@@ -75,18 +68,13 @@ constructor(props){
       var messageRef = firebase.database().ref('posts/' + this.props.params.listingName);
       messageRef.child('text').set(newMessage);
       messageRef.child('timeEdited').set(firebase.database.ServerValue.TIMESTAMP);
-      this.setState({edit:false});
     }
   }
 
-	/* Determines if the user is the creator of the original post and allows
-	them to edit it if true. */
+	/* Redirects user to the edit your listing page. */
 	editMessage() {
-		var thisComponent = this;
-    var userId = firebase.auth().currentUser.uid;
-    if(userId === this.state.listingUser) {
-        thisComponent.setState({edit: true});
-    }	
+		const path = this.props.params.listingName + '/editpost';
+    hashHistory.push(path);
 	}
 
 	/* Removes the specified message from the database. */
@@ -128,29 +116,13 @@ constructor(props){
 	}
 
   render() {
-		console.log(this.state);
 		var listingImage = '';
-    var editContent = null;
     var lastEdited = '';
 
     if(this.state.image === '') {
       listingImage = './img/defaultboardimage.jpg';
     } else {
       listingImage = this.state.image;
-    } 
-
-		if(!this.state.edit) { // show regular msg if not being edited
-    	editContent = this.state.post;
-    } else if(this.state.edit) { // if being edited, show new text submit area 
-				editContent = (<form role="form">
-					<Textfield
-					onChange={(e) => this.updatePost(e)}
-					label='edit message'
-					value={this.state.post}
-					rows={1}
-					onKeyPress={(e) => this.postMessage(e)}
-					/>
-				</form>);
 		} 
 
     return (
@@ -170,8 +142,8 @@ constructor(props){
 											
 						<div className={this.state.showControls}>
 						<h2 className="editing-heading">post controls</h2>
-							<span className="edit {edited}" onClick={() => this.editMessage()}><Button colored><i className="fa fa-pencil" aria-hidden="true"></i> Edit</Button></span>
-							<span className="edit {edited}" onClick={this.handleOpenDialog}><Button colored><i className="fa fa-trash-o" aria-hidden="true"></i> Delete</Button></span>
+							<span className="edit" onClick={() => this.editMessage()}><Button colored><i className="fa fa-pencil" aria-hidden="true"></i> Edit</Button></span>
+							<span className="edit" onClick={this.handleOpenDialog}><Button colored><i className="fa fa-trash-o" aria-hidden="true"></i> Delete</Button></span>
 							<Dialog open={this.state.openDialog}>
 								<DialogTitle>delete post?</DialogTitle>
 								<DialogContent>
@@ -189,7 +161,7 @@ constructor(props){
 						<p className={this.state.type}>{this.state.type}</p>
 						<span><strong>Job</strong>: {this.state.job}</span>
 						<span><strong>Instruments/Skills</strong>: {this.state.instrument}</span>
-						<div className="listing-desc">{editContent}</div>
+						<div className="listing-desc">{this.state.post}</div>
 					</span>
 				</div>
       </div>

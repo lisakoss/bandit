@@ -243,12 +243,13 @@ export class MessageBox extends React.Component {
               <div className="help">
                 <p><strong>Listing Title</strong>: a few words advertising what you're offering or looking for.</p>
                 <p><strong>Short Summary</strong>: a small blurb that gives a few details about your listing. <em>Displayed on outside of listing on board.</em></p>
-                <p><strong>Zip Code</strong>: 5 digits only; your location.</p>
+                <p><strong>Zip Code</strong>: the city, state, and zip code where the listing will take place.</p>
                 <p><strong>Instrument/Skills</strong>: the instrument or skills required for your listing.</p>
                 <p><strong>Job Title</strong>: the title of the job with skills you're offering or looking for.</p>
                 <p><strong>Listing Image</strong>: image displayed on the outside of your listing; <em>optional</em>.</p>
-                <p><strong>Tags</strong>: tag your listing with relevant words to make it easier for others to find your listing via searching.</p>
+                <p><strong>Tags</strong>: tag your listing with relevant words to make it easier for others to find your listing via searching; <em>optional</em>.</p>
                 <p><strong>Description</strong>: describe in detail what you can offer or what you're looking for from someone else.</p>
+                <p><strong>Listing Type</strong>: choose if you're looking for someone to fill a position (wanted) or if you're looking for a position (offering); <em>cannot be edited later</em>.</p>
               </div>
             </DialogContent>
             <DialogActions fullWidth>
@@ -336,6 +337,7 @@ export class MessageList extends React.Component {
                      tags={message.tags}
                      image={message.image}
                      user={this.state.users[message.userId]} 
+                     listingUserId = {message.userId}
                      type={message.type}
                      key={message.key}
                      id={message.key}
@@ -361,6 +363,7 @@ class MessageItem extends React.Component {
       var lastEdited = '';
       var listingImage = '';
       var id = "/#/posts/" + this.props.id;
+      var listingUserId = "/#/profile/" + this.props.listingUserId;
 
       if(this.props.image === '') {
         console.log(this.props.image);
@@ -392,7 +395,7 @@ class MessageItem extends React.Component {
                 {this.props.tags}
               </span>
               posted by: {/* This image's src should be the user's avatar */}
-              <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle">{this.props.user.displayName}</span>
+              <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle"><a href={listingUserId}>{this.props.user.displayName}</a></span>
             </div>
 
             <CardActions border>
