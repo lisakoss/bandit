@@ -14,7 +14,7 @@ class EditProfile extends React.Component {
 	//Lifecycle callback executed when the component appears on the screen.
 	//Sets the initial state of the logged in user so they can edit their profile information
 	componentDidMount() {
-    // Add a listener and callback for authentication events 
+    // Add a listener and callback for authentication events
     this.unregister = firebase.auth().onAuthStateChanged(user => {
 		if(user) {
 			this.setState({userId: user.uid});
@@ -213,7 +213,7 @@ class EditProfile extends React.Component {
 						floatingLabel
 						className="profile-job-title"
 					/>
-					
+
 					<div className="cover-photo" style={divStyle}>
 						<div className="cover-preview">
 							<p>cover photo preview</p>
@@ -229,7 +229,7 @@ class EditProfile extends React.Component {
 					/>
 
 					<div>
-						<div className="profile-avatar"> 
+						<div className="profile-avatar">
 							<img src={this.state.avatar || './img/blank-user.jpg'} alt="avatar" />
 						</div>
 
@@ -274,7 +274,7 @@ class EditProfile extends React.Component {
 						floatingLabel
 						className="profile-about"
 					/>
-					
+
 					<Textfield
 						rows={8}
 						onChange={(e) => this.updateExperience(e)}

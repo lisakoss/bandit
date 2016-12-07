@@ -9,19 +9,19 @@ export class RecentListings extends React.Component {
     	this.state = {listings:[]};
   	}
 
-	//Lifecycle callback executed when the component appears on the screen.	
+	//Lifecycle callback executed when the component appears on the screen.
 	//Grabs list of posts for the particular user profile.
 	componentDidMount() {
 		var listingsRef = firebase.database().ref('users/' + this.props.profileID + '/posts').limitToLast(3); //only shows the 3 most recent posts
 		listingsRef.on('value', (snapshot) => {
-			var userListingsArray = []; 
+			var userListingsArray = [];
 			snapshot.forEach(function(child){
 				var listing = child.val();
 				userListingsArray.push(listing);
-	      	});
+	      	});
 			userListingsArray.sort((a,b) => b.time - a.time); //reverse order, to show most recently posted first
 			this.setState({listings: userListingsArray}); //push each listing onto array of listings associated with a user
-    	});
+    	});
 	}
 
  	//when the component is unmounted,
@@ -34,20 +34,20 @@ export class RecentListings extends React.Component {
     componentWillReceiveProps(nextProps) {
 		var listingsRef = firebase.database().ref('users/' + nextProps.profileID + '/posts').limitToLast(3); //only shows the last 3 posts
 		listingsRef.on('value', (snapshot) => {
-			var userListingsArray = []; 
+			var userListingsArray = [];
 			snapshot.forEach(function(child){
 				var listing = child.val();
 				userListingsArray.push(listing);
-	      	});
+	      	});
 			userListingsArray.sort((a,b) => b.time - a.time); //reverse order
 			this.setState({listings: userListingsArray});
-    	});
+    	});
     }
 
 	render() {
     // Create a list of <ListingItem /> objects so each listing can be displayed
     var listingItems = this.state.listings.map((listing) => {
-      return <ListingItem listing={listing} 
+      return <ListingItem listing={listing}
                         key={listing.listingId} />
     })
 
@@ -64,7 +64,7 @@ export class RecentListings extends React.Component {
 //A single user listing
 class ListingItem extends React.Component {
 	render() {
-        var listingType = null; //determines listing type 
+        var listingType = null; //determines listing type
         if(this.props.listing.type === 'offering') {
             listingType = 'listing-type listing-offer';
         } else {
@@ -85,7 +85,7 @@ class ListingItem extends React.Component {
 						<Button><a href={"/#/comments/" + this.props.listing.listingId}>Comments</a></Button>
 					</div>
 				</div>
-			</div>      
+			</div>
 		);
 	}
 }

@@ -55,7 +55,7 @@ ReactDOM.render(
       <Route path="/login" component={Login}/>
       <Route path="/signup" component={SignUp}/>
     </Route>
-  </Router>, 
+  </Router>,
 
   document.getElementById('root')
 );

@@ -1,9 +1,10 @@
 import React from 'react';
 import firebase from 'firebase';
-//import { hashHistory } from 'react-router';
-//import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
+import { hashHistory } from 'react-router';
+import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
 import Time from 'react-time';
 
+//complete list of comments for a post
 export class CommentList extends React.Component {
     constructor(props) {
         super(props);
@@ -20,7 +21,7 @@ export class CommentList extends React.Component {
         commentRef.on('value', (snapshot) => {
             var commentArray = [];
             snapshot.forEach(function (child) { //goes through each comment
-                var comment = child.val(); 
+                var comment = child.val();
                 comment.key = child.key;
                 commentArray.push(comment);
             });
@@ -28,7 +29,7 @@ export class CommentList extends React.Component {
             this.setState({ comments: commentArray });
         })
     }
-    
+
     //turn off listeners when unmounting
     componentWillUnmount() {
         firebase.database().ref('users').off();
@@ -43,15 +44,50 @@ export class CommentList extends React.Component {
             return <CommentItem message={message}
                 user={this.state.users[message.userId]}
                 userId={message.userId}
-                key={message.key} />
+                key={message.key}
+                messageId={message.key}
+                postId={this.props.post} />
         });
         return (<div>{commentItems}</div>)
     }
 }
 
+//single instance of a comment
 class CommentItem extends React.Component {
-    render() {
+    constructor(props) {
+        super(props);
+        this.state = {};
 
+        this.handleOpenDialog = this.handleOpenDialog.bind(this);
+        this.handleCloseDialog = this.handleCloseDialog.bind(this);
+    }
+
+    handleOpenDialog() { //when delete is pressed
+        this.setState({ openDialog: true });
+    }
+
+    handleCloseDialog() { //when close is pressed
+        this.setState({ openDialog: false });
+    }
+    
+    //only able to delete if user is author of the post
+    handleDelete(event) {
+        var currentUser = firebase.auth().currentUser.uid;
+        if (this.props.userId === currentUser) {
+            var messageId = this.props.messageId;
+            var postRef = firebase.database().ref('posts/' + this.props.postId + '/messages/' + messageId);
+            postRef.remove()
+                .then(function () {
+                    console.log("Deleted message");
+                });
+            this.setState({ openDialog: false });
+        } else {
+            alert('You can\'t delete someone elses posts');
+            this.setState({ openDialog: false });
+        }
+    }
+
+    render() {
         var avatar = this.props.user.avatar;
         var profileUrl = "/#/profile/" + this.props.userId;
 
@@ -63,6 +99,19 @@ class CommentItem extends React.Component {
                     <span><Time value={this.props.message.time} relative /></span>
                 </div>
                 <span className="message-text">{this.props.message.text}</span>
+                <Button className="delete" onClick={(e) => this.handleOpenDialog(e)}><i className="fa fa-trash-o" aria-hidden="true"></i></Button>
+                <div>
+                    <Dialog open={this.state.openDialog}>
+                        <DialogTitle>Delete comment?</DialogTitle>
+                        <DialogContent>
+                            <p>Deleting comments can't be undone, so think carefully before doing so!</p>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button type='button' onClick={(e) => this.handleDelete(e)}>Delete</Button>
+                            <Button type='button' onClick={this.handleCloseDialog}>Cancel</Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
             </div>
         );
     }
