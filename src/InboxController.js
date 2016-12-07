@@ -69,25 +69,14 @@ export class RecentConvoList extends React.Component {
         this.state = { people: [] };
     }
 
-    componentDidMount() {
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                console.log('Auth state changed: logged in as', user.email);
-                this.setState({ userId: user.uid });
-            } else {
-                console.log('Auth state changed: logged out');
-                this.setState({ userId: null }); //null out the saved state
-            }
-        })
-
+    componentWillMount() {
         //set arrays to capture information
         var nameArray = [];
         var avatarArray = [];
         var userIDArray = [];
         var that = this;
         //reference to user/(userID)/inbox
-        var userRef = firebase.database().ref('users/' + this.state.userId + '/inbox');
-        console.log(this.state.userId);
+        var userRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/inbox');
         //pulls data, the userIDs of other people recently conversed with
         userRef.once('value', (snapshot) => {
             snapshot.forEach(function (child) {
@@ -95,6 +84,7 @@ export class RecentConvoList extends React.Component {
                 var otherRef = firebase.database().ref('users/' + otherID);
                 otherRef.once('value', (snap) => {
                     var name = snap.child('displayName').val();
+                    console.log(name);
                     var avatar = snap.child('avatar').val();
                     nameArray.push(name);
                     avatarArray.push(avatar);
@@ -118,10 +108,6 @@ export class RecentConvoList extends React.Component {
             return null;
         }
 
-        console.log(this.state.people.length);
-        if (this.state.people.length > 0) {
-            console.log(this.state.people)
-        }
         var peopleItems = this.state.people.map((person) => {
             return <RecentConvoItem person={person}
                 />
