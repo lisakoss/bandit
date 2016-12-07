@@ -57,7 +57,8 @@ class SignUp extends React.Component {
 		var userRef = firebase.database().ref('users/'+firebaseUser.uid); 
         var userData = {
           displayName: displayName,
-          avatar: avatar
+          avatar: avatar,
+          inbox: ""
         }
         userRef.set(userData); //update entry in JOITC, return promise for chaining
       })
