@@ -4,7 +4,6 @@ body {
   margin: 0;
   padding: 0;
   background:rgba(245,248,250,1);
-  font-family: 'Roboto', sans-serif;
 }
 
 @media (min-width: 568px) {
@@ -20,7 +19,6 @@ body {
 h1 {
   font-variant: small-caps;
   font-family: sans-serif;
-  background-color:rgba(245,248,250,1);
 }
 
 .container {
@@ -36,6 +34,10 @@ h1 {
 .board-container { 
   margin: 0 auto;
   margin-bottom: 24px;
+}
+
+.listing-container {
+  min-width: 600px;
 }
 
 .nav-container {
@@ -136,6 +138,8 @@ h1 {
 .avatar-field {
   padding-top: 20px;
 }
+
+/* profile styling */
 
 .profile-nav {
   margin: 16px 0 0 10px;
@@ -272,10 +276,6 @@ h1 {
   min-width: 300px;
 }
 
-.edit {
-  float: right;
-  margin: 4px !important;
-}
 
 .image {
 	margin:10px;
@@ -299,6 +299,11 @@ li {
 .handle {
 	font-size:1.25em;
 	font-weight: 700;
+}
+
+.handle a {
+  color: gray;
+  text-decoration:  none;
 }
 
 .message {
@@ -338,6 +343,10 @@ li {
   float: left;
 }
 
+.tags a {
+  text-decoration: none;
+}
+
 .post-img {
   width: 300px;
 	height: 150px;
@@ -357,24 +366,26 @@ li {
   top: 112px;
   color: #ffffff;
   display: inline;
-  margin-top: 0;
   padding-left: 10px;
 }
 
 .listing-tags {
-  position: relative;
-  top: 144px;
-  left: 142px;
   background-color: rgba(245,248,250,0.5);
   float: right;
   border-radius: 5px;
   padding: 3px;
+  margin-top: 144px;
+  margin-right: 6px;
+}
+
+.listing-tags a {
+  color: #000000;
+  text-decoration: none;
 }
 
 .user-info {
   float: right;
   padding-left: 24px;
-  padding-bottom: 16px;
   width: 200px;
   text-align: center;
 }
@@ -418,7 +429,6 @@ li {
 }
 
 .show {
-  color: #ffffff;
   margin-right: 4px;
   font-variant: small-caps;
 }
@@ -426,6 +436,12 @@ li {
 .show .mdl-dialog__content p {
   font-size: 12pt !important;
   font-variant: normal;
+}
+
+.editing-heading {
+  font-size: 18pt !important;
+  margin: -16px;
+  margin-top: 4px;
 }
 
 .mdl-radio {
@@ -467,6 +483,8 @@ li {
 		flex-basis:33%;
 	}
 }
+
+/* profile styling */
 
 #profile, .profile-content {
   background-color: #ffffff;
