@@ -844,3 +844,7 @@ li {
 .comment-desc {
   font-size: 25px;
 }
+
+.delete {
+  float: right;
+}
