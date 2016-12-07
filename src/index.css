@@ -490,7 +490,6 @@ li {
 }
 
 /* profile styling */
-
 #profile, .profile-content {
   background-color: #ffffff;
 }
@@ -801,6 +800,8 @@ li {
   display: none;
 }
 
+/* comment styling */
+
 .comment-box {
   background: white;
   color: black;
@@ -847,6 +848,19 @@ li {
 
 .delete {
   float: right;
+}
+
+.comment-heading {
+  margin-top: 0;
+}
+
+.comment-button {
+  margin: 0 !important;
+}
+
+.back-button {
+  margin-top: 20px !important;
+  margin-bottom: 10px !important;
 }
 
 /* search page */
