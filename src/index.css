@@ -135,14 +135,65 @@ h1 {
   padding-top: 20px;
 }
 
-.profile-nav img {
+.profile-nav {
+  margin: 16px 0 0 10px;
+  float: right;
   width: 25px;
-  padding-left: 3px;
+  height: 25px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.profile-nav img {
+  display: inline;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.profile-drawer {
+  float: left;
+  margin-left: 10px;
+  width: 175px;
+  height: 175px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
 }
 
 .profile-drawer img {
-  width: 150px;
-  padding: 0;
+  display: inline;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+.links {
+  clear: both;
+  text-align: left;
+  margin: 10px 0 10px 15px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.drawer-title {
+  margin: 0 0 10px 15px !important;
+}
+
+.mdl-layout-title {
+  padding: 0 !important;
+}
+
+.icon {
+  color: #ffffff;
+  width: 100%;
+  text-align: right;
+  margin: auto;
+}
+
+.drawer-title i {
+  font-size: 11pt;
+  padding-left: 5px;
 }
 
 .mdl-navigation {
@@ -413,4 +464,196 @@ li {
 	.card-column {
 		flex-basis:33%;
 	}
+}
+
+#profile, .profile-content {
+  background-color: #ffffff;
+}
+
+.profile-content {
+  padding: 24px;
+}
+
+.profile-image {
+  margin: 0 auto;
+  width: 175px;
+  height: 175px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+}
+
+.profile-image img {
+  display: inline;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.profile-top {
+  background-image: url('');
+  background-color: #323232;
+  background-size: cover;                     
+  background-repeat: no-repeat;
+  background-position: center center; 
+  height: 300px;
+}
+
+.profile-user {
+  width: 100%;
+  top: 175px;
+  position: absolute;
+  margin: auto;
+  text-align: center;
+  display: inline;
+}
+
+.profile-stats span {
+  vertical-align: top;
+  display: inline-block;
+  width: 10%;
+  padding: 0 30px 0 30px;
+}
+
+.display-icon {
+  padding: 5px;
+}
+
+.mdl-tooltip {
+  padding: 10px !important;
+}
+
+.job-title {
+  color: #5C5C5C;
+  letter-spacing: 1px;
+  font-size: 18px;
+}
+
+.edit-profile {
+  padding: 10px;
+  margin: 5px 5px 0 0;
+  border-radius: 10px;
+  background-color: #323232;
+  color: #ffffff;
+  opacity: 0.5;
+}
+
+.edit-profile-text {
+  font-family: sans-serif;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.profile-heading {
+  font-size: 32pt;
+  color: #323232;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.profile-tabs {
+  background-color: #ffffff;
+}
+
+.profile-alert {
+  color: #5C5C5C;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 0 0 15px 0;
+}
+
+.profile-alert p {
+  margin: 0;
+  text-align: center;
+}
+
+.red-discard {
+  background-color: #ffb3b3;
+  border: 1px solid #ff1a1a;
+}
+
+.green-confirm {
+  background-color: #c2f0c2;
+  border: 1px solid #33cc33;
+}
+
+.profile-spinner {
+  margin-left: 48% !important;
+}
+
+.profile-display-name, .profile-job-title, .profile-genre, .profile-location, .profile-about, .profile-experience {
+  width: 48% !important;
+}
+
+.profile-job-title, .profile-location, .profile-experience {
+  float: right;
+}
+
+.profile-cover {
+  width: 100% !important;
+}
+
+.cover-photo {
+  background-color: #323232;
+  width: 100%;
+  height: 300px;
+  background-size: cover;                     
+  background-repeat: no-repeat;
+  background-position: center center; 
+}
+
+.cover-preview {
+  text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.cover-photo p {
+  width: 50%;
+  padding: 10px;
+  border-radius: 10px;
+  margin: auto;
+  background-color: #323232;
+  color: #ffffff;
+  opacity: 0.6;
+}
+
+.profile-avatar {
+  float: left;
+  width: 125px;
+  height: 125px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+}
+
+.profile-avatar img {
+  display: inline;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.profile-avatar-text {
+  float: right;
+  width: 82% !important;
+  transform: translateY(55%);
+}
+
+.profile-instruments {
+  width: 100% !important;
+}
+
+.profile-submit {
+  text-align: center;
+  clear: both;
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+.hidden {
+  display: none;
 }

@@ -13,7 +13,7 @@ import SignUp from './SignUp';
 import Login from './Login';
 import CreatePost from './CreatePost';
 import Listing from './Listing';
-
+import EditProfile from './EditProfile';
 
 /* import material design lite */
 import 'react-mdl/extra/css/material.grey-red.min.css';
@@ -42,7 +42,10 @@ ReactDOM.render(
       <Route path="/createpost" component={CreatePost}/>
       <Route path="/search" component={Search}/>
       <Route path="/inbox" component={Inbox}/>
-      <Route path="/profile" component={Profile}/>
+      <Route path="/profile">
+        <Route path="/profile/:profileID" component={Profile}/>
+      </Route>
+      <Route path="/profileedit" component={EditProfile}/>
       <Route path="/login" component={Login}/>
       <Route path="/signup" component={SignUp}/>
     </Route>
