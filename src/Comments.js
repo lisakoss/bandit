@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
-import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
+import { Button, Textfield } from 'react-mdl';
 import { CommentList } from './CommentsController';
 
 
@@ -65,12 +65,19 @@ export class CommentBox extends React.Component {
         event.preventDefault();
 
         var postId = this.props.post;
+        var userRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/inbox');
         var commentRef = firebase.database().ref('posts/' + postId + '/messages'); //get reference
         var newComment = { //build the message and relevant information
             text: this.state.comment,
             userId: firebase.auth().currentUser.uid,
             time: firebase.database.ServerValue.TIMESTAMP
         };
+        var newLog = {
+            postId: postId,
+            text: this.state.comment,
+            time: firebase.database.ServerValue.TIMESTAMP 
+        }
+        userRef.push(newLog);
         commentRef.push(newComment); //push it to Firebase
         this.setState({ comment: '' }); //reset state
         document.getElementById('comment').value=''; //clear text field

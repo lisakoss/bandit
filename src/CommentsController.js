@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
-import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
+import { Button, Textfield } from 'react-mdl';
 import Time from 'react-time';
 
 export class CommentList extends React.Component {
