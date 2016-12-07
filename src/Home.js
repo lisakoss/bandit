@@ -9,7 +9,7 @@ class Home extends React.Component {
 	}
 	
 	//Lifecycle callback executed when the component appears on the screen.
-  //It is cleaner to use this than the constructor for fetching data
+	//Grabs basic user data 
   componentDidMount() {
     /* Add a listener and callback for authentication events */
     this.unregister = firebase.auth().onAuthStateChanged(user => {
@@ -18,12 +18,12 @@ class Home extends React.Component {
 				this.setState({displayName: firebase.auth().currentUser.displayName});
 				this.setState({avatar: firebase.auth().currentUser.photoURL});
       }
-      else{
+      else {
         this.setState({userId: null}); //null out the saved state
 				this.setState({displayName: null}); //null out the saved state
 				this.setState({avatar: null}); //null out the saved state
       }
-    })
+    });
   }
 
   //when the component is unmounted, unregister using the saved function
@@ -37,13 +37,13 @@ class Home extends React.Component {
 		var signUpMessage = null;
 
 		if(this.state.userId === null) {
-			signUpMessage =(<div className="bottom-sign-up">
+			signUpMessage =(<div className="bottom-sign-up" role="region">
 												<p>Don't have an account? <a href="/#/signup">Sign up</a> today!</p>
 										  </div>);
 		}
 
 		return (
-			<div className="container">
+			<div className="container" role="region">
 				<Layout style={{background: 'url(./img/IMG_7962.png) center / cover'}}>
 					<div className="welcome-msg">
 						<p className="welcome-title">band together</p>

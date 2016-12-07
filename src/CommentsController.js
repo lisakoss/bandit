@@ -42,6 +42,7 @@ export class CommentList extends React.Component {
         var commentItems = this.state.comments.map((message) => { //mapping array for one instance of comment
             return <CommentItem message={message}
                 user={this.state.users[message.userId]}
+                userId={message.userId}
                 key={message.key} />
         });
         return (<div>{commentItems}</div>)
@@ -52,12 +53,13 @@ class CommentItem extends React.Component {
     render() {
 
         var avatar = this.props.user.avatar;
+        var profileUrl = "/#/profile/" + this.props.userId;
 
         return (
             <div className="message-item board-container">
-                <img className="user-image" src={avatar} alt="user picture" />
+                <img className="user-image" src={avatar} alt="avatar" />
                 <div className="message-info">
-                    <span className="user-display"><strong>{this.props.user.displayName}</strong></span>
+                    <a href={profileUrl}><span className="user-display"><strong>{this.props.user.displayName}</strong></span></a>
                     <span><Time value={this.props.message.time} relative /></span>
                 </div>
                 <span className="message-text">{this.props.message.text}</span>

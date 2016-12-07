@@ -1,21 +1,26 @@
 import React from 'react';
 import Time from 'react-time';
 import firebase from 'firebase';
-import {Textfield, Button, Dialog, DialogTitle, DialogContent, DialogActions, Card, CardTitle, CardText, CardActions, Tooltip, Radio, RadioGroup} from 'react-mdl';
+import {Textfield, Button, Dialog, DialogTitle, DialogContent, DialogActions, Card, CardTitle, CardText, CardActions, Radio, RadioGroup} from 'react-mdl';
 import {hashHistory} from 'react-router';
 
-/* A form the user can use to post a channel message. */
+/* A form the user can use to post a listing message. */
 export class MessageBox extends React.Component {
   constructor(props){
     super(props);
     this.state = {
         "post":'',
-        //"email": "hidden"
+        "postTyped": false,
         "title": '',
+        "titleTyped": false,
         "summary": '',
+        "summaryTyped": false,
         "location": '',
+        "locationTyped": false,
         "instrument": '',
+        "instrumentTyped": false,
         "job": '',
+        "jobTyped": false,
         "image": '',
         "tags": '',
         "type": 'wanted'
@@ -42,32 +47,32 @@ export class MessageBox extends React.Component {
 	
   /* Tracks changes in message input field. */
   updatePost(event) {
-    this.setState({post: event.target.value});
+    this.setState({post: event.target.value, postTyped: true});
   }
 
   /* Tracks changes in message input field. */
   updateTitle(event) {
-    this.setState({title: event.target.value});
+    this.setState({title: event.target.value, titleTyped: true});
   }
 
   /* Tracks changes in message input field. */
   updateSummary(event) {
-    this.setState({summary: event.target.value});
+    this.setState({summary: event.target.value, summaryTyped: true});
   }
 
   /* Tracks changes in message input field. */
   updateLocation(event) {
-    this.setState({location: event.target.value});
+    this.setState({location: event.target.value, locationTyped: true});
   }
 
   /* Tracks changes in message input field. */
   updateInstrument(event) {
-    this.setState({instrument: event.target.value});
+    this.setState({instrument: event.target.value, instrumentTyped: true});
   }
 
   /* Tracks changes in message input field. */
   updateJob(event) {
-    this.setState({job: event.target.value});
+    this.setState({job: event.target.value, jobTyped: true});
   }
 
   /* Tracks changes in message input field. */
@@ -80,75 +85,89 @@ export class MessageBox extends React.Component {
     this.setState({tags: event.target.value});
   }
 
+  /* Tracks changes in the listing type field. */
   listingType(event) {
     this.setState({type: event.target.value});
   }
 
-  /* Posts a new channel message to the database. */
+  /* Posts a new listing message to the database. */
   postMessage(event){
-    //&& this.state.email === "hidden"
-    if(this.state.post.length !== 0) {
-        event.preventDefault(); // don't submit like usual
+    event.preventDefault(); // don't submit like usual
+    if(this.state.post.length !== 0 && this.state.title.length !== 0 && this.state.summary.length !== 0 
+      && this.state.summary.length < 100 && this.state.location.length !== 0 && this.state.instrument.length !== 0
+      && this.state.job.length !== 0) {
 
-        /* Add a new channel message to the database */
-        var messagesRef = firebase.database().ref('posts');
-        var newMessage = {
-            text: this.state.post,
-            title: this.state.title,
-            summary: this.state.summary,
-            location: this.state.location,
-            instrument: this.state.instrument,
-            job: this.state.job,
-            image: this.state.image,
-            tags: this.state.tags,
-            type: this.state.type,
-            userId: firebase.auth().currentUser.uid, 
-            time: firebase.database.ServerValue.TIMESTAMP,
-            timeEdited: ''
-        };
-        var listing = messagesRef.push(newMessage); // upload msg to database
-        var listingId = listing.key;
-        console.log(listingId);
+      /* Add a new listing message to the database */
+      var messagesRef = firebase.database().ref('posts');
+      var newMessage = {
+          text: this.state.post,
+          title: this.state.title,
+          summary: this.state.summary,
+          location: this.state.location,
+          instrument: this.state.instrument,
+          job: this.state.job,
+          image: this.state.image,
+          tags: this.state.tags,
+          type: this.state.type,
+          userId: firebase.auth().currentUser.uid, 
+          time: firebase.database.ServerValue.TIMESTAMP,
+          timeEdited: ''
+      };
+      var listing = messagesRef.push(newMessage); // upload msg to database
+      var listingId = listing.key;
 
-        /* Add listing to user's id */
-        var currUser = firebase.auth().currentUser.uid;
-        var usersRef = firebase.database().ref('users/' + currUser + '/posts');
-        var newListing = {
-          listingId: listingId
-        }
-        usersRef.push(newListing);
+      /* Add listing to user's id */
+      var currUser = firebase.auth().currentUser.uid;
+      var usersRef = firebase.database().ref('users/' + currUser + '/posts');
+      var newListing = {
+        listingId: listingId,
+        title: this.state.title,
+        summary: this.state.summary,
+        image: this.state.image,
+        type: this.state.type,
+        userId: firebase.auth().currentUser.uid, 
+        time: firebase.database.ServerValue.TIMESTAMP,
+      }
+      usersRef.push(newListing);
 
-        /* empty out post so that message field is blank. */
-        this.setState({post:'', title:'', summary:'', location:'', instrument:'', job:'', image:'', tags:''});
+      /* empty out post so that message field is blank. */
+      this.setState({post:'', title:'', summary:'', location:'', instrument:'', job:'', image:'', tags:''});
+
+      const path = '/board'; // redirects user back to board after posting
+			hashHistory.push(path);
+    } else { // determines if field has been left blank
+      if(this.state.post.length === 0) {
+        this.setState({postTyped: true});
+      } if(this.state.title.length === 0) {
+        this.setState({titleTyped: true});
+      } 
+      if(this.state.summary.length === 0) {
+        this.setState({summaryTyped: true});
+      }
+      if(this.state.location.length === 0) {
+        this.setState({locationTyped: true});
+      }
+      if(this.state.instrument.length === 0) {
+        this.setState({instrumentTyped: true});
+      }
+      if(this.state.job.length === 0) {
+        this.setState({jobTyped: true});
+      }
     }
   }
-
-  /* Lifecycle callback:
-  executed when the component appears on the screen. */
-	componentDidMount() {
-		//var thisComponent = this;
-		//firebase.auth().onAuthStateChanged(function(user) {
-			//if(!user.emailVerified) { // displays an error message if email is not verified
-				//thisComponent.setState({email:"show"});
-			//}
-		//})
-	}
 
   render() {
     var listingImage = '';
 
+    // show default listing img if none is given.
     if(this.state.image === '') {
       listingImage = './img/defaultboardimage.jpg';
     } else {
       listingImage = this.state.image;
     }    
 
-    console.log(this.state);
-
     return (
-			<div className="write-msg">
-				{/*<div className={this.state.email}>Please verifiy email</div>*/}
-
+			<div className="write-msg" role="article">
 				<form role="form">
           <Textfield
             onChange={(e) => this.updateTitle(e)}
@@ -157,6 +176,9 @@ export class MessageBox extends React.Component {
             value={this.state.title}
             className="msg-input"
           />
+          {this.state.title.length === 0 && this.state.titleTyped === true &&
+            <p className="help-block">Title cannot be left blank.</p>
+          }
           <Textfield
             onChange={(e) => this.updateSummary(e)}
             label="short summary"
@@ -165,7 +187,10 @@ export class MessageBox extends React.Component {
             className="msg-input"
           />
           {this.state.summary.length > 100 &&
-            <p className="help-block">100 character limit!</p>
+            <p className="help-block">100 character limit.</p>
+          }
+          {this.state.summary.length === 0 && this.state.summaryTyped === true &&
+            <p className="help-block">Summary cannot be left blank.</p>
           }
           <Textfield
             onChange={(e) => this.updateLocation(e)}
@@ -191,7 +216,16 @@ export class MessageBox extends React.Component {
             className="msg-input-type"
             style={{width: '33%'}}
           />
-          <div className="post-img" style={{background: 'url(' + listingImage + ') center / cover'}} />
+          {this.state.location.length === 0 && this.state.locationTyped === true &&
+            <p className="help-block">Location cannot be left blank.</p>
+          }
+          {this.state.instrument.length === 0 && this.state.instrumentTyped === true &&
+            <p className="help-block">Instrument(s) and/or skills cannot be left blank.</p>
+          }
+          {this.state.job.length === 0 && this.state.jobTyped === true &&
+            <p className="help-block">Job cannot be left blank.</p>
+          }
+          <div role="region" className="post-img" style={{background: 'url(' + listingImage + ') center / cover'}} />
           <Textfield
             onChange={(e) => this.updateImage(e)}
             label="listing image url"
@@ -212,11 +246,14 @@ export class MessageBox extends React.Component {
           />
           <Textfield
 						onChange={(e) => this.updatePost(e)}
-						label="description"
+						label="listing description"
 						value={this.state.post}
 						rows={6}
 						className="msg-input"
 					/>
+          {this.state.post.length === 0 && this.state.postTyped === true &&
+            <p className="help-block">Listing description cannot be left blank.</p>
+          }
 
           <p className="form-para">choose listing type:</p>
           <RadioGroup name="demo" value="wanted">
@@ -226,18 +263,19 @@ export class MessageBox extends React.Component {
 
           <Button ripple className="create-button" onClick={(e) => this.postMessage(e)}>Post Listing</Button>
           <i onClick={this.handleOpenDialog} className="fa fa-question fa-2x" aria-hidden="true"></i>
-          <Dialog open={this.state.openDialog}>
+          <Dialog open={this.state.openDialog} role="region" aria-live="polite">
             <DialogTitle>Need Help?</DialogTitle>
             <DialogContent>
               <div className="help">
                 <p><strong>Listing Title</strong>: a few words advertising what you're offering or looking for.</p>
                 <p><strong>Short Summary</strong>: a small blurb that gives a few details about your listing. <em>Displayed on outside of listing on board.</em></p>
-                <p><strong>Zip Code</strong>: 5 digits only; your location.</p>
+                <p><strong>Zip Code</strong>: the city, state, and zip code where the listing will take place.</p>
                 <p><strong>Instrument/Skills</strong>: the instrument or skills required for your listing.</p>
                 <p><strong>Job Title</strong>: the title of the job with skills you're offering or looking for.</p>
                 <p><strong>Listing Image</strong>: image displayed on the outside of your listing; <em>optional</em>.</p>
-                <p><strong>Tags</strong>: tag your listing with relevant words to make it easier for others to find your listing via searching.</p>
-                <p><strong>Description</strong>: describe in detail what you can offer or what you're looking for from someone else.</p>
+                <p><strong>Tags</strong>: tag your listing with relevant words to make it easier for others to find your listing via searching; <em>optional</em>.</p>
+                <p><strong>Listing Description</strong>: describe in detail what you can offer or what you're looking for from someone else.</p>
+                <p><strong>Listing Type</strong>: choose if you're looking for someone to fill a position (wanted) or if you're looking for a position (offering); <em>cannot be edited later</em>.</p>
               </div>
             </DialogContent>
             <DialogActions fullWidth>
@@ -250,7 +288,7 @@ export class MessageBox extends React.Component {
   }
 }
 
-/* A list of channel messages that have been posted. */
+/* A list of listing messages that have been posted. */
 export class MessageList extends React.Component {
   constructor(props){
     super(props);
@@ -260,7 +298,6 @@ export class MessageList extends React.Component {
   }
 	
   //Lifecycle callback executed when the component appears on the screen.
-  //It is cleaner to use this than the constructor for fetching data
   componentDidMount() {
     /* Add a listener for changes to the user details object, and save in the state */
     var usersRef = firebase.database().ref('users');
@@ -268,8 +305,7 @@ export class MessageList extends React.Component {
       this.setState({users:snapshot.val()});
     });
 
-    /* Add a listener for changes to the chirps object, and save in the state.
-		Limit displayed messages to 100 in each channel. */
+    /* Add a listener for changes to the listings object, and save in the state. */
     var messagesRef = firebase.database().ref('posts');
     messagesRef.on('value', (snapshot) => {
       var messageArray = []; 
@@ -278,7 +314,8 @@ export class MessageList extends React.Component {
 				message.key = child.key; 
 				messageArray.push(message); 
       });
-      this.setState({messages:messageArray});
+      messageArray.sort((a,b) => b.time - a.time); //reverse order
+      this.setState({messages: messageArray});
     });
   }
 
@@ -289,29 +326,8 @@ export class MessageList extends React.Component {
     firebase.database().ref('posts').off();
   }
 
-	/* Update component with new props. */
-	componentWillReceiveProps(nextProps) {
-    /* Add a listener for changes to the user details object, and save in the state */
-    var usersRef = firebase.database().ref('users');
-    usersRef.on('value', (snapshot) => {
-      this.setState({users:snapshot.val()});
-    });
-
-    /* Add a listener for changes to the chirps object, and save in the state */
-    var messagesRef = firebase.database().ref('posts');
-    messagesRef.on('value', (snapshot) => {
-      var messageArray = []; 
-      snapshot.forEach(function(child){
-          var message = child.val();
-          message.key = child.key;
-          messageArray.push(message);
-      });
-      this.setState({messages:messageArray});
-    });
-	}
-
   render() {
-    // don't show if don't have user data yet (to avoid partial loads)
+    // don't show if don't have user data yet
     if(!this.state.users){
       return null;
     }
@@ -325,6 +341,7 @@ export class MessageList extends React.Component {
                      tags={message.tags}
                      image={message.image}
                      user={this.state.users[message.userId]} 
+                     listingUserId={message.userId}
                      type={message.type}
                      key={message.key}
                      id={message.key}
@@ -335,7 +352,7 @@ export class MessageList extends React.Component {
   }
 }
 
-/* A single message. */
+/* A single listing. */
 class MessageItem extends React.Component {
   constructor(props){
     super(props);
@@ -349,29 +366,40 @@ class MessageItem extends React.Component {
     hashHistory.push(path);
   }
     
-    render() {
-      var avatar = (this.props.user.avatar);
-      var userName = (this.props.user.displayName);
-      var lastEdited = '';
-      var listingImage = '';
-      var id = "/#/posts/" + this.props.id;
+  render() {
+    var avatar = (this.props.user.avatar);
+    var lastEdited = '';
+    var listingImage = '';
+    var id = "/#/posts/" + this.props.id;
+    var listingUserId = "/#/profile/" + this.props.listingUserId;
+    var tagsArray = this.props.tags.split(" ");
+    var tagsString = '';
 
-      if(this.props.image === '') {
-        console.log(this.props.image);
-        listingImage = './img/defaultboardimage.jpg';
-      } else {
-        console.log(this.props.image);
-        listingImage = this.props.image;
-      }
+    // Add #'s to each word given as a tag.
+    tagsArray.forEach(function(word) {
+      var noHashtagWord = word;
+      word = '#' + word;
+      tagsString += '<a href="#/search/' + noHashtagWord + '">' + word + '</a> ';
+    });
 
-		/* Show last edit time. */
-		if(this.props.message.timeEdited !== '') {
-			lastEdited = <span>(edited <Time value={this.props.message.timeEdited} relative/>)</span>;
-		}
+    // Set the HTML so that the links work properly.
+    var hashtagContent  = (<span className="tags" dangerouslySetInnerHTML={{__html:tagsString}}></span>);
+
+    // Display the given listing image. If none given, display the default.
+    if(this.props.image === '') {
+      listingImage = './img/defaultboardimage.jpg';
+    } else {
+      listingImage = this.props.image;
+    }
+
+    // Show last edit time.
+    if(this.props.message.timeEdited !== '') {
+      lastEdited = <span>(edited <Time value={this.props.message.timeEdited} relative/>)</span>;
+    }
 
     return (
-      <div className="card-column">
-        <div className="item">
+      <div className="card-column" role="article">
+        <div className="item" role="region">
           <Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
             <CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(' + listingImage + ') center / cover'}}>{this.props.title}</CardTitle>
             <span className="time"><span className={this.props.type}>{this.props.type}</span><Time value={this.props.message.time} relative/> {lastEdited}</span>
@@ -382,15 +410,14 @@ class MessageItem extends React.Component {
 
             <div className="posted-by">
 
-              <span className="tags">
-                {this.props.tags}
-              </span>
+              {hashtagContent}
               posted by: {/* This image's src should be the user's avatar */}
-              <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle">{this.props.user.displayName}</span>
+              <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle"><a href={listingUserId}>{this.props.user.displayName}</a></span>
             </div>
 
             <CardActions border>
-              <a href={id}><Button colored>Read</Button></a><Button colored onClick={(e)=> this.handleContact(e)}>Contact</Button><Button colored>Bookmark</Button>
+
+              <a href={id}><Button colored>Read</Button></a><Button colored onClick={(e)=> this.handleContact(e)}>Comments</Button>
             </CardActions>
           </Card>
         </div>

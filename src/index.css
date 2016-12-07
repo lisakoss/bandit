@@ -4,7 +4,6 @@ body {
   margin: 0;
   padding: 0;
   background:rgba(245,248,250,1);
-  font-family: 'Roboto', sans-serif;
 }
 
 @media (min-width: 568px) {
@@ -19,6 +18,7 @@ body {
 
 h1 {
   font-variant: small-caps;
+  font-family: sans-serif;
 }
 
 .container {
@@ -34,6 +34,10 @@ h1 {
 .board-container { 
   margin: 0 auto;
   margin-bottom: 24px;
+}
+
+.listing-container {
+  min-width: 600px;
 }
 
 .nav-container {
@@ -93,7 +97,7 @@ h1 {
 }
 
 .mdl-textfield__input, .mdl-textfield__label {
-  font-size: 16pt !important;
+  font-size: 12pt !important;
 }
 
 .mdl-layout__header-row {
@@ -134,6 +138,8 @@ h1 {
 .avatar-field {
   padding-top: 20px;
 }
+
+/* profile styling */
 
 .profile-nav {
   margin: 16px 0 0 10px;
@@ -270,10 +276,6 @@ h1 {
   min-width: 300px;
 }
 
-.edit {
-  float: right;
-  margin: 4px !important;
-}
 
 .image {
 	margin:10px;
@@ -297,6 +299,11 @@ li {
 .handle {
 	font-size:1.25em;
 	font-weight: 700;
+}
+
+.handle a {
+  color: gray;
+  text-decoration:  none;
 }
 
 .message {
@@ -336,6 +343,10 @@ li {
   float: left;
 }
 
+.tags a {
+  text-decoration: none;
+}
+
 .post-img {
   width: 300px;
 	height: 150px;
@@ -355,24 +366,31 @@ li {
   top: 112px;
   color: #ffffff;
   display: inline;
-  margin-top: 0;
   padding-left: 10px;
 }
 
 .listing-tags {
-  position: relative;
-  top: 144px;
-  left: 142px;
   background-color: rgba(245,248,250,0.5);
   float: right;
   border-radius: 5px;
   padding: 3px;
+  margin-top: 144px;
+  margin-right: 6px;
+}
+
+.listing-tags a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.listing-profile-link a {
+  text-decoration: none;
+  color: #9d9d9d;
 }
 
 .user-info {
   float: right;
   padding-left: 24px;
-  padding-bottom: 16px;
   width: 200px;
   text-align: center;
 }
@@ -416,7 +434,6 @@ li {
 }
 
 .show {
-  color: #ffffff;
   margin-right: 4px;
   font-variant: small-caps;
 }
@@ -424,6 +441,12 @@ li {
 .show .mdl-dialog__content p {
   font-size: 12pt !important;
   font-variant: normal;
+}
+
+.editing-heading {
+  font-size: 16pt !important;
+  margin: -16px;
+  margin-top: 4px;
 }
 
 .mdl-radio {
@@ -466,8 +489,14 @@ li {
 	}
 }
 
+/* profile styling */
+
 #profile, .profile-content {
   background-color: #ffffff;
+}
+
+#profile {
+  overflow: hidden;
 }
 
 .profile-content {
@@ -519,6 +548,11 @@ li {
   padding: 5px;
 }
 
+.quick-info {
+  line-height: 1.3em;
+  text-align: center;
+}
+
 .mdl-tooltip {
   padding: 10px !important;
 }
@@ -531,7 +565,7 @@ li {
 
 .edit-profile {
   padding: 10px;
-  margin: 5px 5px 0 0;
+  margin: 5px 15px 0 0;
   border-radius: 10px;
   background-color: #323232;
   color: #ffffff;
@@ -552,7 +586,14 @@ li {
 }
 
 .profile-tabs {
+  margin-top: 20px;
   background-color: #ffffff;
+  text-align: justify;
+  min-height: 320px;
+}
+
+.tab-content li {
+  border: none;
 }
 
 .profile-alert {
@@ -581,11 +622,15 @@ li {
   margin-left: 48% !important;
 }
 
-.profile-display-name, .profile-job-title, .profile-genre, .profile-location, .profile-about, .profile-experience {
+.profile-display-name, .profile-job-title, .profile-genre, .profile-location {
   width: 48% !important;
 }
 
-.profile-job-title, .profile-location, .profile-experience {
+.profile-about, .profile-experience {
+  width: 100% !important;
+}
+
+.profile-job-title, .profile-location {
   float: right;
 }
 
@@ -637,8 +682,26 @@ li {
 
 .profile-avatar-text {
   float: right;
-  width: 82% !important;
+  width: 55% !important;
   transform: translateY(55%);
+}
+
+@media (min-width: 768px) {
+    .profile-avatar-text { 
+    	width: 75% !important;
+    } 
+}
+
+@media (min-width: 992px) {
+    .profile-avatar-text { 
+    	width: 82% !important;
+    } 
+}
+
+@media (min-width: 1200px) {
+    .profile-avatar-text { 
+    	width: 88% !important;
+    } 
 }
 
 .profile-instruments {
@@ -652,6 +715,86 @@ li {
 
 .tab-content {
   padding: 20px;
+}
+
+.all-listings {
+  background-color: #F5F8FA;
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 300px;
+}
+
+.recent-listing {
+  border-bottom: 1px solid #d9d9d9;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.recent-listing-container {
+  clear: both;
+  overflow: auto;
+}
+
+.listing-image {
+  float: left;
+  margin-right: 15px;
+}
+
+.listing-image img {
+  max-width: 300px;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+}
+
+.listing-info h1 {
+  float: right;
+  font-size: 32px;
+  color: #323232;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.listing-type {
+  float: right;
+  margin: 10px 5px 0 0;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.listing-wanted {
+  background-color: #ffb3b3;
+  color: #5C5C5C;
+  text-transform: uppercase;
+}
+
+.listing-offer {
+  background-color: #c2f0c2;
+  color: #5C5C5C;
+  text-transform: uppercase;
+}
+
+.listing-summary {
+  clear: right;
+  padding-top: 10px;
+  text-align: justify;
+}
+
+.listing-time {
+  color: #5C5C5C;
+  float: right;
+  margin-top: 15px;
+  padding-right: 10px;
+  font-size: 12px;
+}
+
+.listing-controls {
+  float: right;
+}
+
+.listing-controls a {
+  text-decoration: none;
 }
 
 .hidden {
