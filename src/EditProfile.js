@@ -5,13 +5,12 @@ import { hashHistory } from 'react-router';
 
 class EditProfile extends React.Component {
   constructor(props){
-		super(props);
-		this.state = {cancelAlert: false, confirmAlert: false, hidden: 'hidden'};
-		this.confirmProfile = this.confirmProfile.bind(this);
-    this.discardProfile = this.discardProfile.bind(this);
+	super(props);
+	this.state = {cancelAlert: false, confirmAlert: false, hidden: 'hidden', content: 'initial content'};
+	this.confirmProfile = this.confirmProfile.bind(this);
+	this.discardProfile = this.discardProfile.bind(this);
 
-	}
-
+  }
 
 	//Lifecycle callback executed when the component appears on the screen.
   //It is cleaner to use this than the constructor for fetching data
@@ -20,32 +19,32 @@ class EditProfile extends React.Component {
     this.unregister = firebase.auth().onAuthStateChanged(user => {
       if(user) {
         this.setState({userId: user.uid});
-				this.setState({displayName: firebase.auth().currentUser.displayName});
-				//this.setState({avatar: firebase.auth().currentUser.photoURL});
-				var profileRef = firebase.database().ref('users/' + this.state.userId);
-				profileRef.once("value")
-					.then(snapshot => {
-						this.setState({avatar: snapshot.child("avatar").val()});
-						this.setState({jobTitle: snapshot.child("jobTitle").val()});
-						this.setState({coverPhoto: snapshot.child("coverPhoto").val()});
-						this.setState({instruments: snapshot.child("instruments").val()});
-						this.setState({genre: snapshot.child("genre").val()});
-						this.setState({location: snapshot.child("location").val()});
-						this.setState({about: snapshot.child("about").val()});
-						this.setState({experience: snapshot.child("experience").val()});
-					});
+		this.setState({displayName: firebase.auth().currentUser.displayName});
+		//this.setState({avatar: firebase.auth().currentUser.photoURL});
+		var profileRef = firebase.database().ref('users/' + this.state.userId);
+		profileRef.once("value")
+			.then(snapshot => {
+				this.setState({avatar: snapshot.child("avatar").val()});
+				this.setState({jobTitle: snapshot.child("jobTitle").val()});
+				this.setState({coverPhoto: snapshot.child("coverPhoto").val()});
+				this.setState({instruments: snapshot.child("instruments").val()});
+				this.setState({genre: snapshot.child("genre").val()});
+				this.setState({location: snapshot.child("location").val()});
+				this.setState({about: snapshot.child("about").val()});
+				this.setState({experience: snapshot.child("experience").val()});
+			});
       }
       else{
         this.setState({userId: null}); //null out the saved state
-				this.setState({displayName: null}); //null out the saved state
-				this.setState({avatar: null}); //null out the saved state
-				this.setState({jobTitle: null}); //null out the saved state
-				this.setState({coverPhoto: null}); //null out the saved state
-				this.setState({instruments: null}); //null out the saved state
-				this.setState({genre: null}); //null out the saved state
-				this.setState({location: null}); //null out the saved state
-				this.setState({about: null}); //null out the saved state
-				this.setState({experience: null}); //null out the saved state
+			this.setState({displayName: null}); //null out the saved state
+			this.setState({avatar: null}); //null out the saved state
+			this.setState({jobTitle: null}); //null out the saved state
+			this.setState({coverPhoto: null}); //null out the saved state
+			this.setState({instruments: null}); //null out the saved state
+			this.setState({genre: null}); //null out the saved state
+			this.setState({location: null}); //null out the saved state
+			this.setState({about: null}); //null out the saved state
+			this.setState({experience: null}); //null out the saved state
       }
     })
   }
@@ -53,7 +52,8 @@ class EditProfile extends React.Component {
   //when component will be removed
   componentWillUnmount() {
   	//unregister listeners
-		firebase.database().ref('users/' + this.state.userId).off();
+	firebase.database().ref('users/' + this.state.userId).off();
+	firebase.database().ref('users/' + this.props.params.profileID + '/posts').off();
     if(this.unregister){ //if have a function to unregister with
       this.unregister(); //call that function!
     }
@@ -61,19 +61,19 @@ class EditProfile extends React.Component {
 
 	updateProfile(event) {
 		event.preventDefault();
-    this.setState({
-      openDialog: true,
-    });
-  }
+		this.setState({
+			openDialog: true,
+		});
+	}
 
 	discardProfile() {
-    this.setState({
-      openDialog: false,
-			cancelAlert: true,
-			confirmAlert: false,
-			hidden: 'profile-alert red-discard'
-    });
-  }
+		this.setState({
+		openDialog: false,
+				cancelAlert: true,
+				confirmAlert: false,
+				hidden: 'profile-alert red-discard'
+		});
+	}
 
 	confirmProfile() {
 		//const path = '/profile/' + firebase.auth().currentUser.uid;
@@ -112,6 +112,8 @@ class EditProfile extends React.Component {
 			experience: this.state.experience //sets experience
 		});
 
+		var profile = document.getElementById("s");
+		profile.style.display = "none";
 
 		setTimeout(function() {
 			const path = '/profile/' + firebase.auth().currentUser.uid;
@@ -184,114 +186,115 @@ class EditProfile extends React.Component {
 
 		return(
 			<div className="content-container">
-					<h1>edit your profile</h1>
-					<div className={this.state.hidden}>
-						{alert}
+				<h1>edit your profile</h1>
+				<div id="alert" className={this.state.hidden}>
+					{alert}
+				</div>
+				<form id="s" className="profile-content">
+
+					<Textfield
+						onChange={(e) => this.updateDisplay(e)}
+						label="Display Name"
+						value={this.state.displayName || ''}
+						floatingLabel
+						className="profile-display-name"
+					/>
+
+					<Textfield
+						onChange={(e) => this.updateJob(e)}
+						label="Job Title"
+						value={this.state.jobTitle || ''}
+						floatingLabel
+						className="profile-job-title"
+					/>
+					
+					<div className="cover-photo" style={divStyle}>
+						<div className="cover-preview">
+							<p>cover photo preview</p>
+						</div>
 					</div>
-					<form className="profile-content">
 
-						<Textfield
-							onChange={(e) => this.updateDisplay(e)}
-							label="Display Name"
-							value={this.state.displayName || ''}
-							floatingLabel
-							className="profile-display-name"
-						/>
+					<Textfield
+						onChange={(e) => this.updateCover(e)}
+						label="Cover Photo"
+						value={this.state.coverPhoto || ''}
+						floatingLabel
+						className="profile-cover"
+					/>
 
-						<Textfield
-							onChange={(e) => this.updateJob(e)}
-							label="Job Title"
-							value={this.state.jobTitle || ''}
-							floatingLabel
-							className="profile-job-title"
-						/>
-						
-						<div className="cover-photo" style={divStyle}>
-							<div className="cover-preview">
-								<p>cover photo preview</p>
-							</div>
+					<div>
+						<div className="profile-avatar"> 
+							<img src={this.state.avatar || './img/blank-user.jpg'} alt="avatar" />
 						</div>
 
 						<Textfield
-							onChange={(e) => this.updateCover(e)}
-							label="Cover Photo"
-							value={this.state.coverPhoto || ''}
+							onChange={(e) => this.updateAvatar(e)}
+							label="Avatar"
+							value={this.state.avatar || ''}
 							floatingLabel
-							className="profile-cover"
+							className="profile-avatar-text"
 						/>
+					</div>
 
-						<div>
-							<div className="profile-avatar"> 
-								<img src={this.state.avatar || './img/blank-user.jpg'} alt="avatar" />
-							</div>
+					<Textfield
+						onChange={(e) => this.updateInstruments(e)}
+						label="Instrument(s) and/or skills"
+						value={this.state.instruments || ''}
+						floatingLabel
+						className="profile-instruments"
+					/>
 
-							<Textfield
-								onChange={(e) => this.updateAvatar(e)}
-								label="Avatar"
-								value={this.state.avatar || ''}
-								floatingLabel
-								className="profile-avatar-text"
-							/>
-						</div>
+					<Textfield
+						onChange={(e) => this.updateGenre(e)}
+						label="Genre"
+						value={this.state.genre || ''}
+						floatingLabel
+						className="profile-genre"
+					/>
 
-						<Textfield
-							onChange={(e) => this.updateInstruments(e)}
-							label="Instrument(s) and/or skills"
-							value={this.state.instruments || ''}
-							floatingLabel
-							className="profile-instruments"
-						/>
+					<Textfield
+						onChange={(e) => this.updateLocation(e)}
+						label="Location (city, state/providence, and/or zip code)"
+						value={this.state.location || ''}
+						floatingLabel
+						className="profile-location"
+					/>
 
-						<Textfield
-							onChange={(e) => this.updateGenre(e)}
-							label="Genre"
-							value={this.state.genre || ''}
-							floatingLabel
-							className="profile-genre"
-						/>
+					<Textfield
+						rows={8}
+						onChange={(e) => this.updateAbout(e)}
+						label="About"
+						value={this.state.about || ''}
+						floatingLabel
+						className="profile-about"
+					/>
+					
 
-						<Textfield
-							onChange={(e) => this.updateLocation(e)}
-							label="Location (city, state/providence, and/or zip code)"
-							value={this.state.location || ''}
-							floatingLabel
-							className="profile-location"
-						/>
+					<Textfield
+						rows={8}
+						onChange={(e) => this.updateExperience(e)}
+						label="Experience"
+						value={this.state.experience || ''}
+						floatingLabel
+						className="profile-experience"
+					/>
 
-						<Textfield
-							rows={6}
-							onChange={(e) => this.updateAbout(e)}
-							label="About"
-							value={this.state.about || ''}
-							floatingLabel
-							className="profile-about"
-						/>
-
-						<Textfield
-							rows={6}
-							onChange={(e) => this.updateExperience(e)}
-							label="Experience"
-							value={this.state.experience || ''}
-							floatingLabel
-							className="profile-experience"
-						/>
-
-						<div className="profile-submit">
-							<Button raised accent ripple onClick={(e)=>this.updateProfile(e)}>Update Profile</Button>
-						</div>
-						<Dialog open={this.state.openDialog}>
-							<DialogTitle>Are you sure?</DialogTitle>
-							<DialogContent>
-								<p>Click <strong>confirm</strong> to submit all changes to your profile. If you want to cancel any changes you've made, click <strong>cancel</strong>.</p>
-							</DialogContent>
-							<DialogActions>
-								<Button type='button' onClick={()=>this.confirmProfile()}>Confirm</Button>
-								<Button type='button' onClick={()=>this.discardProfile()}>Cancel</Button>
-							</DialogActions>
-						</Dialog>
+					<div className="profile-submit">
+						<Button raised accent ripple onClick={(e)=>this.updateProfile(e)}>Update Profile</Button>
+					</div>
+					<Dialog open={this.state.openDialog}>
+						<DialogTitle>Are you sure?</DialogTitle>
+						<DialogContent>
+							<p>Click <strong>confirm</strong> to submit all changes to your profile. If you want to cancel any changes you've made, click <strong>cancel</strong>.</p>
+						</DialogContent>
+						<DialogActions>
+							<Button type='button' onClick={()=>this.confirmProfile()}>Confirm</Button>
+							<Button type='button' onClick={()=>this.discardProfile()}>Cancel</Button>
+						</DialogActions>
+					</Dialog>
 				</form>
 			</div>
-    );
+    	);
 	}
 }
 

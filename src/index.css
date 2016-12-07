@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background:rgba(245,248,250,1);
+  background-color:rgba(245,248,250,1);
 }
 
 .container {
@@ -173,6 +173,10 @@ body {
   background-color: #ffffff;
 }
 
+#profile {
+  overflow: hidden;
+}
+
 .profile-content {
   padding: 24px;
 }
@@ -222,6 +226,11 @@ body {
   padding: 5px;
 }
 
+.quick-info {
+  line-height: 1.3em;
+  text-align: center;
+}
+
 .mdl-tooltip {
   padding: 10px !important;
 }
@@ -234,7 +243,7 @@ body {
 
 .edit-profile {
   padding: 10px;
-  margin: 5px 5px 0 0;
+  margin: 5px 15px 0 0;
   border-radius: 10px;
   background-color: #323232;
   color: #ffffff;
@@ -255,7 +264,10 @@ body {
 }
 
 .profile-tabs {
+  margin-top: 20px;
   background-color: #ffffff;
+  text-align: justify;
+  min-height: 320px;
 }
 
 .profile-alert {
@@ -284,11 +296,15 @@ body {
   margin-left: 48% !important;
 }
 
-.profile-display-name, .profile-job-title, .profile-genre, .profile-location, .profile-about, .profile-experience {
+.profile-display-name, .profile-job-title, .profile-genre, .profile-location {
   width: 48% !important;
 }
 
-.profile-job-title, .profile-location, .profile-experience {
+.profile-about, .profile-experience {
+  width: 100% !important;
+}
+
+.profile-job-title, .profile-location {
   float: right;
 }
 
@@ -340,8 +356,26 @@ body {
 
 .profile-avatar-text {
   float: right;
-  width: 82% !important;
+  width: 55% !important;
   transform: translateY(55%);
+}
+
+@media (min-width: 768px) {
+    .profile-avatar-text { 
+    	width: 75% !important;
+    } 
+}
+
+@media (min-width: 992px) {
+    .profile-avatar-text { 
+    	width: 82% !important;
+    } 
+}
+
+@media (min-width: 1200px) {
+    .profile-avatar-text { 
+    	width: 88% !important;
+    } 
 }
 
 .profile-instruments {
@@ -355,6 +389,78 @@ body {
 
 .tab-content {
   padding: 20px;
+}
+
+.all-listings {
+  background-color: #F5F8FA;
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 300px;
+}
+
+.listing {
+  border-bottom: 1px solid #d9d9d9;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.listing-container {
+  clear: both;
+  overflow: auto;
+}
+
+.listing-image {
+  float: left;
+  margin-right: 15px;
+}
+
+.listing-image img {
+  max-height: 175px;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+}
+
+.listing-info h1 {
+  float: right;
+  font-size: 32px;
+  color: #323232;
+  letter-spacing: 3px;
+  margin: 0;
+}
+
+.listing-type {
+  float: right;
+  margin: 10px 5px 0 0;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.listing-wanted {
+  background-color: #ffb3b3;
+  color: #5C5C5C;
+  text-transform: uppercase;
+}
+
+.listing-offer {
+  background-color: #c2f0c2;
+  color: #5C5C5C;
+  text-transform: uppercase;
+}
+
+.listing-summary {
+  clear: right;
+  padding-top: 10px;
+  text-align: justify;
+}
+
+.listing-time {
+  color: #5C5C5C;
+  float: right;
+  margin-top: 15px;
+  padding-right: 10px;
+  font-size: 12px;
 }
 
 .hidden {

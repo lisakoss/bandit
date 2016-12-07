@@ -13,6 +13,7 @@ import SignUp from './SignUp';
 import Login from './Login';
 import CreatePost from './CreatePost';
 import EditProfile from './EditProfile';
+import MyEditor from './MyEditor';
 
 
 /* import material design lite */
@@ -39,6 +40,7 @@ ReactDOM.render(
       <Route path="/createpost" component={CreatePost}/>
       <Route path="/search" component={Search}/>
       <Route path="/inbox" component={Inbox}/>
+      <Route path="/myeditor" component={MyEditor}/>
       <Route path="/profile">
         <Route path="/profile/:profileID" component={Profile}/>
       </Route>
