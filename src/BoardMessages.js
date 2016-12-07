@@ -2,6 +2,7 @@ import React from 'react';
 import Time from 'react-time';
 import firebase from 'firebase';
 import {Textfield, Button, Dialog, DialogTitle, DialogContent, DialogActions, Card, CardTitle, CardText, CardActions, Tooltip, Radio, RadioGroup} from 'react-mdl';
+import {hashHistory} from 'react-router';
 
 /* A form the user can use to post a channel message. */
 export class MessageBox extends React.Component {
@@ -342,6 +343,11 @@ class MessageItem extends React.Component {
         'post':'',
     };
   }
+
+  handleContact(event) {
+    const path = '/comments/' + this.props.id;
+    hashHistory.push(path);
+  }
     
     render() {
       var avatar = (this.props.user.avatar);
@@ -384,7 +390,7 @@ class MessageItem extends React.Component {
             </div>
 
             <CardActions border>
-              <a href={id}><Button colored>Read</Button></a><Button colored>Contact</Button><Button colored>Bookmark</Button>
+              <a href={id}><Button colored>Read</Button></a><Button colored onClick={(e)=> this.handleContact(e)}>Contact</Button><Button colored>Bookmark</Button>
             </CardActions>
           </Card>
         </div>

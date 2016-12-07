@@ -773,3 +773,47 @@ li {
 .hidden {
   display: none;
 }
+
+.comment-box {
+  background: white;
+  color: black;
+  text-align: center;
+}
+
+.message-item {
+  border-radius: 5px;
+  background-color: white;
+  margin-bottom: 2px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.message-item:hover {
+  background-color: #8bb1ef;
+}
+
+.message-text {
+  font-size: 25px;
+  display: inline-block;
+}
+
+.user-display {
+  padding-right: 5px;
+}
+
+.user-image {
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 50%;
+  height:60px;
+  width: 60px;
+  float:left;
+}
+
+.message-info {
+  display: block;
+}
+
+.comment-desc {
+  font-size: 25px;
+}
