@@ -14,6 +14,7 @@ import Login from './Login';
 import CreatePost from './CreatePost';
 import Listing from './Listing';
 import EditProfile from './EditProfile';
+import Comments from './Comments';
 
 /* import material design lite */
 import 'react-mdl/extra/css/material.grey-red.min.css';
@@ -39,6 +40,7 @@ ReactDOM.render(
       <Route path="/posts">
         <Route path="/posts/:listingName" component={Listing} />
       </Route>
+      <Route path="/comments/:listingName/" component={Comments} />
       <Route path="/createpost" component={CreatePost}/>
       <Route path="/search" component={Search}/>
       <Route path="/inbox" component={Inbox}/>

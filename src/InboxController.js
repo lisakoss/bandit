@@ -84,7 +84,6 @@ export class RecentConvoList extends React.Component {
                 var otherRef = firebase.database().ref('users/' + otherID);
                 otherRef.once('value', (snap) => {
                     var name = snap.child('displayName').val();
-                    console.log(name);
                     var avatar = snap.child('avatar').val();
                     nameArray.push(name);
                     avatarArray.push(avatar);
@@ -107,6 +106,7 @@ export class RecentConvoList extends React.Component {
             console.log("does this happen");
             return null;
         }
+        console.log(this.state);
 
         var peopleItems = this.state.people.map((person) => {
             return <RecentConvoItem person={person}

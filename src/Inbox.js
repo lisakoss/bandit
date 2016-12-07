@@ -25,7 +25,7 @@ class Inbox extends React.Component {
             <div>
                 <div className="content-container"><h1>inbox</h1><Button raised colored>Compose</Button></div>
                 <div>
-                    <RecentConvoList />
+                    
                 </div>
 
                 <div>
