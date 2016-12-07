@@ -42,17 +42,24 @@ export class CommentList extends React.Component {
                 user={this.state.users[message.userId]}
                 key={message.key} />
         });
-
+        console.log(commentItems);
         return (<div>{commentItems}</div>)
     }
 }
 
 class CommentItem extends React.Component {
     render() {
+
+        var avatar = this.props.user.avatar;
+
         return (
             <div className="message-item board-container">
+                <img className="user-image" src={avatar} alt="user picture" />
+                <div className="message-info">
+                    <span className="user-display"><strong>{this.props.user.displayName}</strong></span>
+                    <span>{this.props.message.time}</span>
+                </div>
                 <span className="message-text">{this.props.message.text}</span>
-                <span>{this.props.message.time}</span>
             </div>
         );
     }

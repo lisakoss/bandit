@@ -11,6 +11,18 @@ export class Comments extends React.Component {
         this.state = {};
     }
 
+    componentDidMount() {
+        var titleRef = firebase.database().ref('posts/' + this.props.params.listingName);
+        titleRef.once('value', (snapshot) => {
+            var title = snapshot.child('title').val();
+            var summary = snapshot.child('summary').val();
+            this.setState({
+                title: title,
+                summary: summary
+            });
+        });
+    }
+
     handleButton(event) {
         const path = '/posts/' + this.props.params.listingName;
         hashHistory.push(path);
@@ -18,11 +30,15 @@ export class Comments extends React.Component {
 
     render() {
         return (
-            <div>
-            <Button raised onClick={(e) => {this.handleButton(e)}}>Back to post</Button>
+            <div className="board-container">
+                <Button raised onClick={(e) => { this.handleButton(e) } }>Back to post</Button>
                 <div>
-                    <div><CommentList post={this.props.params.listingName} /></div>
+                    <h1>{this.state.title}</h1>
+                    <p className="comment-desc">{this.state.summary}</p>
+                </div>
+                <div>
                     <div><CommentBox post={this.props.params.listingName} /></div>
+                    <div><CommentList post={this.props.params.listingName} /></div>
                 </div>
             </div>
         );
@@ -56,28 +72,21 @@ export class CommentBox extends React.Component {
             userId: firebase.auth().currentUser.uid,
             time: firebase.database.ServerValue.TIMESTAMP
         };
+        this.setState({ comment: '' });
         commentRef.push(newComment);
 
-        this.setState({ comment: '' });
+
     }
 
     render() {
-        var postId = this.props.post;
-
-        var titleRef = firebase.database().ref('posts/' + postId + '/title');
-        var title = '';
-        titleRef.once('value', (snapshot) => {
-            title = snapshot.val();
-        });
 
         return (
             <div>
-                <h1>{title}</h1>
                 <div className="board-container comment-box">
                     <Textfield
                         onChange={(e) => { this.updateComment(e) } }
                         label="Write your message here..."
-                        style={{ width: '80%' }}
+                        style={{ width: '70%' }}
                         />
                     <Button raised colored onClick={this.postComment}>Send</Button>
                 </div>
