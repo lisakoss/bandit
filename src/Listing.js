@@ -14,6 +14,7 @@ constructor(props){
 		// bind functions
 		this.handleOpenDialog = this.handleOpenDialog.bind(this);
     this.handleCloseDialog = this.handleCloseDialog.bind(this);
+		this.handleComments = this.handleComments.bind(this);
   }
 
   componentDidMount() {
@@ -115,6 +116,11 @@ constructor(props){
 			});
 	}
 
+	handleComments() {
+		const path = '/comments/' + this.props.params.listingName;
+    hashHistory.push(path);
+	}
+
   render() {
 		var listingImage = '';
 
@@ -136,7 +142,8 @@ constructor(props){
 						<img className="listing-avatar" src={this.state.avatar} alt="user avatar" />
 						<p><strong>Name</strong>: {this.state.displayName}</p>
 						<p><strong>Location</strong>: {this.state.location}</p>
-						<Button colored>Contact</Button><Button colored>Profile</Button>
+
+						<Button colored onClick={this.handleComments}>Comments</Button><Button colored>Profile</Button>
 											
 											
 						<div className={this.state.showControls} role="region">

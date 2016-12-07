@@ -12,7 +12,6 @@ import { Textfield, Button } from 'react-mdl';
 class SignInForm extends React.Component {
   constructor(props){
     super(props);
-
     this.state = {
       'email': undefined,
       'password': undefined
@@ -95,7 +94,7 @@ class SignInForm extends React.Component {
     var signInEnabled = (emailErrors.isValid && passwordErrors.isValid);
 
     return (
-      <div>
+      <div role="article">
         <h1>sign in</h1>
 
         <form role="form" className="sign-up-form">
@@ -144,7 +143,7 @@ class ValidatedInput extends React.Component {
 class ValidationErrors extends React.Component {
   render() {
     return (
-      <div>
+      <div role="region">
         {this.props.errors.required &&
           <span className="help-block">Required! </span>
         }

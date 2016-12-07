@@ -15,13 +15,11 @@ class SignUp extends React.Component {
   }
 
   //Lifecycle callback executed when the component appears on the screen.
-  //It is cleaner to use this than the constructor for fetching data
   componentDidMount() {
-    /* Add a listener and callback for authentication events */
+    // Add a listener and callback for authentication events 
     this.unregister = firebase.auth().onAuthStateChanged(user => {
-      if(user) {
+      if(user) { //redirect to board once user is signed up
         this.setState({userId:user.uid});
-        //user.sendEmailVerification(); //email confirmation
         const path = '/board';
         hashHistory.push(path);
       }
@@ -40,28 +38,29 @@ class SignUp extends React.Component {
   
   //A callback function for registering new users
   signUp(email, password, displayName, avatar) {
-    /* Create a new user and save their information */
+    // Create a new user and save their information 
     var thisComponent = this;
-    thisComponent.setState({spinnerDisplay: true});
-    thisComponent.setState({isSnackbarActive: true});
-    firebase.auth().createUserWithEmailAndPassword(email, password)
+    thisComponent.setState({spinnerDisplay: true}); //show loading spinner while user is being signed up
+    thisComponent.setState({isSnackbarActive: true}); //show snackbar, where spinner is located, while user is being signed up
+    firebase.auth().createUserWithEmailAndPassword(email, password) //sign up user with email, password, and then display name and avatar
       .then(function(firebaseUser) {
         //include information (for app-level content)
-        thisComponent.setState({spinnerDisplay: 'hidden'})
+        thisComponent.setState({spinnerDisplay: 'hidden'}) //do not show spinner once this is completed
         firebaseUser.updateProfile({
           displayName: displayName,
           photoURL: avatar
         });
 
-        //create new entry in the Cloud DB (for others to reference)
+    //create new entry in the Cloud DB (for others to reference)
 		var userRef = firebase.database().ref('users/'+firebaseUser.uid); 
         var userData = {
           displayName: displayName,
-          avatar: avatar
+          avatar: avatar,
+          inbox: ""
         }
         userRef.set(userData); //update entry in JOITC, return promise for chaining
       })
-      .catch(function(error) {
+      .catch(function(error) { //show error if there is a mistake signing up, with error in snackbar
         var errorCode = error.code;
         var errorMessage = error.message;
         console.log(thisComponent);
@@ -86,7 +85,6 @@ class SignUp extends React.Component {
           thisComponent.setState({ isSnackbarActive: true });
           thisComponent.setState({spinnerDisplay: false})
         }
-        console.log(error);
       });
   }
 
@@ -110,10 +108,10 @@ class SignUp extends React.Component {
     }
     return (
       <div>
-        <main className="content-container">   
+        <main role="article" className="content-container">   
           {content}
         </main>
-        <div>
+        <div role="region">
           <Snackbar
             active={this.state.isSnackbarActive}
             onTimeout={this.handleTimeoutSnackbar}>{snackbarContent}</Snackbar> 

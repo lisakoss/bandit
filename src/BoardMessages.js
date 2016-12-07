@@ -360,6 +360,11 @@ class MessageItem extends React.Component {
         'post':'',
     };
   }
+
+  handleContact(event) {
+    const path = '/comments/' + this.props.id;
+    hashHistory.push(path);
+  }
     
   render() {
     var avatar = (this.props.user.avatar);
@@ -411,7 +416,8 @@ class MessageItem extends React.Component {
             </div>
 
             <CardActions border>
-              <a href={id}><Button colored>Read</Button></a><Button colored>Contact</Button>
+
+              <a href={id}><Button colored>Read</Button></a><Button colored onClick={(e)=> this.handleContact(e)}>Comments</Button>
             </CardActions>
           </Card>
         </div>
