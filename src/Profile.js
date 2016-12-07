@@ -11,63 +11,61 @@ class Profile extends React.Component {
 	}
 
 	//Lifecycle callback executed when the component appears on the screen.
-  //It is cleaner to use this than the constructor for fetching data
-  componentDidMount() {
-	this.unregister = firebase.auth().onAuthStateChanged(user => {
-		if(user) {
-			this.setState({userId: user.uid});
-			//this.setState({displayName: firebase.auth().currentUser.displayName});
-			//this.setState({avatar: firebase.auth().currentUser.photoURL});
-			var profileRef = firebase.database().ref('users/' + this.props.params.profileID);
-			profileRef.once("value")
-				.then(snapshot => {
-					this.setState({displayName: snapshot.child("displayName").val()});
-					this.setState({avatar: snapshot.child("avatar").val()});
-					this.setState({coverPhoto: snapshot.child("coverPhoto").val()});
-					this.setState({jobTitle: snapshot.child("jobTitle").val()});
-					this.setState({instruments: snapshot.child("instruments").val()});
-					this.setState({genre: snapshot.child("genre").val()});
-					this.setState({location: snapshot.child("location").val()});
-					this.setState({about: snapshot.child("about").val()});
-					this.setState({experience: snapshot.child("experience").val()});
-				});
+	//Grabs information to display on a user's profile'
+	componentDidMount() {
+		this.unregister = firebase.auth().onAuthStateChanged(user => {
+			if(user) {
+				this.setState({userId: user.uid}); //grabs user id
+				var profileRef = firebase.database().ref('users/' + this.props.params.profileID);
+				profileRef.once("value")
+					.then(snapshot => {
+						this.setState({displayName: snapshot.child("displayName").val()});
+						this.setState({avatar: snapshot.child("avatar").val()});
+						this.setState({coverPhoto: snapshot.child("coverPhoto").val()});
+						this.setState({jobTitle: snapshot.child("jobTitle").val()});
+						this.setState({instruments: snapshot.child("instruments").val()});
+						this.setState({genre: snapshot.child("genre").val()});
+						this.setState({location: snapshot.child("location").val()});
+						this.setState({about: snapshot.child("about").val()});
+						this.setState({experience: snapshot.child("experience").val()});
+					});
+
 				if(this.state.instruments === "") {
-					this.setState({instrumentShow: 'hidden'});
+					this.setState({instrumentShow: 'hidden'}); //hides instruments if not filled out
 				}
 				if(this.state.genre === "") {
-					this.setState({genreShow: 'hidden'});
+					this.setState({genreShow: 'hidden'}); //hides genre if not filled out
 				}
-				console.log(this.state);
 				if(this.state.location === "") {
-					this.setState({locationShow: 'hidden'});
+					this.setState({locationShow: 'hidden'}); //hides location if not filled out
 				}
-		}
-      else {
+			} else { //redirects user if logged out and sets state to null
 				const path = '/login';
-        hashHistory.push(path);
-        this.setState({userId: null}); //null out the saved state
-		this.setState({displayName: null}); //null out the saved state
-		this.setState({avatar: null}); //null out the saved state
-		this.setState({jobTitle: null}); //null out the saved state
-		this.setState({coverPhoto: null}); //null out the saved state
-		this.setState({instruments: null}); //null out the saved state
-		this.setState({genre: null}); //null out the saved state
-		this.setState({location: null}); //null out the saved state
-		this.setState({about: null}); //null out the saved state
-		this.setState({experience: null}); //null out the saved state
-      }
-    })
-  }
+				hashHistory.push(path);
+				this.setState({userId: null}); //null out the saved state
+				this.setState({displayName: null}); //null out the saved state
+				this.setState({avatar: null}); //null out the saved state
+				this.setState({jobTitle: null}); //null out the saved state
+				this.setState({coverPhoto: null}); //null out the saved state
+				this.setState({instruments: null}); //null out the saved state
+				this.setState({genre: null}); //null out the saved state
+				this.setState({location: null}); //null out the saved state
+				this.setState({about: null}); //null out the saved state
+				this.setState({experience: null}); //null out the saved state
+			}
+		})
+	}
 
-  //when component will be removed
-  componentWillUnmount() {
-  	//unregister listeners
-  	firebase.database().ref('users/' + this.props.params.profileID).off();
+	//when component will be removed
+	componentWillUnmount() {
+		//unregister listeners
+  		firebase.database().ref('users/' + this.props.params.profileID).off();
 		if(this.unregister){ //if have a function to unregister with
-      this.unregister(); //call that function!
-    }
-  }
+     		this.unregister(); //call that function!
+   		}
+  	}
 
+	//Grabs the next user's information'
 	componentWillReceiveProps(nextProps) {
 		var profileRef = firebase.database().ref('users/' + nextProps.params.profileID);
 		profileRef.once("value")
@@ -84,8 +82,6 @@ class Profile extends React.Component {
 			});
 	}
 
-
-
 	render() {
 		var divStyle = {
  			backgroundImage: 'url(' + this.state.coverPhoto || ' )'
@@ -97,14 +93,16 @@ class Profile extends React.Component {
 		var genreHide = 'hidden';
 		var instrumentsHide = 'hidden';
 
-		if(this.props.params.profileID === this.state.userId) {
+		//if you are on your own profile, you have access to the profile edit tool via your profile
+		if(this.props.params.profileID === this.state.userId) { 
 			edit = "icon";
 		} else {
 			edit = "icon hidden"
 		}
 
+		//determines tab content for about, experience, and recent listings
 		if(this.state.activeTab === 0) {
-			htmlTabContent = this.state.about ||"No information to show.";
+			htmlTabContent = this.state.about || "No information to show.";
 			tabContent = (<div className="tab-content" dangerouslySetInnerHTML={{__html:htmlTabContent}}></div>);
 		} else if(this.state.activeTab === 1) {
 			htmlTabContent = this.state.experience || 'No experience to show.';
@@ -113,24 +111,27 @@ class Profile extends React.Component {
 			tabContent = (<div className="tab-content"><RecentListings profileID={this.props.params.profileID} /></div>);
 		}
 
+		//show location if filled out
 		if(this.state.location !== null && this.state.location !== "") {
 			locationHide = '';
 		}
 
+		//show instruments if filled out
 		if(this.state.instruments !== null && this.state.instruments !== "") {
 			instrumentsHide = '';
 		}
 
+		//show genre if filled out
 		if(this.state.genre !== null && this.state.genre !== "") {
 			genreHide = '';
 		}
 
 		return (
-			<div id="alert">
-				<div className="profile-top" style={divStyle}>
+			<div role="article">
+				<div role="region" className="profile-top" style={divStyle}>
 					<p className={edit}><a href="/#/profileedit"><i className="fa fa-pencil edit-profile" aria-hidden="true"> <span className="edit-profile-text">edit</span></i></a></p>
 				</div>
-				<div className="profile-user">
+				<div role="region" className="profile-user">
 					<div className="content-container">
 						<div className="profile-image">
 							<img src={this.state.avatar || './img/blank-user.jpg'} alt="avatar" />
@@ -144,7 +145,7 @@ class Profile extends React.Component {
 							<span className={locationHide}><Tooltip label="Location" position="top"><i className="fa fa-map-marker display-icon" aria-hidden="true"></i></Tooltip><p className="quick-info"> {this.state.location}</p></span>
 						</div>
 					</div>
-					<div className="profile-tabs">
+					<div role="region" className="profile-tabs">
 						<div className="content-container">
 							<Tabs activeTab={this.state.activeTab} onChange={(tabId) => this.setState({ activeTab: tabId })} ripple>
 								<Tab>About</Tab>

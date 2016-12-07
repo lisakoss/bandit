@@ -4,47 +4,40 @@ import Time from 'react-time';
 import { Button } from 'react-mdl';
 
 export class RecentListings extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {listings:[]};
-  }
+	constructor(props){
+    	super(props);
+    	this.state = {listings:[]};
+  	}
 
-			
+	//Lifecycle callback executed when the component appears on the screen.	
+	//Grabs list of posts for the particular user profile.
 	componentDidMount() {
-		var listingsRef = firebase.database().ref('users/' + this.props.profileID + '/posts');
-		//var thisComponent = this;
-		console.log(this.props.profileID);
+		var listingsRef = firebase.database().ref('users/' + this.props.profileID + '/posts').limitToLast(3); //only shows the 3 most recent posts
 		listingsRef.on('value', (snapshot) => {
 			var userListingsArray = []; 
 			snapshot.forEach(function(child){
 				var listing = child.val();
 				userListingsArray.push(listing);
-				console.log(listing.title);
-				console.log(listing.summary);
-				console.log(listing.image);
 	      	});
-			userListingsArray.sort((a,b) => b.time - a.time); //reverse order
-			this.setState({listings: userListingsArray});
+			userListingsArray.sort((a,b) => b.time - a.time); //reverse order, to show most recently posted first
+			this.setState({listings: userListingsArray}); //push each listing onto array of listings associated with a user
     	});
 	}
 
+ 	//when the component is unmounted,
 	componentWillUnmount() {
   		//unregister listeners
 		firebase.database().ref('users/' + this.props.profileID + '/posts').off();
 	}
 
+	//Grabs user and listing data for the next profile
     componentWillReceiveProps(nextProps) {
-		var listingsRef = firebase.database().ref('users/' + nextProps.profileID + '/posts');
-		//var thisComponent = this;
-		console.log(nextProps.profileID);
+		var listingsRef = firebase.database().ref('users/' + nextProps.profileID + '/posts').limitToLast(3); //only shows the last 3 posts
 		listingsRef.on('value', (snapshot) => {
 			var userListingsArray = []; 
 			snapshot.forEach(function(child){
 				var listing = child.val();
 				userListingsArray.push(listing);
-				console.log(listing.title);
-				console.log(listing.summary);
-				console.log(listing.image);
 	      	});
 			userListingsArray.sort((a,b) => b.time - a.time); //reverse order
 			this.setState({listings: userListingsArray});
@@ -52,7 +45,7 @@ export class RecentListings extends React.Component {
     }
 
 	render() {
-    /* Create a list of <ListingItem /> objects */
+    // Create a list of <ListingItem /> objects so each listing can be displayed
     var listingItems = this.state.listings.map((listing) => {
       return <ListingItem listing={listing} 
                         key={listing.listingId} />
@@ -60,9 +53,9 @@ export class RecentListings extends React.Component {
 
     var listings = null;
     if(listingItems.length > 0) {
-        listings = (<div className="all-listings">{listingItems}</div>);
+        listings = (<div className="all-listings">{listingItems}</div>); //grabs all recent listings for a user
     } else {
-        listings = (<div><p>No recent listings to show.</p></div>);
+        listings = (<div><p>No recent listings to show.</p></div>); //if no listings exist for a user
     }
     return listings;
   }
@@ -71,29 +64,28 @@ export class RecentListings extends React.Component {
 //A single user listing
 class ListingItem extends React.Component {
 	render() {
-        var listingType = null;
+        var listingType = null; //determines listing type 
         if(this.props.listing.type === 'offering') {
             listingType = 'listing-type listing-offer';
         } else {
             listingType = 'listing-type listing-wanted';
         }
 		return (
-		<div className="listing">
-            <div className="listing-container">
-                <div className="listing-image">
-                    <img src={this.props.listing.image || 'http://www.thesnipenews.com/wp-content/gallery/lights-at-the-commodore-ballroom-vancouver-nov-7-2009/valsmile.jpg'} alt="avatar" />
-                </div>
-                <div className="listing-info">
-                    <h1>{this.props.listing.title}</h1><span className={listingType}>{this.props.listing.type}</span> <span className="listing-time"><Time value={this.props.listing.time} relative/></span>
-                    <p className="listing-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et maximus ex. Suspendisse vestibulum enim eu ante sagittis, vel faucibus enim sodales. Proin ultrices et metus vitae pretium. Praesent efficitur augue rutrum eleifend auctor. Aliquam posuere luctus elit, non eleifend ante molestie ut. Ut quis ornare ipsum. Quisque tincidunt tellus sed pharetra vulputate. Nullam ligula libero, scelerisque sit amet pulvinar at, scelerisque eget ante. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec eu fermentum dolor.</p>
-                </div>
-                <div className="listing-controls">
-                    <Button><a href={"/#/posts/" + this.props.listing.listingId}>Read</a></Button>
-                    <Button><a href={"/#/comments/" + this.props.listing.listingId}>Comments</a></Button>
-                </div>
-            </div>
-
-		</div>      
+			<div role="article" className="listing">
+				<div className="listing-container">
+					<div role="region" className="listing-image">
+						<img src={this.props.listing.image || './img/defaultboardimage.jpg'} alt="listing" />
+					</div>
+					<div role="region" className="listing-info">
+						<h1>{this.props.listing.title}</h1><span className={listingType}>{this.props.listing.type}</span> <span className="listing-time"><Time value={this.props.listing.time} relative/></span>
+						<p className="listing-summary">{this.props.listing.summary}</p>
+					</div>
+					<div role="region" className="listing-controls">
+						<Button><a href={"/#/posts/" + this.props.listing.listingId}>Read</a></Button>
+						<Button><a href={"/#/comments/" + this.props.listing.listingId}>Comments</a></Button>
+					</div>
+				</div>
+			</div>      
 		);
 	}
 }

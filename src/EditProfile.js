@@ -5,39 +5,36 @@ import { hashHistory } from 'react-router';
 
 class EditProfile extends React.Component {
   constructor(props){
-	super(props);
-	this.state = {cancelAlert: false, confirmAlert: false, hidden: 'hidden', content: 'initial content'};
-	this.confirmProfile = this.confirmProfile.bind(this);
-	this.discardProfile = this.discardProfile.bind(this);
-
+		super(props);
+		this.state = {cancelAlert: false, confirmAlert: false, hidden: 'hidden'};
+		this.confirmProfile = this.confirmProfile.bind(this);
+		this.discardProfile = this.discardProfile.bind(this);
   }
 
 	//Lifecycle callback executed when the component appears on the screen.
-  //It is cleaner to use this than the constructor for fetching data
+	//Sets the initial state of the logged in user so they can edit their profile information
 	componentDidMount() {
-    /* Add a listener and callback for authentication events */
+    // Add a listener and callback for authentication events 
     this.unregister = firebase.auth().onAuthStateChanged(user => {
-      if(user) {
-        this.setState({userId: user.uid});
-		this.setState({displayName: firebase.auth().currentUser.displayName});
-		//this.setState({avatar: firebase.auth().currentUser.photoURL});
-		var profileRef = firebase.database().ref('users/' + this.state.userId);
-		profileRef.once("value")
-			.then(snapshot => {
-				this.setState({avatar: snapshot.child("avatar").val()});
-				this.setState({jobTitle: snapshot.child("jobTitle").val()});
-				this.setState({coverPhoto: snapshot.child("coverPhoto").val()});
-				this.setState({instruments: snapshot.child("instruments").val()});
-				this.setState({genre: snapshot.child("genre").val()});
-				this.setState({location: snapshot.child("location").val()});
-				this.setState({about: snapshot.child("about").val()});
-				this.setState({experience: snapshot.child("experience").val()});
-			});
-      }
-      else{
-		const path = '/login';
-        hashHistory.push(path);
-        this.setState({userId: null}); //null out the saved state
+		if(user) {
+			this.setState({userId: user.uid});
+				this.setState({displayName: firebase.auth().currentUser.displayName});
+				var profileRef = firebase.database().ref('users/' + this.state.userId);
+				profileRef.once("value")
+					.then(snapshot => {
+						this.setState({avatar: snapshot.child("avatar").val()});
+						this.setState({jobTitle: snapshot.child("jobTitle").val()});
+						this.setState({coverPhoto: snapshot.child("coverPhoto").val()});
+						this.setState({instruments: snapshot.child("instruments").val()});
+						this.setState({genre: snapshot.child("genre").val()});
+						this.setState({location: snapshot.child("location").val()});
+						this.setState({about: snapshot.child("about").val()});
+						this.setState({experience: snapshot.child("experience").val()});
+					});
+		} else {
+			const path = '/login'; //redirect to login page if user is not logged in
+			hashHistory.push(path);
+			this.setState({userId: null}); //null out the saved state
 			this.setState({displayName: null}); //null out the saved state
 			this.setState({avatar: null}); //null out the saved state
 			this.setState({jobTitle: null}); //null out the saved state
@@ -47,20 +44,21 @@ class EditProfile extends React.Component {
 			this.setState({location: null}); //null out the saved state
 			this.setState({about: null}); //null out the saved state
 			this.setState({experience: null}); //null out the saved state
-      }
-    })
+      	}
+    });
   }
 
-  //when component will be removed
-  componentWillUnmount() {
-  	//unregister listeners
-	firebase.database().ref('users/' + this.state.userId).off();
-	firebase.database().ref('users/' + this.props.params.profileID + '/posts').off();
-    if(this.unregister){ //if have a function to unregister with
-      this.unregister(); //call that function!
-    }
-  }
+	//when component will be removed
+	componentWillUnmount() {
+		//unregister listeners
+		firebase.database().ref('users/' + this.state.userId).off();
+		firebase.database().ref('users/' + this.props.params.profileID + '/posts').off();
+		if(this.unregister){ //if have a function to unregister with
+			this.unregister(); //call that function!
+		}
+	}
 
+	//when you click update profile, a dialog box is opened
 	updateProfile(event) {
 		event.preventDefault();
 		this.setState({
@@ -68,18 +66,18 @@ class EditProfile extends React.Component {
 		});
 	}
 
+	//you can discard profile changes by clicking cancel
 	discardProfile() {
 		this.setState({
-		openDialog: false,
-				cancelAlert: true,
-				confirmAlert: false,
-				hidden: 'profile-alert red-discard'
+			openDialog: false,
+			cancelAlert: true,
+			confirmAlert: false,
+			hidden: 'profile-alert red-discard'
 		});
 	}
 
+	// you can confirm profile changes by clicking confirm, which will reset the state and redirect you back to your profile
 	confirmProfile() {
-		//const path = '/profile/' + firebase.auth().currentUser.uid;
-		//hashHistory.push(path);
 		this.setState({
 			openDialog: false,
 			cancelAlert: false,
@@ -87,11 +85,10 @@ class EditProfile extends React.Component {
 			hidden: 'profile-alert green-confirm'
 		});
 
+		var user = firebase.auth().currentUser; //grabs the logged in user's' info
 
-		var user = firebase.auth().currentUser; //grabs the logged in user's' info, updates app.js
-
-		var userRef = firebase.database().ref('users/' + user.uid); //finds the logged in user in the database; updates profile.js
-		userRef.child('displayName').set(this.state.displayName); //sets their displayname
+		var userRef = firebase.database().ref('users/' + user.uid); //finds the logged in user in the database
+		userRef.child('displayName').set(this.state.displayName); //sets their display name
 		userRef.child('jobTitle').set(this.state.jobTitle); //sets their job title
 		userRef.child('coverPhoto').set(this.state.coverPhoto); //sets their cover photo
 		userRef.child('avatar').set(this.state.avatar); //sets their avatar
@@ -104,19 +101,13 @@ class EditProfile extends React.Component {
 
 		user.updateProfile({
 			displayName: this.state.displayName, //sets display name
-			jobTitle: this.state.jobTitle, //sets job title
-			coverPhoto: this.state.coverPhoto, //sets cover photo
-			avatar: this.state.avatar, //sets avatar
-			instruments: this.state.instruments, //sets intruments
-			genre: this.state.genre, //sets genre
-			location: this.state.location, //sets location
-			about: this.state.about, //sets about
-			experience: this.state.experience //sets experience
 		});
 
-		var profile = document.getElementById("s");
+		//removes the editing controls when you click submit so you can read the confirmation alert
+		var profile = document.getElementById("profile-edit");
 		profile.style.display = "none";
 
+		//redirects after 2 seconds back to profile so you have time to read the confirmation alert
 		setTimeout(function() {
 			const path = '/profile/' + firebase.auth().currentUser.uid;
 			hashHistory.push(path);
@@ -124,47 +115,47 @@ class EditProfile extends React.Component {
 		}, 2000);
 	}
 
-	//when the text in the display name field changes
+	//when the text in the display name field changes, updates state
 	updateDisplay(event) {
 		this.setState({displayName: event.target.value});
 	}
 
-	//when the text in the job title field changes
+	//when the text in the job title field changes, updates state
 	updateJob(event) {
 		this.setState({jobTitle: event.target.value});
 	}
 
-	//when the text in the cover photo field changes
+	//when the text in the cover photo field changes, updates state
 	updateCover(event) {
 		this.setState({coverPhoto: event.target.value});
 	}
 
-	//when the text in the avatar field changes
+	//when the text in the avatar field changes, updates state
 	updateAvatar(event) {
 		this.setState({avatar: event.target.value});
 	}
 
-	//when the text in the instruments field changes
+	//when the text in the instruments field changes, updates state
 	updateInstruments(event) {
 		this.setState({instruments: event.target.value});
 	}
 
-	//when the text in the genre field changes
+	//when the text in the genre field changes, updates state
 	updateGenre(event) {
 		this.setState({genre: event.target.value});
 	}
 
-	//when the text in the location field changes
+	//when the text in the location field changes, updates state
 	updateLocation(event) {
 		this.setState({location: event.target.value});
 	}
 
-	//when the text in the location field changes
+	//when the text in the location field changes, updates state
 	updateAbout(event) {
 		this.setState({about: event.target.value});
 	}
 
-	//when the text in the location field changes
+	//when the text in the location field changes, updates state
 	updateExperience(event) {
 		this.setState({experience: event.target.value});
 	}
@@ -179,20 +170,17 @@ class EditProfile extends React.Component {
 			alert = (<div><p>You did not submit your changes.</p></div>);
 		} else if (this.state.confirmAlert === true) {
 			alert = (<div><p>You have submitted your changes. Redirecting...</p>
-							 <Spinner className="profile-spinner" singleColor />
-							 </div>);
+						 <Spinner className="profile-spinner" singleColor />
+					 </div>);
 		}
 
-		console.log(this.state);
-		console.log(this.state.jobTitle);
-
 		return(
-			<div className="content-container">
+			<div className="content-container" role="article">
 				<h1>edit your profile</h1>
-				<div id="alert" className={this.state.hidden}>
+				<div role="region" id="alert" className={this.state.hidden}>
 					{alert}
 				</div>
-				<form id="s" className="profile-content">
+				<form role="region" id="profile-edit" className="profile-content">
 
 					<Textfield
 						onChange={(e) => this.updateDisplay(e)}
@@ -271,7 +259,6 @@ class EditProfile extends React.Component {
 						className="profile-about"
 					/>
 					
-
 					<Textfield
 						rows={8}
 						onChange={(e) => this.updateExperience(e)}
@@ -284,7 +271,7 @@ class EditProfile extends React.Component {
 					<div className="profile-submit">
 						<Button raised accent ripple onClick={(e)=>this.updateProfile(e)}>Update Profile</Button>
 					</div>
-					<Dialog open={this.state.openDialog}>
+					<Dialog role="region" open={this.state.openDialog}>
 						<DialogTitle>Are you sure?</DialogTitle>
 						<DialogContent>
 							<p>Click <strong>confirm</strong> to submit all changes to your profile. If you want to cancel any changes you've made, click <strong>cancel</strong>.</p>

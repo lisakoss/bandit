@@ -60,7 +60,7 @@ class App extends React.Component {
 														</p>
 														<p className="links">Quick Links</p>
 													</div>
-													<Navigation>
+													<Navigation role="navigation">
 														<a href="/#/profileedit">Edit profile</a>
 														<a href="/#/createpost">Create a post</a>
 														<a href="">Manage posts</a>
@@ -78,14 +78,14 @@ class App extends React.Component {
 											</Tooltip>
 										 </div>);
 		} else {
-			drawerContent = (<Navigation><span>You must <a href="/#/login">login</a> or <a href="/#/signup">sign up</a> to view this content.</span></Navigation>);
+			drawerContent = (<Navigation role="navigation"><span>You must <a href="/#/login">login</a> or <a href="/#/signup">sign up</a> to view this content.</span></Navigation>);
 		}
 
     return (
-      <div style={{height: '100%'}}>
+      <div style={{height: '100%'}} role="main">
         <Layout fixedHeader>
-          <Header transparent title={<span><a href="/" className="header-link">BANDIT</a></span>}>
-            <Navigation>
+          <Header role="banner" transparent title={<span><a href="/" className="header-link">BANDIT</a></span>}>
+            <Navigation role="navigation">
 							<a href="/#/board">Board</a>
 							<a href="/#/search">Search</a>
 							<a href="/#/inbox">Inbox</a>
