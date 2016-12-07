@@ -15,11 +15,10 @@ class Login extends React.Component {
   }
 
   //Lifecycle callback executed when the component appears on the screen.
-  //It is cleaner to use this than the constructor for fetching data
   componentDidMount() {
-    /* Add a listener and callback for authentication events */
+    // Add a listener and callback for authentication events 
     this.unregister = firebase.auth().onAuthStateChanged(user => {
-      if(user) {
+      if(user) { //if logged in, redirects to message board
         this.setState({userId:user.uid});
         const path = '/board';
         hashHistory.push(path);
@@ -27,7 +26,7 @@ class Login extends React.Component {
       else{
         this.setState({userId: null}); //null out the saved state
       }
-    })
+    });
   }
 
 //when the component is unmounted, unregister using the saved function
@@ -44,17 +43,16 @@ class Login extends React.Component {
 
   //A callback function for logging in existing users
   signIn(email, password) {
-    /* Sign in the user */
+    // Sign in the user 
     var thisComponent = this;
-    thisComponent.setState({spinnerDisplay: true});
-    thisComponent.setState({isSnackbarActive: true});
-    firebase.auth().signInWithEmailAndPassword(email, password)
-       .catch(function(error) {
+    thisComponent.setState({spinnerDisplay: true}); //show spinner while user is logging in
+    thisComponent.setState({isSnackbarActive: true}); //show snackbar that contains spinner while user is logging in
+    firebase.auth().signInWithEmailAndPassword(email, password) //logs in user with email and password
+       .catch(function(error) { //displays an error if there is a mistake with logging a user in
         var errorMessage = error.message;
-        thisComponent.setState({spinnerDisplay: false})
-        thisComponent.setState({error: errorMessage});
-        thisComponent.setState({ isSnackbarActive: true });
-          //alert(errorMessage);
+        thisComponent.setState({spinnerDisplay: false}); //don't show spinner with error message
+        thisComponent.setState({error: errorMessage}); //put error message in state
+        thisComponent.setState({ isSnackbarActive: true }); //pop up snackbar to contain error message
        });
   }
 
@@ -74,10 +72,10 @@ class Login extends React.Component {
 
     return (
       <div>      
-        <main className="content-container">   
+        <main role="article" className="content-container">   
           {content}
         </main>
-        <div>
+        <div role="region">
           <Snackbar
             active={this.state.isSnackbarActive}
             onTimeout={this.handleTimeoutSnackbar}>{snackbarContent}</Snackbar> 
