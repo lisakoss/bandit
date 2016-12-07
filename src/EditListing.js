@@ -49,7 +49,7 @@ class EditListing extends React.Component {
 		var messagesRef = firebase.database().ref('posts/' + this.props.params.listingName);
 		messagesRef.once('value', (snapshot) => {
 			var listingContent = snapshot.val();
-			this.setState({title: listingContent.title, summary: listingContent.summary, location: listingContent.location, instrument: listingContent.instrument, job: listingContent.job, image: listingContent.image, tags: listingContent.tags, post: listingContent.text, type: listingContent.type, listingUser: listingContent.userId});
+			this.setState({title: listingContent.title, summary: listingContent.summary, location: listingContent.location, instrument: listingContent.instrument, job: listingContent.job, image: listingContent.image, tags: listingContent.tags, post: listingContent.text, type: listingContent.type, listingUser: listingContent.userId}); // update state with given listing info from url
 
 			var currUser = firebase.auth().currentUser.uid;
       if (listingContent.userId !== currUser) {
@@ -117,9 +117,9 @@ class EditListing extends React.Component {
 		event.preventDefault(); // don't submit like usual
     if(this.state.post.length !== 0 && this.state.title.length !== 0 && this.state.summary.length !== 0 
       && this.state.summary.length < 100 && this.state.location.length !== 0 && this.state.instrument.length !== 0
-      && this.state.job.length !== 0) {
+      && this.state.job.length !== 0) { // don't submit blank form'
 
-      /* Add a new channel message to the database. */
+      /* Add a new listing message to the database. */
       var messageRef = firebase.database().ref('posts/' + this.props.params.listingName);
       messageRef.child('text').set(newMessage);
       messageRef.child('timeEdited').set(firebase.database.ServerValue.TIMESTAMP);
@@ -134,6 +134,7 @@ class EditListing extends React.Component {
 			var userRef = firebase.database().ref('users/' + this.state.listingUser + '/posts');
 			var thisComponent = this;
 
+			// add listing info to each individual user for recent listings
 			userRef.on('value', (snapshot) => {
 				snapshot.forEach(function(child){
 					var message = child.val();
@@ -148,7 +149,7 @@ class EditListing extends React.Component {
 
 			const path = '/posts/' + this.props.params.listingName; // redirects user back to listing after editing
 			hashHistory.push(path);
-    } else {
+    } else { // determines if form has been left blank; show error.
       if(this.state.post.length === 0) {
         this.setState({postTyped: true});
       } if(this.state.title.length === 0) {
@@ -168,10 +169,17 @@ class EditListing extends React.Component {
       }
     }
   }
+
+	/* discard edit changes to listing. */
+	cancelMessage() {
+			const path = '/posts/' + this.props.params.listingName; // redirects user back to listing after discarding
+			hashHistory.push(path);
+	}
 	
 	render() {
 		var listingImage = '';
 
+		// show default listing img if none given.
     if(this.state.image === '') {
       listingImage = './img/defaultboardimage.jpg';
     } else {
@@ -179,11 +187,9 @@ class EditListing extends React.Component {
     }   
 
 		return (
-			<div className="board-container">
+			<div className="board-container" role="article">
 				<h1>edit your listing</h1>
-					<div className="write-msg">
-					{/*<div className={this.state.email}>Please verifiy email</div>*/}
-
+					<div className="write-msg" role="region">
 					<form role="form">
 						<Textfield
 							onChange={(e) => this.updateTitle(e)}
@@ -272,9 +278,10 @@ class EditListing extends React.Component {
           	}
 
 						<Button ripple className="create-button" onClick={(e) => this.postMessage(e)}>Edit Listing</Button>
+						<Button ripple className="create-button" onClick={(e) => this.cancelMessage(e)}>Discard Edit</Button>
 
 						<i onClick={this.handleOpenDialog} className="fa fa-question fa-2x" aria-hidden="true"></i>
-						<Dialog open={this.state.openDialog}>
+						<Dialog open={this.state.openDialog} role="region" aria-live="polite">
 							<DialogTitle>Need Help?</DialogTitle>
 							<DialogContent>
 								<div className="help">

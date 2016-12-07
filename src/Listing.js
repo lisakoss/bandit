@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
 import {hashHistory} from 'react-router';
-import {Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions} from 'react-mdl';
+import {Button, Dialog, DialogTitle, DialogContent, DialogActions} from 'react-mdl';
 
 class Listing extends React.Component {
 constructor(props){
@@ -20,7 +20,7 @@ constructor(props){
 		var messagesRef = firebase.database().ref('posts/' + this.props.params.listingName);
 		messagesRef.once('value', (snapshot) => {
 			var listingContent = snapshot.val();
-			this.setState({title: listingContent.title, summary: listingContent.summary, location: listingContent.location, instrument: listingContent.instrument, job: listingContent.job, image: listingContent.image, tags: listingContent.tags, post: listingContent.text, type: listingContent.type, listingUser: listingContent.userId})
+			this.setState({title: listingContent.title, summary: listingContent.summary, location: listingContent.location, instrument: listingContent.instrument, job: listingContent.job, image: listingContent.image, tags: listingContent.tags, post: listingContent.text, type: listingContent.type, listingUser: listingContent.userId}); // set state with given listing in url
 
 			// only show edit controls on a user's own posts
 			if(snapshot.child('userId').val() === firebase.auth().currentUser.uid) {
@@ -91,13 +91,13 @@ constructor(props){
       snapshot.forEach(function(child){
         var message = child.val();
 				
+				// remove only if the listing id found in db matches one in url
 				if(message.listingId === thisComponent.props.params.listingName) {
 					firebase.database().ref('users/' + thisComponent.state.listingUser + '/posts/' + child.key).remove();
 				}
       });
     });
 
-		console.log(this.state);
 		const path = '/board'; // prompts user to login to see content
     hashHistory.push(path);
 	}
@@ -109,8 +109,7 @@ constructor(props){
 		userRef.once("value")
 			.then(function(snapshot) {
 				var childKey = snapshot.child('userId').val();
-				console.log(childKey);
-				if(childKey === firebase.auth().currentUser.uid) { // only shows controls on a user's own posts'
+				if(childKey === firebase.auth().currentUser.uid) { // only shows controls on a user's own posts
 					thisComponent.setState({showControls: 'show'});
 				}
 			});
@@ -118,9 +117,6 @@ constructor(props){
 
   render() {
 		var listingImage = '';
-    var lastEdited = '';
-		console.log(this.state.tags);
-
 
     if(this.state.image === '') {
       listingImage = './img/defaultboardimage.jpg';
@@ -129,13 +125,13 @@ constructor(props){
 		} 
 
     return (
-      <div className="content-container">
-			  <div className="listing-img" style={{background: 'url(' + listingImage + ') center / cover'}}>
+      <div className="content-container listing-container" role="article">
+			  <div className="listing-img" style={{background: 'url(' + listingImage + ') center / cover'}} role="region">
 					<h1 className="listing-title">{this.state.title}</h1>
 					{this.state.tags}
 				</div>
 
-				<div className="listing">
+				<div className="listing" role="region">
 					<span className="user-info">
 						<img className="listing-avatar" src={this.state.avatar} alt="user avatar" />
 						<p><strong>Name</strong>: {this.state.displayName}</p>
@@ -143,11 +139,11 @@ constructor(props){
 						<Button colored>Contact</Button><Button colored>Profile</Button>
 											
 											
-						<div className={this.state.showControls}>
+						<div className={this.state.showControls} role="region">
 						<h2 className="editing-heading">post controls</h2>
 							<span className="edit" onClick={() => this.editMessage()}><Button colored><i className="fa fa-pencil" aria-hidden="true"></i> Edit</Button></span>
 							<span className="edit" onClick={this.handleOpenDialog}><Button colored><i className="fa fa-trash-o" aria-hidden="true"></i> Delete</Button></span>
-							<Dialog open={this.state.openDialog}>
+							<Dialog open={this.state.openDialog} role="region" aria-live="polite">
 								<DialogTitle>delete post?</DialogTitle>
 								<DialogContent>
 									<p>Are you sure you want to permanently delete this post?</p>
@@ -160,7 +156,7 @@ constructor(props){
 						</div>
 					</span>
 
-					<span className="listing-text">
+					<span className="listing-text" role="region">
 						<p className={this.state.type}>{this.state.type}</p>
 						<span><strong>Job</strong>: {this.state.job}</span>
 						<span><strong>Instruments/Skills</strong>: {this.state.instrument}</span>
