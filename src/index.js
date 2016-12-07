@@ -40,7 +40,7 @@ ReactDOM.render(
       <Route path="/posts">
         <Route path="/posts/:listingName" component={Listing} />
       </Route>
-      <Route path="/comments/:listingName/" component={Comments} />
+      <Route path="/comments/:listingName" component={Comments} />
       <Route path="/createpost" component={CreatePost}/>
       <Route path="/search" component={Search}/>
       <Route path="/inbox" component={Inbox}/>
