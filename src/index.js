@@ -16,6 +16,7 @@ import Listing from './Listing';
 import EditProfile from './EditProfile';
 import EditListing from './EditListing';
 import Comments from './Comments';
+import MyRecentListings from './MyRecentListings';
 
 /* import material design lite */
 import 'react-mdl/extra/css/material.grey-red.min.css';
@@ -44,6 +45,7 @@ ReactDOM.render(
       <Route path="/comments/:listingName" component={Comments} />
       <Route path="/createpost" component={CreatePost}/>
       <Route path="/:listingName/editpost" component={EditListing}/>
+      <Route path="/recentlistings" component={MyRecentListings}/>
       <Route path="/search" component={Search}/>
       <Route path="/inbox" component={Inbox}/>
       <Route path="/profile">

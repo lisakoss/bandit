@@ -48,7 +48,8 @@ class SignUp extends React.Component {
         thisComponent.setState({spinnerDisplay: 'hidden'}) //do not show spinner once this is completed
         firebaseUser.updateProfile({
           displayName: displayName,
-          photoURL: avatar
+          photoURL: avatar,
+          email: email
         });
 
     //create new entry in the Cloud DB (for others to reference)
@@ -56,7 +57,7 @@ class SignUp extends React.Component {
         var userData = {
           displayName: displayName,
           avatar: avatar,
-          inbox: ""
+          email: email
         }
         userRef.set(userData); //update entry in JOITC, return promise for chaining
       })
