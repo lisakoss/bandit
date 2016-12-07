@@ -1,89 +1,48 @@
 import React from 'react';
-import './index.css';
-import {Card, CardTitle, CardText, CardActions, Button} from 'react-mdl';
+import {MessageList} from './BoardMessages';
+import firebase from 'firebase';
+import {hashHistory} from 'react-router';
+import {Button} from 'react-mdl';
 
-class Board extends React.Component {
-	render() {
-		return (
-			<div className="content-container">
+class MessageBoard extends React.Component {
+    constructor(props){
+    super(props);
+    this.state = {}; 
+  }
+
+  /* Lifecycle callback:
+  executed when the component appears on the screen. */
+  componentDidMount() {
+    /* Add a listener and callback for authentication events */
+    this.unregister = firebase.auth().onAuthStateChanged(user => {
+      if(user) {
+        this.setState({userId:user.uid});
+      } else { // redircts user to login page if not logged in
+        this.setState({userId: null}); //null out the saved state
+        const path = '/login'; // prompts user to login to see content
+        hashHistory.push(path);
+      }
+    })
+  }
+
+  /* Unregister listerns. */
+  componentWillUnmount() {
+    if(this.unregister) {
+      this.unregister();
+    }
+  }
+
+  render() {
+    return (
+      <div className="board-container">
 				<h1>board</h1>
-				<div className="category-flex">
-					<div className="card-column">
-						<div className="item">
-						<Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
-							<CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/welcome_card.jpg) center / cover'}}>Post Title</CardTitle>
-							<CardText>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							</CardText>
-							<CardActions border>
-								<Button colored>Read</Button><Button colored>Contact</Button>
-							</CardActions>
-						</Card>
-						</div>
-					</div>
-					<div className="card-column">
-						<div className="item">
-						<Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
-							<CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/welcome_card.jpg) center / cover'}}>Post Title</CardTitle>
-							<CardText>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							</CardText>
-							<CardActions border>
-								<Button colored>Read</Button><Button colored>Contact</Button>
-							</CardActions>
-						</Card>
-						</div>
-					</div>
-					<div className="card-column">
-						<div className="item">
-						<Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
-							<CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/welcome_card.jpg) center / cover'}}>Post Title</CardTitle>
-							<CardText>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							</CardText>
-							<CardActions border>
-								<Button colored>Read</Button><Button colored>Contact</Button>
-							</CardActions>
-						</Card>
-						</div>
-					</div>
-					<div className="card-column">
-						<div className="item">
-						<Card shadow={0} style={{width: '320px', height: '320px', margin: 'auto'}}>
-							<CardTitle  expand style={{height: '100px', color: '#fff', background: 'url(http://www.getmdl.io/assets/demos/welcome_card.jpg) center / cover'}}>Post Title</CardTitle>
-							<CardText>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-								Aenan convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							</CardText>
-							<CardActions border>
-								<Button colored>Read</Button><Button colored>Contact</Button>
-							</CardActions>
-						</Card>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
+				<a href="/#/createpost"><Button ripple className="create-button">Create Listing</Button></a>
+				<Button ripple className="create-button">Manage Posts</Button>
+				<Button ripple className="create-button">Bookmarks</Button>
+        <div><MessageList/></div>
+      </div>
+    );
+  }
 }
 
-export default Board;
+export default MessageBoard;
