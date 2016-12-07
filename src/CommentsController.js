@@ -37,15 +37,11 @@ export class CommentList extends React.Component {
         if (!this.state.users) {
             return null;
         }
-
-        console.log(this.state.comments)
         var commentItems = this.state.comments.map((message) => {
             return <CommentItem message={message}
                 user={this.state.users[message.userId]}
                 key={message.key} />
         });
-        console.log('here');
-        console.log(commentItems);
 
         return (<div>{commentItems}</div>)
     }
@@ -54,8 +50,8 @@ export class CommentList extends React.Component {
 class CommentItem extends React.Component {
     render() {
         return (
-            <div>
-                <span>{this.props.message.text}</span>
+            <div className="message-item board-container">
+                <span className="message-text">{this.props.message.text}</span>
                 <span>{this.props.message.time}</span>
             </div>
         );

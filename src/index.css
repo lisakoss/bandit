@@ -660,7 +660,7 @@ li {
 
 .comment-box {
   background: white;
-  color: #ffffff;
+  color: black;
   position: absolute;
   width: 80%;
   bottom: 0px;
@@ -669,4 +669,17 @@ li {
   margin-left: -45%;
   padding: 20px 20px 0 20px;
   text-align: center;
+}
+
+.message-item {
+  text-align: center;
+  border-radius: 5px;
+  background-color: white;
+  margin-bottom: 2px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.message-text {
+  font-size: 25px;
 }

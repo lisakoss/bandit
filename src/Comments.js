@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
 import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
-import {CommentList} from './CommentsController';
+import { CommentList } from './CommentsController';
 
 
 export class Comments extends React.Component {
@@ -11,11 +11,19 @@ export class Comments extends React.Component {
         this.state = {};
     }
 
+    handleButton(event) {
+        const path = '/posts/' + this.props.params.listingName;
+        hashHistory.push(path);
+    }
+
     render() {
         return (
             <div>
-                <div><CommentList post={this.props.params.listingName} /></div>
-                <div><CommentBox post={this.props.params.listingName}/></div>
+            <Button raised onClick={(e) => {this.handleButton(e)}}>Back to post</Button>
+                <div>
+                    <div><CommentList post={this.props.params.listingName} /></div>
+                    <div><CommentBox post={this.props.params.listingName} /></div>
+                </div>
             </div>
         );
     }
@@ -36,14 +44,12 @@ export class CommentBox extends React.Component {
 
     updateComment(event) {
         this.setState({ comment: event.target.value });
-        console.log(this.state);
     }
 
     postComment(event) {
         event.preventDefault();
 
         var postId = this.props.post;
-        console.log(this.props.post);
         var commentRef = firebase.database().ref('posts/' + postId + '/messages');
         var newComment = {
             text: this.state.comment,
@@ -56,10 +62,7 @@ export class CommentBox extends React.Component {
     }
 
     render() {
-        // var currentUser = this.getUserID();
-        // console.log(currentUser);
         var postId = this.props.post;
-        console.log(postId);
 
         var titleRef = firebase.database().ref('posts/' + postId + '/title');
         var title = '';
