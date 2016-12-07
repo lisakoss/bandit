@@ -1,9 +1,11 @@
 import React from 'react';
+import {MessageBox} from './BoardMessages';
 
 class CreatePost extends React.Component {
     render() {
         return (
-            <div className="content-container"><h1>create a post</h1></div>
+            <div className="board-container"><h1>create a listing</h1>
+            <MessageBox/></div>
         );
     }
 }
