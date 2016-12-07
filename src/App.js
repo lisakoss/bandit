@@ -16,9 +16,6 @@ class App extends React.Component {
     this.unregister = firebase.auth().onAuthStateChanged(user => {
       if(user) {
         this.setState({userId: user.uid});
-				//this.setState({displayName: firebase.auth().currentUser.displayName});
-				//this.setState({avatar: firebase.auth().currentUser.photoURL});
-				//console.log(firebase.auth().currentUser);
 				var profileRef = firebase.database().ref('users/' + this.state.userId);
 				profileRef.once("value")
 					.then(snapshot => {
