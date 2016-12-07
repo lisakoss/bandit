@@ -12,14 +12,13 @@ import { Textfield, Button } from 'react-mdl';
 class SignUpForm extends React.Component {
   constructor(props){
     super(props);
-
     this.state = {
       'email': undefined,
       'password': undefined,
       'displayName': undefined,
       'passwordConfirm': undefined,
       'avatar': ''
-    }; 
+    };
 
     //function binding
     this.handleChange = this.handleChange.bind(this);
@@ -43,13 +42,13 @@ class SignUpForm extends React.Component {
 
   /**
    * A helper function to validate a value based on a hash of validations
-   * second parameter has format e.g., 
+   * second parameter has format e.g.,
    * {required: true, minLength: 5, email: true}
    * (for required field, with min length of 5, and valid email)
    */
   validate(value, validations) {
     var errors = {isValid: true, style:''};
-    
+
     if(value !== undefined) { //check validations
       //display name required
       if(validations.required && value === '') {
@@ -63,7 +62,7 @@ class SignUpForm extends React.Component {
         errors.isValid = false;
       }
 
-      //handle email type 
+      //handle email type
       if(validations.email) {
         //pattern comparison from w3c
         //https://www.w3.org/TR/html-markup/input.email.html#input.email.attrs.value.single
@@ -86,7 +85,7 @@ class SignUpForm extends React.Component {
     //display details
     if(!errors.isValid){ //if found errors
       errors.style = 'has-error';
-      
+
     }
     else if(value !== undefined){ //valid and has input
 
@@ -108,7 +107,7 @@ class SignUpForm extends React.Component {
     var signUpEnabled = (emailErrors.isValid && passwordErrors.isValid && displayNameErrors.isValid && passwordConfirmErrors.isValid);
 
     return (
-      <div>
+      <div role="article">
         <h1>sign up</h1>
 
         <form role="form" className="sign-up-form">
@@ -169,14 +168,14 @@ class ValidatedInput extends React.Component {
         <ValidationErrors errors={this.props.errors} />
       </div>
     );
-  }  
+  }
 }
 
 //a component to represent and display validation errors
 class ValidationErrors extends React.Component {
   render() {
     return (
-      <div>
+      <div role="region">
         {this.props.errors.required &&
           <span className="help-block">Required! </span>
         }
@@ -184,10 +183,10 @@ class ValidationErrors extends React.Component {
           <span className="help-block">Not an email address!</span>
         }
         {this.props.errors.minLength &&
-          <span className="help-block">Must be at least {this.props.errors.minLength} character(s).</span>        
-        } 
+          <span className="help-block">Must be at least {this.props.errors.minLength} character(s).</span>
+        }
         {this.props.errors.match &&
-          <span className="help-block">Your passwords don't match!</span>        
+          <span className="help-block">Your passwords don't match!</span>
         }
       </div>
     );
