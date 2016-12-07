@@ -299,6 +299,7 @@ class EditListing extends React.Component {
 								<Button type='button' onClick={this.handleCloseDialog}>Close</Button>
 							</DialogActions>
 						</Dialog>
+						
 					</form>
 				</div>
 			</div>
