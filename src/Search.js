@@ -1,9 +1,10 @@
 import React from 'react';
 import firebase from 'firebase';
 import { Textfield } from 'react-mdl';
+import SearchResults from './SearchResults';
 
 class Search extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {};
 
@@ -19,7 +20,10 @@ class Search extends React.Component {
 
     // Obtain database objects
     postsRef.once('value').then(snapshot => {
-      this.setState({posts: snapshot.val()});
+      this.setState({
+        posts: snapshot.val(),
+        searchResults: snapshot.val()
+      });
     });
     usersRef.once('value').then(snapshot => {
       this.setState({users: snapshot.val()});
@@ -37,7 +41,7 @@ class Search extends React.Component {
           key !== "timeEdited" &&
           key !== "wanted" &&
           key !== "userId") {
-        if (value.includes(searchTerm)) {
+        if (String(value).includes(String(searchTerm))) {
           return true;
         }
       }
@@ -45,23 +49,27 @@ class Search extends React.Component {
     return false;
   }
 
-  // Update state for specific field
+  // Update state whenever user updates the search field
   handleSearch(event) {
-    console.log("=================");
     var field = event.target.name; // search-field
     var searchTerm = event.target.value; // whatever is typed
-    var posts = this.state.posts;
+    var allPosts = this.state.posts;
+    var matchingPosts = [];
 
     // Iterate through posts
-    for (const key of Object.keys(posts)) {
-      const post = posts[key];
+    for (const key of Object.keys(allPosts)) {
+      const post = allPosts[key];
       // Does this post have a value containing the search term?
       var postHasTerm = this.hasSearchTerm(post, searchTerm);
       if (postHasTerm) {
-        // Render this post... Or update state?
-        console.log(post);
+        matchingPosts.push(post);
       }
     }
+
+    // searchResults contains array of job objects that match the search term
+    this.setState({
+      searchResults: matchingPosts
+    });
 
   }
 
@@ -79,6 +87,8 @@ class Search extends React.Component {
               className="search-field"
             />
           </form>
+
+          <SearchResults className="search-results" results={this.state.searchResults} />
         </div>
       );
   }
