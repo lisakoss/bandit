@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
-import { hashHistory } from 'react-router';
-import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
+//import { hashHistory } from 'react-router';
+//import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
 import Time from 'react-time';
 
 export class CommentList extends React.Component {
@@ -55,7 +55,7 @@ class CommentItem extends React.Component {
 
         return (
             <div className="message-item board-container">
-                <img className="user-image" src={avatar} alt="user picture" />
+                <img className="user-image" src={avatar} alt="avatar" />
                 <div className="message-info">
                     <span className="user-display"><strong>{this.props.user.displayName}</strong></span>
                     <span><Time value={this.props.message.time} relative /></span>

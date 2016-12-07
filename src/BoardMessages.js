@@ -379,7 +379,7 @@ class MessageItem extends React.Component {
     tagsArray.forEach(function(word) {
       var noHashtagWord = word;
       word = '#' + word;
-      tagsString += '<a href="#/search/' + noHashtagWord + '">' + word + '</a>' + ' ';
+      tagsString += '<a href="#/search/' + noHashtagWord + '">' + word + '</a> ';
     });
 
     // Set the HTML so that the links work properly.

@@ -71,8 +71,8 @@ class ListingItem extends React.Component {
             listingType = 'listing-type listing-wanted';
         }
 		return (
-			<div role="article" className="listing">
-				<div className="listing-container">
+			<div role="article" className="recent-listing">
+				<div className="recent-listing-container">
 					<div role="region" className="listing-image">
 						<img src={this.props.listing.image || './img/defaultboardimage.jpg'} alt="listing" />
 					</div>

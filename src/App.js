@@ -60,8 +60,6 @@ class App extends React.Component {
 													<Navigation role="navigation">
 														<a href="/#/profileedit">Edit profile</a>
 														<a href="/#/createpost">Create a post</a>
-														<a href="">Manage posts</a>
-														<a href="">Saved bookmarks</a>
 														<div className="nav-container">
 															<SignOut/>
 														</div>
@@ -85,7 +83,6 @@ class App extends React.Component {
             <Navigation role="navigation">
 							<a href="/#/board">Board</a>
 							<a href="/#/search">Search</a>
-							<a href="/#/inbox">Inbox</a>
 							<a href={this.state.userId !== null ? "/#/profile/" + this.state.userId : "/#/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} <p className="profile-nav">{profileImg}</p></a> 
 						</Navigation>
           </Header>

@@ -97,7 +97,7 @@ h1 {
 }
 
 .mdl-textfield__input, .mdl-textfield__label {
-  font-size: 16pt !important;
+  font-size: 12pt !important;
 }
 
 .mdl-layout__header-row {
@@ -383,6 +383,11 @@ li {
   text-decoration: none;
 }
 
+.listing-profile-link a {
+  text-decoration: none;
+  color: #9d9d9d;
+}
+
 .user-info {
   float: right;
   padding-left: 24px;
@@ -439,7 +444,7 @@ li {
 }
 
 .editing-heading {
-  font-size: 18pt !important;
+  font-size: 16pt !important;
   margin: -16px;
   margin-top: 4px;
 }
@@ -587,6 +592,10 @@ li {
   min-height: 320px;
 }
 
+.tab-content li {
+  border: none;
+}
+
 .profile-alert {
   color: #5C5C5C;
   border-radius: 10px;
@@ -715,13 +724,13 @@ li {
   min-width: 300px;
 }
 
-.listing {
+.recent-listing {
   border-bottom: 1px solid #d9d9d9;
   padding-bottom: 10px;
   margin-bottom: 20px;
 }
 
-.listing-container {
+.recent-listing-container {
   clear: both;
   overflow: auto;
 }
@@ -732,7 +741,7 @@ li {
 }
 
 .listing-image img {
-  max-height: 175px;
+  max-width: 300px;
   border: 3px solid #ffffff;
   border-radius: 20px;
 }

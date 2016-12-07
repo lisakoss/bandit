@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, List, ListItem, ListItemContent, ListItemAction, Icon, TextField } from 'react-mdl';
+import { Button } from 'react-mdl';
 import firebase from 'firebase';
-import {MessageBox, RecentConvoList} from './InboxController';
+//import {MessageBox, RecentConvoList} from './InboxController';
 import {hashHistory} from 'react-router';
 
 class Inbox extends React.Component {
