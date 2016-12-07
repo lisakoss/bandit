@@ -131,6 +131,21 @@ class EditListing extends React.Component {
 			messageRef.child('image').set(newImage);
 			messageRef.child('tags').set(newTags);
 
+			var userRef = firebase.database().ref('users/' + this.state.listingUser + '/posts');
+			var thisComponent = this;
+
+			userRef.on('value', (snapshot) => {
+				snapshot.forEach(function(child){
+					var message = child.val();
+					
+					if(message.listingId === thisComponent.props.params.listingName) {
+						firebase.database().ref('users/' + thisComponent.state.listingUser + '/posts/' + child.key).child('title').set(newTitle);
+						firebase.database().ref('users/' + thisComponent.state.listingUser + '/posts/' + child.key).child('summary').set(newSummary);
+						firebase.database().ref('users/' + thisComponent.state.listingUser + '/posts/' + child.key).child('image').set(newImage);
+					}
+				});
+			});
+
 			const path = '/posts/' + this.props.params.listingName; // redirects user back to listing after editing
 			hashHistory.push(path);
     } else {
@@ -155,7 +170,6 @@ class EditListing extends React.Component {
   }
 	
 	render() {
-
 		var listingImage = '';
 
     if(this.state.image === '') {

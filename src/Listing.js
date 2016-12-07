@@ -12,7 +12,6 @@ constructor(props){
 		}; 
 
 		// bind functions
-		this.postMessage = this.postMessage.bind(this);
 		this.handleOpenDialog = this.handleOpenDialog.bind(this);
     this.handleCloseDialog = this.handleCloseDialog.bind(this);
   }
@@ -28,6 +27,20 @@ constructor(props){
 				this.setState({showControls: 'show'});
 			}
 
+			var tagsArray = listingContent.tags.split(" ");
+			var tagsString = '';
+
+			// Add #'s to each word given as a tag.
+			tagsArray.forEach(function(word) {
+				var noHashtagWord = word;
+				word = '#' + word;
+				tagsString += '<a href="#/search/' + noHashtagWord + '">' + word + '</a>' + ' ';
+			});
+
+			// Set the HTML so that the links work properly.
+			var hashtagContent  = (<span className="listing-tags" dangerouslySetInnerHTML={{__html:tagsString}}></span>);
+			this.setState({tags: hashtagContent});
+
 			// update user's display name and avatar image
 			var usersRef = firebase.database().ref('users/' + listingContent.userId);
 			usersRef.on('value', (snapshot) => {
@@ -38,11 +51,12 @@ constructor(props){
 	}
 
 	//when the component is unmounted, unregister using the saved function
-  componentWillUnmount() {
-    if(this.unregister){ //if have a function to unregister with
-      this.unregister(); //call that function!
-    }
-  }
+	componentWillUnmount() {
+		var listingUserId = this.state.listingUser;
+		//unregister listeners
+		firebase.database().ref('posts/' + this.props.params.listingName).off();
+		firebase.database().ref('users/' + listingUserId).off();
+	}
 
 	/* Dialog box open rendering. */
   handleOpenDialog() {
@@ -56,19 +70,6 @@ constructor(props){
     this.setState({
       openDialog: false
     });
-  }
-
-	/* Resubmit the edited message to the database. */
-  postMessage(event){
-    var newMessage = this.state.post;
-    if(event.key === 'Enter' && this.state.post.length !== 0) {
-      event.preventDefault(); // don't submit like usual
-
-      /* Add a new channel message to the database. */
-      var messageRef = firebase.database().ref('posts/' + this.props.params.listingName);
-      messageRef.child('text').set(newMessage);
-      messageRef.child('timeEdited').set(firebase.database.ServerValue.TIMESTAMP);
-    }
   }
 
 	/* Redirects user to the edit your listing page. */
@@ -118,6 +119,8 @@ constructor(props){
   render() {
 		var listingImage = '';
     var lastEdited = '';
+		console.log(this.state.tags);
+
 
     if(this.state.image === '') {
       listingImage = './img/defaultboardimage.jpg';
@@ -129,7 +132,7 @@ constructor(props){
       <div className="content-container">
 			  <div className="listing-img" style={{background: 'url(' + listingImage + ') center / cover'}}>
 					<h1 className="listing-title">{this.state.title}</h1>
-					<span className="listing-tags">{this.state.tags}</span>
+					{this.state.tags}
 				</div>
 
 				<div className="listing">

@@ -363,6 +363,10 @@ li {
   margin-right: 6px;
 }
 
+.listing-tags a {
+  color: #000000;
+}
+
 .user-info {
   float: right;
   padding-left: 24px;
@@ -463,6 +467,8 @@ li {
 		flex-basis:33%;
 	}
 }
+
+/* profile styling */
 
 #profile, .profile-content {
   background-color: #ffffff;

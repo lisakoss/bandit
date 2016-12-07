@@ -122,18 +122,12 @@ export class MessageBox extends React.Component {
       var usersRef = firebase.database().ref('users/' + currUser + '/posts');
       var newListing = {
         listingId: listingId,
-        text: this.state.post,
         title: this.state.title,
         summary: this.state.summary,
-        location: this.state.location,
-        instrument: this.state.instrument,
-        job: this.state.job,
         image: this.state.image,
-        tags: this.state.tags,
         type: this.state.type,
         userId: firebase.auth().currentUser.uid, 
         time: firebase.database.ServerValue.TIMESTAMP,
-        timeEdited: ''
       }
       usersRef.push(newListing);
 
@@ -335,7 +329,8 @@ export class MessageList extends React.Component {
 				message.key = child.key; 
 				messageArray.push(message); 
       });
-      this.setState({messages:messageArray});
+      messageArray.sort((a,b) => b.time - a.time); //reverse order
+      this.setState({messages: messageArray});
     });
   }
 
@@ -346,26 +341,7 @@ export class MessageList extends React.Component {
     firebase.database().ref('posts').off();
   }
 
-	/* Update component with new props. */
-	componentWillReceiveProps(nextProps) {
-    /* Add a listener for changes to the user details object, and save in the state */
-    var usersRef = firebase.database().ref('users');
-    usersRef.on('value', (snapshot) => {
-      this.setState({users:snapshot.val()});
-    });
-
-    /* Add a listener for changes to the chirps object, and save in the state */
-    var messagesRef = firebase.database().ref('posts');
-    messagesRef.on('value', (snapshot) => {
-      var messageArray = []; 
-      snapshot.forEach(function(child){
-          var message = child.val();
-          message.key = child.key;
-          messageArray.push(message);
-      });
-      this.setState({messages:messageArray});
-    });
-	}
+	
 
   render() {
     // don't show if don't have user data yet (to avoid partial loads)
@@ -409,7 +385,20 @@ class MessageItem extends React.Component {
       var listingImage = '';
       var id = "/#/posts/" + this.props.id;
       var listingUserId = "/#/profile/" + this.props.listingUserId;
+      var tagsArray = this.props.tags.split(" ");
+      var tagsString = '';
 
+      // Add #'s to each word given as a tag.
+      tagsArray.forEach(function(word) {
+        var noHashtagWord = word;
+        word = '#' + word;
+        tagsString += '<a href="#/search/' + noHashtagWord + '">' + word + '</a>' + ' ';
+      });
+
+      // Set the HTML so that the links work properly.
+      var hashtagContent  = (<span className="tags" dangerouslySetInnerHTML={{__html:tagsString}}></span>);
+
+      // Display the given listing image. If none given, display the default.
       if(this.props.image === '') {
         console.log(this.props.image);
         listingImage = './img/defaultboardimage.jpg';
@@ -418,10 +407,10 @@ class MessageItem extends React.Component {
         listingImage = this.props.image;
       }
 
-		/* Show last edit time. */
-		if(this.props.message.timeEdited !== '') {
-			lastEdited = <span>(edited <Time value={this.props.message.timeEdited} relative/>)</span>;
-		}
+      // Show last edit time.
+      if(this.props.message.timeEdited !== '') {
+        lastEdited = <span>(edited <Time value={this.props.message.timeEdited} relative/>)</span>;
+      }
 
     return (
       <div className="card-column">
@@ -436,9 +425,7 @@ class MessageItem extends React.Component {
 
             <div className="posted-by">
 
-              <span className="tags">
-                {this.props.tags}
-              </span>
+              {hashtagContent}
               posted by: {/* This image's src should be the user's avatar */}
               <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle"><a href={listingUserId}>{this.props.user.displayName}</a></span>
             </div>
