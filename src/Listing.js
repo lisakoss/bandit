@@ -92,7 +92,23 @@ constructor(props){
 	/* Removes the specified message from the database. */
 	deleteMessage() {
 		var messageRef = firebase.database().ref('posts/' + this.props.params.listingName);
-		messageRef.remove();
+		messageRef.remove(); // removes listing from db
+
+		// remove listing from user's recent listings
+		var userRef = firebase.database().ref('users/' + this.state.listingUser + '/posts');
+		var thisComponent = this;
+
+		userRef.on('value', (snapshot) => {
+      snapshot.forEach(function(child){
+        var message = child.val();
+				
+				if(message.listingId === thisComponent.props.params.listingName) {
+					firebase.database().ref('users/' + thisComponent.state.listingUser + '/posts/' + child.key).remove();
+				}
+      });
+    });
+
+		console.log(this.state);
 		const path = '/board'; // prompts user to login to see content
     hashHistory.push(path);
 	}
