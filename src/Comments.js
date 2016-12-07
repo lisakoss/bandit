@@ -33,9 +33,9 @@ export class Comments extends React.Component {
     render() {
         return (
             <div className="board-container">
-                <Button raised onClick={(e) => { this.handleButton(e) } }>Back to post</Button>
+                <Button ripple className="create-button back-button" onClick={(e) => { this.handleButton(e) } }>Back to post</Button>
                 <div>
-                    <h1>{this.state.title}</h1>
+                    <h1 className="comment-heading">{this.state.title}</h1>
                     <p className="comment-desc">{this.state.summary}</p>
                 </div>
                 <div>
@@ -94,7 +94,7 @@ export class CommentBox extends React.Component {
                         label="Write your message here..."
                         style={{ width: '80%' }}
                         />
-                    <Button raised colored onClick={this.postComment}>Send</Button>
+                    <Button ripple className="create-button comment-button" onClick={this.postComment}>Send</Button>
                 </div>
             </div>
         )

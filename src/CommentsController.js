@@ -102,13 +102,13 @@ class CommentItem extends React.Component {
                 <Button className="delete" onClick={(e) => this.handleOpenDialog(e)}><i className="fa fa-trash-o" aria-hidden="true"></i></Button>
                 <div>
                     <Dialog open={this.state.openDialog}>
-                        <DialogTitle>Delete message?</DialogTitle>
+                        <DialogTitle>Delete comment?</DialogTitle>
                         <DialogContent>
-                            <p>Deleting messages can't be undone, so think carefully before doing so!</p>
+                            <p>Deleting comments can't be undone, so think carefully before doing so!</p>
                         </DialogContent>
                         <DialogActions>
-                            <Button type='button' onClick={(e) => this.handleDelete(e)}>Agree</Button>
-                            <Button type='button' onClick={this.handleCloseDialog}>Disagree</Button>
+                            <Button type='button' onClick={(e) => this.handleDelete(e)}>Delete</Button>
+                            <Button type='button' onClick={this.handleCloseDialog}>Cancel</Button>
                         </DialogActions>
                     </Dialog>
                 </div>
