@@ -112,7 +112,10 @@ export class MessageBox extends React.Component {
         /* Add listing to user's id */
         var currUser = firebase.auth().currentUser.uid;
         var usersRef = firebase.database().ref('users/' + currUser + '/posts');
-        usersRef.push(listingId);
+        var newListing = {
+          listingId: listingId
+        }
+        usersRef.push(newListing);
 
         /* empty out post so that message field is blank. */
         this.setState({post:'', title:'', summary:'', location:'', instrument:'', job:'', image:'', tags:''});

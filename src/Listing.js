@@ -111,11 +111,6 @@ constructor(props){
 			});
 	}
 
-	/* Hides edit and delete buttons for each individual post. */
-	hideControls() {
-		this.setState({showControls: 'hidden'});
-	}
-
   render() {
 		console.log(this.state);
 		var listingImage = '';
@@ -145,7 +140,7 @@ constructor(props){
     return (
       <div className="content-container">
 			  <div className="listing-img" style={{background: 'url(' + listingImage + ') center / cover'}}>
-									<div className={this.state.showControls}>
+					<div className={this.state.showControls}>
 						<span className="edit {edited}" onClick={this.handleOpenDialog}><i className="fa fa-trash-o" aria-hidden="true"></i></span>
 						<Dialog open={this.state.openDialog}>
 							<DialogTitle>Delete Post?</DialogTitle>
