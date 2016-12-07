@@ -2,6 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
 import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
+import Time from 'react-time';
 
 export class CommentList extends React.Component {
     constructor(props) {
@@ -57,7 +58,7 @@ class CommentItem extends React.Component {
                 <img className="user-image" src={avatar} alt="user picture" />
                 <div className="message-info">
                     <span className="user-display"><strong>{this.props.user.displayName}</strong></span>
-                    <span>{this.props.message.time}</span>
+                    <span><Time value={this.props.message.time} relative /></span>
                 </div>
                 <span className="message-text">{this.props.message.text}</span>
             </div>

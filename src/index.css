@@ -681,6 +681,10 @@ li {
   display: inline-block;
 }
 
+.user-display {
+  padding-right: 5px;
+}
+
 .user-image {
   padding-left: 20px;
   padding-right: 20px;
@@ -696,10 +700,4 @@ li {
 
 .comment-desc {
   font-size: 25px;
-}
-
-.comment-container {
-  margin: 0 auto;
-  margin-bottom: 24px;
-  margin-top: 24px;
 }

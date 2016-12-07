@@ -72,10 +72,8 @@ export class CommentBox extends React.Component {
             userId: firebase.auth().currentUser.uid,
             time: firebase.database.ServerValue.TIMESTAMP
         };
-        this.setState({ comment: '' });
         commentRef.push(newComment);
-
-
+        this.setState({ comment: '' });
     }
 
     render() {
@@ -86,7 +84,7 @@ export class CommentBox extends React.Component {
                     <Textfield
                         onChange={(e) => { this.updateComment(e) } }
                         label="Write your message here..."
-                        style={{ width: '70%' }}
+                        style={{ width: '80%' }}
                         />
                     <Button raised colored onClick={this.postComment}>Send</Button>
                 </div>
