@@ -35,6 +35,8 @@ class EditProfile extends React.Component {
 			});
       }
       else{
+		const path = '/login';
+        hashHistory.push(path);
         this.setState({userId: null}); //null out the saved state
 			this.setState({displayName: null}); //null out the saved state
 			this.setState({avatar: null}); //null out the saved state

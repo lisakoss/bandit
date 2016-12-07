@@ -16,15 +16,9 @@ class SignOut extends React.Component {
 		this.unregister = firebase.auth().onAuthStateChanged(user => {
 			if(user) {
 				this.setState({userId:user.uid});
-        var profileRef = firebase.database().ref('users/' + this.state.userId);
-				profileRef.once("value")
-					.then(snapshot => {
-						this.setState({displayName: snapshot.child("displayName").val()});
-					});
 			}
 			else{
 				this.setState({userId: null}); //null out the saved state
-        this.setState({displayName: null}); //null out the saved state
 				const path = '/';
 				hashHistory.push(path);
 			}
@@ -48,7 +42,7 @@ class SignOut extends React.Component {
       <div>
 				{this.state.userId &&  /*inline conditional rendering*/
           <div className="container-drawer">
-            <Button raised accent ripple onClick={()=>this.signOut()}><i className="fa fa-sign-out" aria-hidden="true"></i> Sign Out {this.state.displayName}</Button>
+            <Button raised accent ripple onClick={()=>this.signOut()}><i className="fa fa-sign-out" aria-hidden="true"></i> Sign Out</Button>
           </div>
         }
 		</div>

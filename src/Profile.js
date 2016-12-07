@@ -2,13 +2,13 @@ import React from 'react';
 import firebase from 'firebase';
 import { Tooltip, Tabs, Tab } from 'react-mdl';
 import RecentListings from './RecentListings.js';
+import { hashHistory } from 'react-router';
 
 class Profile extends React.Component {
   constructor(props){
 		super(props);
 		this.state = {activeTab: 0};
 	}
-
 
 	//Lifecycle callback executed when the component appears on the screen.
   //It is cleaner to use this than the constructor for fetching data
@@ -43,6 +43,8 @@ class Profile extends React.Component {
 				}
 		}
       else {
+				const path = '/login';
+        hashHistory.push(path);
         this.setState({userId: null}); //null out the saved state
 		this.setState({displayName: null}); //null out the saved state
 		this.setState({avatar: null}); //null out the saved state
