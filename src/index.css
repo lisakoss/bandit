@@ -424,7 +424,7 @@ body {
   float: right;
   font-size: 32px;
   color: #323232;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   margin: 0;
 }
 
@@ -461,6 +461,14 @@ body {
   margin-top: 15px;
   padding-right: 10px;
   font-size: 12px;
+}
+
+.listing-controls {
+  float: right;
+}
+
+.listing-controls a {
+  text-decoration: none;
 }
 
 .hidden {

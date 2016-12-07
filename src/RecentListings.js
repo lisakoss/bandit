@@ -1,6 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
-import Time from 'react-time'
+import Time from 'react-time';
+import { Button } from 'react-mdl';
 
 export class RecentListings extends React.Component {
   constructor(props){
@@ -57,7 +58,13 @@ export class RecentListings extends React.Component {
                         key={listing.listingId} />
     })
 
-    return (<div className="all-listings">{listingItems}</div>);
+    var listings = null;
+    if(listingItems.length > 0) {
+        listings = (<div className="all-listings">{listingItems}</div>);
+    } else {
+        listings = (<div><p>No recent listings to show.</p></div>);
+    }
+    return listings;
   }
 }
 
@@ -79,6 +86,10 @@ class ListingItem extends React.Component {
                 <div className="listing-info">
                     <h1>{this.props.listing.title}</h1><span className={listingType}>{this.props.listing.type}</span> <span className="listing-time"><Time value={this.props.listing.time} relative/></span>
                     <p className="listing-summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et maximus ex. Suspendisse vestibulum enim eu ante sagittis, vel faucibus enim sodales. Proin ultrices et metus vitae pretium. Praesent efficitur augue rutrum eleifend auctor. Aliquam posuere luctus elit, non eleifend ante molestie ut. Ut quis ornare ipsum. Quisque tincidunt tellus sed pharetra vulputate. Nullam ligula libero, scelerisque sit amet pulvinar at, scelerisque eget ante. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec eu fermentum dolor.</p>
+                </div>
+                <div className="listing-controls">
+                    <Button><a href={"/#/posts/" + this.props.listing.listingId}>Read</a></Button>
+                    <Button><a href={"/#/comments/" + this.props.listing.listingId}>Comments</a></Button>
                 </div>
             </div>
 
