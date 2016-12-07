@@ -16,7 +16,7 @@ class SignUp extends React.Component {
 
   //Lifecycle callback executed when the component appears on the screen.
   componentDidMount() {
-    // Add a listener and callback for authentication events 
+    // Add a listener and callback for authentication events
     this.unregister = firebase.auth().onAuthStateChanged(user => {
       if(user) { //redirect to board once user is signed up
         this.setState({userId:user.uid});
@@ -35,10 +35,10 @@ class SignUp extends React.Component {
       this.unregister(); //call that function!
     }
   }
-  
+
   //A callback function for registering new users
   signUp(email, password, displayName, avatar) {
-    // Create a new user and save their information 
+    // Create a new user and save their information
     var thisComponent = this;
     thisComponent.setState({spinnerDisplay: true}); //show loading spinner while user is being signed up
     thisComponent.setState({isSnackbarActive: true}); //show snackbar, where spinner is located, while user is being signed up
@@ -52,7 +52,7 @@ class SignUp extends React.Component {
         });
 
     //create new entry in the Cloud DB (for others to reference)
-		var userRef = firebase.database().ref('users/'+firebaseUser.uid); 
+		var userRef = firebase.database().ref('users/'+firebaseUser.uid);
         var userData = {
           displayName: displayName,
           avatar: avatar,
@@ -108,15 +108,15 @@ class SignUp extends React.Component {
     }
     return (
       <div>
-        <main role="article" className="content-container">   
+        <main role="article" className="content-container">
           {content}
         </main>
         <div role="region">
           <Snackbar
             active={this.state.isSnackbarActive}
-            onTimeout={this.handleTimeoutSnackbar}>{snackbarContent}</Snackbar> 
+            onTimeout={this.handleTimeoutSnackbar}>{snackbarContent}</Snackbar>
         </div>
-      </div>      
+      </div>
     );
   }
 }

@@ -45,9 +45,9 @@ class App extends React.Component {
 		var drawerTitle = null;
 
 		//console.log(this.state);
-		
+
 		if(this.state.userId !== null) {
-			
+
 			profileImg = <img src={this.state.avatar || './img/blank-user.jpg'} alt="avatar" />;
 			drawerContent = (
 												<div>
@@ -83,7 +83,7 @@ class App extends React.Component {
             <Navigation role="navigation">
 							<a href="/#/board">Board</a>
 							<a href="/#/search">Search</a>
-							<a href={this.state.userId !== null ? "/#/profile/" + this.state.userId : "/#/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} <p className="profile-nav">{profileImg}</p></a> 
+							<a href={this.state.userId !== null ? "/#/profile/" + this.state.userId : "/#/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} <p className="profile-nav">{profileImg}</p></a>
 						</Navigation>
           </Header>
 					<Drawer title={drawerTitle}>

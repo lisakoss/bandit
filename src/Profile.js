@@ -94,7 +94,7 @@ class Profile extends React.Component {
 		var instrumentsHide = 'hidden';
 
 		//if you are on your own profile, you have access to the profile edit tool via your profile
-		if(this.props.params.profileID === this.state.userId) { 
+		if(this.props.params.profileID === this.state.userId) {
 			edit = "icon";
 		} else {
 			edit = "icon hidden"
