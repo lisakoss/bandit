@@ -657,3 +657,16 @@ li {
 .hidden {
   display: none;
 }
+
+.comment-box {
+  background: white;
+  color: #ffffff;
+  position: absolute;
+  width: 80%;
+  bottom: 0px;
+  right: 25%;
+  left: 50%;
+  margin-left: -45%;
+  padding: 20px 20px 0 20px;
+  text-align: center;
+}
