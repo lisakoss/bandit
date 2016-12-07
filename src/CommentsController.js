@@ -4,6 +4,7 @@ import { hashHistory } from 'react-router';
 import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
 import Time from 'react-time';
 
+//complete list of comments for a post
 export class CommentList extends React.Component {
     constructor(props) {
         super(props);
@@ -51,6 +52,7 @@ export class CommentList extends React.Component {
     }
 }
 
+//single instance of a comment
 class CommentItem extends React.Component {
     constructor(props) {
         super(props);
@@ -60,14 +62,15 @@ class CommentItem extends React.Component {
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
     }
 
-    handleOpenDialog() {
+    handleOpenDialog() { //when delete is pressed
         this.setState({ openDialog: true });
     }
 
-    handleCloseDialog() {
+    handleCloseDialog() { //when close is pressed
         this.setState({ openDialog: false });
     }
-
+    
+    //only able to delete if user is author of the post
     handleDelete(event) {
         var currentUser = firebase.auth().currentUser.uid;
         if (this.props.userId === currentUser) {
@@ -80,12 +83,11 @@ class CommentItem extends React.Component {
             this.setState({ openDialog: false });
         } else {
             alert('You can\'t delete someone elses posts');
-            this.setState({openDialog: false});
+            this.setState({ openDialog: false });
         }
     }
 
     render() {
-
         var avatar = this.props.user.avatar;
         var profileUrl = "/#/profile/" + this.props.userId;
 
