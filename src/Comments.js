@@ -31,7 +31,7 @@ export class Comments extends React.Component {
     render() {
         return (
             <div className="board-container">
-                <Button className="back-button" raised onClick={(e) => { this.handleButton(e) } }>Back to post</Button>
+                <Button raised onClick={(e) => { this.handleButton(e) } }>Back to post</Button>
                 <div>
                     <h1>{this.state.title}</h1>
                     <p className="comment-desc">{this.state.summary}</p>
@@ -74,6 +74,8 @@ export class CommentBox extends React.Component {
         };
         commentRef.push(newComment);
         this.setState({ comment: '' });
+        document.getElementById('comment').value='';
+        
     }
 
     render() {
@@ -82,6 +84,7 @@ export class CommentBox extends React.Component {
             <div>
                 <div className="board-container comment-box">
                     <Textfield
+                        id="comment"
                         onChange={(e) => { this.updateComment(e) } }
                         label="Write your message here..."
                         style={{ width: '80%' }}
