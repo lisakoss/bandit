@@ -33,9 +33,8 @@ constructor(props){
 
 			// Add #'s to each word given as a tag.
 			tagsArray.forEach(function(word) {
-				var noHashtagWord = word;
 				word = '#' + word;
-				tagsString += '<a href="#/search/' + noHashtagWord + '">' + word + '</a> ';
+				tagsString +=  word + ' ';
 			});
 
 			// Set the HTML so that the links work properly.
