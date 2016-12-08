@@ -146,7 +146,7 @@ class Profile extends React.Component {
 							<span className={instrumentsHide}><Tooltip label="Instruments and Skills" position="top"><i className="fa fa-music display-icon" aria-hidden="true"></i></Tooltip><p className="quick-info"> {this.state.instruments}</p></span>
 							<span className={genreHide}><Tooltip label="Genre" position="top"><i className="fa fa-headphones display-icon" aria-hidden="true"></i></Tooltip><p className="quick-info"> {this.state.genre}</p></span>
 							<span className={locationHide}><Tooltip label="Location" position="top"><i className="fa fa-map-marker display-icon" aria-hidden="true"></i></Tooltip><p className="quick-info"> {this.state.location}</p></span>
-							<span><Tooltip label="Contact" position="top"><i className="fa fa-comments display-icon" aria-hidden="true"></i></Tooltip><p className="quick-info"> <Link to={"mailto:" + this.state.email}>Contact {this.state.displayName}</Link></p></span>
+							<span><Tooltip label="Contact" position="top"><i className="fa fa-comments display-icon" aria-hidden="true"></i></Tooltip><p className="quick-info"> <a href={"mailto:" + this.state.email}>Contact {this.state.displayName}</a></p></span>
 						</div>
 					</div>
 					<div role="region" className="profile-tabs">
