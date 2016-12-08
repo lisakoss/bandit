@@ -156,9 +156,14 @@ class CommentItem extends React.Component {
                 </div >;
         }
 
+        var editedTime = '';
+        var editTimeRef = firebase.database().ref('posts/' + this.props.postId + '/messages/' + this.props.messageId + '/edit');
+        editTimeRef.once('value', (snapshot) => {
+            editedTime = snapshot.val();
+        });
         var showEdited = null;
         if (firebase.database().ref('posts/' + this.props.postId + '/messages/' + this.props.messageId + '/edit')) {
-            showEdited = <span>(edited at: <Time value={this.state.editTime} relative /> )</span>
+            showEdited = <span>(edited at: <Time value={editedTime} relative /> )</span>
         }
 
         return (
