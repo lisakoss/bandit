@@ -12,8 +12,7 @@ export class UserRecentListings extends React.Component {
 	//Lifecycle callback executed when the component appears on the screen.	
 	//Grabs list of posts for the particular user profile.
 	componentDidMount() {
-		var listingsRef = firebase.database().ref('users/' + this.props.profileID + '/posts').limitToLast(10); //only shows the 3 most recent posts
-		console.log(this.props.profileID);
+		var listingsRef = firebase.database().ref('users/' + this.props.profileID + '/posts').limitToLast(10); //only shows the 10 most recent posts
         
         listingsRef.on('value', (snapshot) => {
 			var userListingsArray = []; 
@@ -69,8 +68,8 @@ class ListingItem extends React.Component {
 						<p className="listing-summary">{this.props.listing.summary}</p>
 					</div>
 					<div role="region" className="listing-controls">
-						<Button><a href={"/#/posts/" + this.props.listing.listingId}>Read</a></Button>
-						<Button><a href={"/#/comments/" + this.props.listing.listingId}>Comments</a></Button>
+						<Button><a href={"/posts/" + this.props.listing.listingId}>Read</a></Button>
+						<Button><a href={"/comments/" + this.props.listing.listingId}>Comments</a></Button>
 					</div>
 				</div>
 			</div>      
