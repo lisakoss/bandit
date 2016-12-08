@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions,Textfield } from 'react-mdl';
 import Time from 'react-time';
 
 //complete list of comments for a post
