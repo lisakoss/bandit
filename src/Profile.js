@@ -132,7 +132,7 @@ class Profile extends React.Component {
 		return (
 			<div role="article">
 				<div role="region" className="profile-top" style={divStyle}>
-					<p className={edit}><a href="#/profileedit"><i className="fa fa-pencil edit-profile" aria-hidden="true"> <span className="edit-profile-text">edit</span></i></a></p>
+					<p className={edit}><a href="/profileedit"><i className="fa fa-pencil edit-profile" aria-hidden="true"> <span className="edit-profile-text">edit</span></i></a></p>
 				</div>
 				<div role="region" className="profile-user">
 					<div className="content-container">

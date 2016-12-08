@@ -119,7 +119,7 @@ class CommentItem extends React.Component {
 
     render() {
         var avatar = this.props.user.avatar;
-        var profileUrl = "#/profile/" + this.props.userId;
+        var profileUrl = "/profile/" + this.props.userId;
         var ComponentToRender = null;
         var currentUser = firebase.auth().currentUser.uid;
 

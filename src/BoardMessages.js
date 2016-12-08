@@ -370,8 +370,8 @@ class MessageItem extends React.Component {
     var avatar = (this.props.user.avatar);
     var lastEdited = '';
     var listingImage = '';
-    var id = "#/posts/" + this.props.id;
-    var listingUserId = "#/profile/" + this.props.listingUserId;
+    var id = "/posts/" + this.props.id;
+    var listingUserId = "/profile/" + this.props.listingUserId;
     var tagsArray = this.props.tags.split(" ");
     var tagsString = '';
 

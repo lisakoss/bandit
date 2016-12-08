@@ -57,9 +57,9 @@ class App extends React.Component {
 														<p className="links">Quick Links</p>
 													</div>
 													<Navigation role="navigation">
-														<a href="#/profileedit">Edit profile</a>
-														<a href="#/createpost">Create a listing</a>
-														<a href="#/recentlistings">Recent listings</a>
+														<a href="/profileedit">Edit profile</a>
+														<a href="/createpost">Create a listing</a>
+														<a href="/recentlistings">Recent listings</a>
 														<div className="nav-container">
 															<SignOut/>
 														</div>
@@ -69,11 +69,11 @@ class App extends React.Component {
 			drawerTitle = (<div className="drawer-title">
 											{this.state.displayName}
 										 	<Tooltip label="go to profile" position="right">
-    										<a href={"#/profile/" + this.state.userId}><Icon name="arrow_forward" /></a>
+    										<a href={"/profile/" + this.state.userId}><Icon name="arrow_forward" /></a>
 											</Tooltip>
 										 </div>);
 		} else {
-			drawerContent = (<Navigation role="navigation"><span>You must <a href="#/login">login</a> or <a href="#/signup">sign up</a> to view this content.</span></Navigation>);
+			drawerContent = (<Navigation role="navigation"><span>You must <a href="/login">login</a> or <a href="/signup">sign up</a> to view this content.</span></Navigation>);
 		}
 
     return (
@@ -81,9 +81,9 @@ class App extends React.Component {
         <Layout fixedHeader>
           <Header role="banner" transparent title={<span><a href="/" className="header-link">BANDIT</a></span>}>
             <Navigation role="navigation">
-							<a href="#/board">Board</a>
-							<a href="#/search">Search</a>
-							<a href={this.state.userId !== null ? "#/profile/" + this.state.userId : "#/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} <p className="profile-nav">{profileImg}</p></a>
+							<a href="/board">Board</a>
+							<a href="/search">Search</a>
+							<a href={this.state.userId !== null ? "/profile/" + this.state.userId : "/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} <p className="profile-nav">{profileImg}</p></a>
 						</Navigation>
           </Header>
 					<Drawer title={drawerTitle}>
