@@ -61,6 +61,8 @@ class CommentItem extends React.Component {
 
         this.handleOpenDialog = this.handleOpenDialog.bind(this);
         this.handleCloseDialog = this.handleCloseDialog.bind(this);
+        this.handleCloseEditDialog = this.handleCloseEditDialog.bind(this);
+        this.handleOpenEditDialog = this.handleOpenEditDialog.bind(this);
     }
 
     updateEdit(event) {
