@@ -8,7 +8,7 @@ constructor(props){
     super(props);
     this.state = {
 			'post':'',
-			'showControls': 'hidden',
+			'showControls': 'hidden'
 		}; 
 
 		// bind functions
