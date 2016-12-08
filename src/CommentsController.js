@@ -65,7 +65,7 @@ class CommentItem extends React.Component {
         this.handleOpenEditDialog = this.handleOpenEditDialog.bind(this);
     }
 
-    updateEdit(event) {
+    updateEdit(event) { 
         this.setState({ comment: event.target.value });
     }
 
@@ -73,7 +73,7 @@ class CommentItem extends React.Component {
         this.setState({ openDialog: true });
     }
 
-    handleOpenEditDialog() {
+    handleOpenEditDialog() { //opens edit dialog
         this.setState({ openEditDialog: true });
     }
 
@@ -81,11 +81,11 @@ class CommentItem extends React.Component {
         this.setState({ openDialog: false });
     }
 
-    handleCloseEditDialog() {
+    handleCloseEditDialog() { //closes edit dialog
         this.setState({ openEditDialog: false });
     }
 
-    postEdit(event) {
+    postEdit(event) { //posts edit
         event.preventDefault();
 
         var postId = this.props.postId;
@@ -123,7 +123,7 @@ class CommentItem extends React.Component {
         var ComponentToRender = null;
         var currentUser = firebase.auth().currentUser.uid;
 
-        if (this.props.userId === currentUser) {
+        if (this.props.userId === currentUser) { //only shows button if current user posted it
             ComponentToRender =
                 <div>
                     <Button className="delete" onClick={(e) => this.handleOpenDialog(e)}><i className="fa fa-trash-o" aria-hidden="true"></i></Button>
@@ -155,14 +155,15 @@ class CommentItem extends React.Component {
                 </div>
                 </div >;
         }
-
+        
+        //checking if message was edited
         var editedTime = '';
         var editTimeRef = firebase.database().ref('posts/' + this.props.postId + '/messages/' + this.props.messageId + '/edit');
         editTimeRef.once('value', (snapshot) => {
             editedTime = snapshot.val();
         });
         var showEdited = null;
-        if (firebase.database().ref('posts/' + this.props.postId + '/messages/' + this.props.messageId + '/edit')) {
+        if (firebase.database().ref('posts/' + this.props.postId + '/messages/' + this.props.messageId + '/edit') !== null) {
             showEdited = <span>(edited at: <Time value={editedTime} relative /> )</span>
         }
 
