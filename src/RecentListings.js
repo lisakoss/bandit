@@ -2,6 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import Time from 'react-time';
 import { Button } from 'react-mdl';
+import {Link} from 'react-router';
 
 export class RecentListings extends React.Component {
 	constructor(props){
@@ -81,8 +82,8 @@ class ListingItem extends React.Component {
 						<p className="listing-summary">{this.props.listing.summary}</p>
 					</div>
 					<div role="region" className="listing-controls">
-						<Button><a href={"/posts/" + this.props.listing.listingId}>Read</a></Button>
-						<Button><a href={"/comments/" + this.props.listing.listingId}>Comments</a></Button>
+						<Button><Link to={"/posts/" + this.props.listing.listingId}>Read</Link></Button>
+						<Button><Link to={"/comments/" + this.props.listing.listingId}>Comments</Link></Button>
 					</div>
 				</div>
 			</div>

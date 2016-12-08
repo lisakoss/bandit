@@ -3,6 +3,7 @@ import './index.css';
 import { Layout, Header, Navigation, Drawer, Content, Tooltip, Icon } from 'react-mdl';
 import SignOut from './SignOut';
 import firebase from 'firebase';
+import {Link} from 'react-router';
 
 class App extends React.Component {
 	constructor(props){
@@ -57,9 +58,9 @@ class App extends React.Component {
 														<p className="links">Quick Links</p>
 													</div>
 													<Navigation role="navigation">
-														<a href="/profileedit">Edit profile</a>
-														<a href="/createpost">Create a listing</a>
-														<a href="/recentlistings">Recent listings</a>
+														<Link to="/profileedit">Edit profile</Link>
+														<Link to="/createpost">Create a listing</Link>
+														<Link to="/recentlistings">Recent listings</Link>
 														<div className="nav-container">
 															<SignOut/>
 														</div>
@@ -69,21 +70,21 @@ class App extends React.Component {
 			drawerTitle = (<div className="drawer-title">
 											{this.state.displayName}
 										 	<Tooltip label="go to profile" position="right">
-    										<a href={"/profile/" + this.state.userId}><Icon name="arrow_forward" /></a>
+    										<Link to={"/profile/" + this.state.userId}><Icon name="arrow_forward" /></Link>
 											</Tooltip>
 										 </div>);
 		} else {
-			drawerContent = (<Navigation role="navigation"><span>You must <a href="/login">login</a> or <a href="/signup">sign up</a> to view this content.</span></Navigation>);
+			drawerContent = (<Navigation role="navigation"><span>You must <Link to="/login">login</Link> or <Link to="/signup">sign up</Link> to view this content.</span></Navigation>);
 		}
 
     return (
       <div style={{height: '100%'}} role="main">
         <Layout fixedHeader>
-          <Header role="banner" transparent title={<span><a href="/" className="header-link">BANDIT</a></span>}>
+          <Header role="banner" transparent title={<span><Link to="/" className="header-link">BANDIT</Link></span>}>
             <Navigation role="navigation">
-							<a href="/board">Board</a>
-							<a href="/search">Search</a>
-							<a href={this.state.userId !== null ? "/profile/" + this.state.userId : "/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} <p className="profile-nav">{profileImg}</p></a>
+							<Link to="/board">Board</Link>
+							<Link to="/search">Search</Link>
+							<Link to={this.state.userId !== null ? "/profile/" + this.state.userId : "/login"}>{this.state.userId !== null ? this.state.displayName : 'Login'} <p className="profile-nav">{profileImg}</p></Link>
 						</Navigation>
           </Header>
 					<Drawer title={drawerTitle}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
-import {hashHistory} from 'react-router';
+import {hashHistory, Link} from 'react-router';
 import {Button, Dialog, DialogTitle, DialogContent, DialogActions} from 'react-mdl';
 
 class Listing extends React.Component {
@@ -142,7 +142,7 @@ constructor(props){
 						<p><strong>Name</strong>: {this.state.displayName}</p>
 						<p><strong>Location</strong>: {this.state.location}</p>
 
-						<Button colored onClick={this.handleComments}>Comments</Button><Button className="listing-profile-link" colored><a href={"/profile/" + this.state.listingUser}>Profile</a></Button>
+						<Button colored onClick={this.handleComments}>Comments</Button><Button className="listing-profile-link" colored><Link to={"/profile/" + this.state.listingUser}>Profile</Link></Button>
 											
 											
 						<div className={this.state.showControls} role="region">

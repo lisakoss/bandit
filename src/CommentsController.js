@@ -2,6 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions,Textfield } from 'react-mdl';
 import Time from 'react-time';
+import {Link} from 'react-router';
 
 //complete list of comments for a post
 export class CommentList extends React.Component {
@@ -171,7 +172,7 @@ class CommentItem extends React.Component {
             <div className="message-item board-container">
                 <img className="user-image" src={avatar} alt="avatar" />
                 <div className="message-info">
-                    <a href={profileUrl}><span className="user-display"><strong>{this.props.user.displayName}</strong></span></a>
+                    <Link to={profileUrl}><span className="user-display"><strong>{this.props.user.displayName}</strong></span></Link>
                     <span><Time value={this.props.message.time} relative /> </span>
                     {showEdited}
                 </div>

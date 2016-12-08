@@ -1,6 +1,7 @@
 import React from 'react';
 import {Layout, Button} from 'react-mdl';
 import firebase from 'firebase';
+import {Link} from 'react-router';
 
 class Home extends React.Component {
   constructor(props){
@@ -38,7 +39,7 @@ class Home extends React.Component {
 
 		if(this.state.userId === null) {
 			signUpMessage =(<div className="bottom-sign-up" role="region">
-												<p>Don't have an account? <a href="/signup">Sign up</a> today!</p>
+												<p>Don't have an account? <Link to="/signup">Sign up</Link> today!</p>
 										  </div>);
 		}
 
@@ -49,7 +50,7 @@ class Home extends React.Component {
 						<p className="welcome-title">band together</p>
 						<p className="welcome-msg-text">find your next gig, band, or collaboration</p>
 						<p className="welcome-msg-text">breakthrough locally or worldwide</p>
-						<a href="/search"><Button raised accent ripple className="search-button"><i className="fa fa-search" aria-hidden="true"></i> Start your search here</Button></a>
+						<Link to="/search"><Button raised accent ripple className="search-button"><i className="fa fa-search" aria-hidden="true"></i> Start your search here</Button></Link>
 					</div>
 					{signUpMessage}
 				</Layout>

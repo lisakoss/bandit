@@ -1,7 +1,7 @@
 import React from 'react';
 import {MessageList} from './BoardMessages';
 import firebase from 'firebase';
-import {hashHistory} from 'react-router';
+import {hashHistory, Link} from 'react-router';
 import {Button} from 'react-mdl';
 
 class MessageBoard extends React.Component {
@@ -36,8 +36,8 @@ class MessageBoard extends React.Component {
     return (
       <div className="board-container">
 				<h1>board</h1>
-				<a href="/createpost"><Button ripple className="create-button">Create Listing</Button></a>
-        <a href="/recentlistings"><Button ripple className="create-button">Recent Listings</Button></a>
+				<Link to="/createpost"><Button ripple className="create-button">Create Listing</Button></Link>
+        <Link to="/recentlistings"><Button ripple className="create-button">Recent Listings</Button></Link>
         <div><MessageList/></div>
       </div>
     );

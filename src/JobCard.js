@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Time from 'react-time';
 import firebase from 'firebase';
 import {Button, Card, CardTitle, CardText, CardActions} from 'react-mdl';
-import {hashHistory} from 'react-router';
+import {hashHistory, Link} from 'react-router';
 
 class JobCard extends Component {
   constructor(props) {
@@ -82,11 +82,11 @@ class JobCard extends Component {
             <div className="posted-by">
               {hashtagContent}
               posted by: {/* This image's src should be the user's avatar */}
-              <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle"><a href={listingUserId}>{this.state.displayName}</a></span>
+              <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle"><Link to={listingUserId}>{this.state.displayName}</Link></span>
             </div>
 
             <CardActions border>
-              <a href={id}><Button colored>Read</Button></a><Button colored onClick={(e)=> this.handleContact(e)}>Comments</Button>
+              <Link to={id}><Button colored>Read</Button></Link><Button colored onClick={(e)=> this.handleContact(e)}>Comments</Button>
             </CardActions>
           </Card>
         </div>

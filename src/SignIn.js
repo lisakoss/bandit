@@ -3,6 +3,7 @@ import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 import './index.css';
 import { Textfield, Button } from 'react-mdl';
+import {Link} from 'react-router';
 
 /**
  * A form for logging into a website.
@@ -105,7 +106,7 @@ class SignInForm extends React.Component {
 
           <div className="form-group sign-up-buttons">
             <p><Button raised accent ripple disabled={!signInEnabled} onClick={(e) => this.signIn(e)}>Sign In</Button></p>
-            <p>Don't have an account yet? <a href="/signup">Sign Up!</a></p>
+            <p>Don't have an account yet? <Link to="/signup">Sign Up!</Link></p>
           </div>
         </form>
       </div>

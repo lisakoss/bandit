@@ -2,7 +2,7 @@ import React from 'react';
 import Time from 'react-time';
 import firebase from 'firebase';
 import {Textfield, Button, Dialog, DialogTitle, DialogContent, DialogActions, Card, CardTitle, CardText, CardActions, Radio, RadioGroup} from 'react-mdl';
-import {hashHistory} from 'react-router';
+import {hashHistory, Link} from 'react-router';
 
 /* A form the user can use to post a listing message. */
 export class MessageBox extends React.Component {
@@ -411,12 +411,12 @@ class MessageItem extends React.Component {
 
               {hashtagContent}
               posted by: {/* This image's src should be the user's avatar */}
-              <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle"><a href={listingUserId}>{this.props.user.displayName}</a></span>
+              <img className="avatar-post" src={avatar} role="presentation" /> <span className="handle"><Link to={listingUserId}>{this.props.user.displayName}</Link></span>
             </div>
 
             <CardActions border>
 
-              <a href={id}><Button colored>Read</Button></a><Button colored onClick={(e)=> this.handleContact(e)}>Comments</Button>
+              <Link to={id}><Button colored>Read</Button></Link><Button colored onClick={(e)=> this.handleContact(e)}>Comments</Button>
             </CardActions>
           </Card>
         </div>
