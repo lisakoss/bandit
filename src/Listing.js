@@ -143,7 +143,7 @@ constructor(props){
 						<p><strong>Name</strong>: {this.state.displayName}</p>
 						<p><strong>Location</strong>: {this.state.location}</p>
 
-						<Button colored onClick={this.handleComments}>Comments</Button><Button className="listing-profile-link" colored><a href={"/#/profile/" + this.state.listingUser}>Profile</a></Button>
+						<Button colored onClick={this.handleComments}>Comments</Button><Button className="listing-profile-link" colored><a href={"#/profile/" + this.state.listingUser}>Profile</a></Button>
 											
 											
 						<div className={this.state.showControls} role="region">

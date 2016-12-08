@@ -69,8 +69,8 @@ class ListingItem extends React.Component {
 						<p className="listing-summary">{this.props.listing.summary}</p>
 					</div>
 					<div role="region" className="listing-controls">
-						<Button><a href={"/#/posts/" + this.props.listing.listingId}>Read</a></Button>
-						<Button><a href={"/#/comments/" + this.props.listing.listingId}>Comments</a></Button>
+						<Button><a href={"#/posts/" + this.props.listing.listingId}>Read</a></Button>
+						<Button><a href={"#/comments/" + this.props.listing.listingId}>Comments</a></Button>
 					</div>
 				</div>
 			</div>      

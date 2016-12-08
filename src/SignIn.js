@@ -105,7 +105,7 @@ class SignInForm extends React.Component {
 
           <div className="form-group sign-up-buttons">
             <p><Button raised accent ripple disabled={!signInEnabled} onClick={(e) => this.signIn(e)}>Sign In</Button></p>
-            <p>Don't have an account yet? <a href="/#/signup">Sign Up!</a></p>
+            <p>Don't have an account yet? <a href="#/signup">Sign Up!</a></p>
           </div>
         </form>
       </div>

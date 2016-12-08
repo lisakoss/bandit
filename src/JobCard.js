@@ -35,8 +35,8 @@ class JobCard extends Component {
     var avatar = (this.state.avatar);
     var lastEdited = '';
     var listingImage = '';
-    var id = "/#/posts/" + this.props.postId;
-    var listingUserId = "/#/profile/" + this.props.userId;
+    var id = "#/posts/" + this.props.postId;
+    var listingUserId = "#/profile/" + this.props.userId;
     var tagsArray = this.props.tags.split(" ");
     var tagsString = '';
 
