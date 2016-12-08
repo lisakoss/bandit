@@ -853,6 +853,8 @@ li {
 
 .delete {
   float: right;
+  padding: 0;
+  margin-bottom: 10px;
 }
 
 .comment-heading {
