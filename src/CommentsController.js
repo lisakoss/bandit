@@ -1,7 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
-import { hashHistory } from 'react-router';
-import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
 import Time from 'react-time';
 
 //complete list of comments for a post
@@ -92,16 +91,16 @@ class CommentItem extends React.Component {
         var profileUrl = "/#/profile/" + this.props.userId;
 
         return (
-            <div className="message-item board-container">
+            <div className="message-item board-container" role="article">
                 <img className="user-image" src={avatar} alt="avatar" />
-                <div className="message-info">
+                <div className="message-info" role="region">
                     <a href={profileUrl}><span className="user-display"><strong>{this.props.user.displayName}</strong></span></a>
                     <span><Time value={this.props.message.time} relative /></span>
                 </div>
                 <span className="message-text">{this.props.message.text}</span>
                 <Button className="delete" onClick={(e) => this.handleOpenDialog(e)}><i className="fa fa-trash-o" aria-hidden="true"></i></Button>
-                <div>
-                    <Dialog open={this.state.openDialog}>
+                <div role="region">
+                    <Dialog open={this.state.openDialog} role="region" aria-live="polite">
                         <DialogTitle>Delete comment?</DialogTitle>
                         <DialogContent>
                             <p>Deleting comments can't be undone, so think carefully before doing so!</p>

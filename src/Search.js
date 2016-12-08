@@ -2,11 +2,14 @@ import React from 'react';
 import firebase from 'firebase';
 import { Textfield } from 'react-mdl';
 import SearchResults from './SearchResults';
+import {hashHistory} from 'react-router';
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      'searchResultsArray':[]
+    };
 
     // Function binding
     this.hasSearchTerm = this.hasSearchTerm.bind(this);
@@ -28,6 +31,24 @@ class Search extends React.Component {
     usersRef.once('value').then(snapshot => {
       this.setState({users: snapshot.val()});
     });
+
+    /* Add a listener and callback for authentication events */
+    this.unregister = firebase.auth().onAuthStateChanged(user => {
+      if(user) {
+        this.setState({userId:user.uid});
+      } else { // redircts user to login page if not logged in
+        this.setState({userId: null}); //null out the saved state
+        const path = '/login'; // prompts user to login to see content
+        hashHistory.push(path);
+      }
+    })
+  }
+
+  /* Unregister listerns. */
+  componentWillUnmount() {
+    if(this.unregister) {
+      this.unregister();
+    }
   }
 
   // Checks if post contains searchTerm
@@ -51,7 +72,6 @@ class Search extends React.Component {
 
   // Update state whenever user updates the search field
   handleSearch(event) {
-    var field = event.target.name; // search-field
     var searchTerm = event.target.value; // whatever is typed
     var allPosts = this.state.posts;
     var matchingPosts = [];
@@ -62,35 +82,36 @@ class Search extends React.Component {
       // Does this post have a value containing the search term?
       var postHasTerm = this.hasSearchTerm(post, searchTerm);
       if (postHasTerm) {
+        post['postId']=(key);
         matchingPosts.push(post);
       }
     }
 
     // searchResults contains array of job objects that match the search term
     this.setState({
-      searchResults: matchingPosts
+      searchResultsArray: matchingPosts
     });
 
   }
 
   render() {
-      return (
-        <div className="content-container">
-          <h1>search</h1>
-          <form role="form" className="search-form">
-            <Textfield
-              onChange={this.handleSearch}
-              label="Search for your next gig or collaboration"
-              id="search-field"
-              type="text"
-              name="search-field"
-              className="search-field"
-            />
-          </form>
+    return (
+      <div className="content-container" role="article">
+        <h1>search</h1>
+        <form role="form" className="search-form">
+          <Textfield
+            onChange={this.handleSearch}
+            label="Search for your next gig or collaboration"
+            id="search-field"
+            type="text"
+            name="search-field"
+            className="search-field"
+          />
+        </form>
 
-          <SearchResults className="search-results" results={this.state.searchResults} />
-        </div>
-      );
+        <SearchResults className="search-results" results={this.state.searchResultsArray} />
+      </div>
+    );
   }
 }
 

@@ -291,7 +291,7 @@ class EditListing extends React.Component {
 									<p><strong>Instrument/Skills</strong>: the instrument or skills required for your listing.</p>
 									<p><strong>Job Title</strong>: the title of the job with skills you're offering or looking for.</p>
 									<p><strong>Listing Image</strong>: image displayed on the outside of your listing; <em>optional</em>.</p>
-									<p><strong>Tags</strong>: tag your listing with relevant words to make it easier for others to find your listing via searching; <em>optional</em></p>
+									<p><strong>Tags</strong>: tag your listing with relevant words to make it easier for others to find your listing via searching; <em>optional</em>. <strong>Separate each tag by a space.</strong></p>
 									<p><strong>Listing Description</strong>: describe in detail what you can offer or what you're looking for from someone else.</p>
 								</div>
 							</DialogContent>
