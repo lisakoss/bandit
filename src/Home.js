@@ -1,5 +1,5 @@
 import React from 'react';
-import {Layout, Textfield} from 'react-mdl';
+import {Layout, Button} from 'react-mdl';
 import firebase from 'firebase';
 
 class Home extends React.Component {
@@ -49,13 +49,7 @@ class Home extends React.Component {
 						<p className="welcome-title">band together</p>
 						<p className="welcome-msg-text">find your next gig, band, or collaboration</p>
 						<p className="welcome-msg-text">breakthrough locally or worldwide</p>
-						<i className="fa fa-search" aria-hidden="true"></i>
-						<Textfield
-							className="search"
-							onChange={() => {}}
-							label="search"
-							style={{width: '200px'}}
-						/>
+						<a href="/#/search"><Button raised accent ripple className="search-button"><i className="fa fa-search" aria-hidden="true"></i> Start your search here</Button></a>
 					</div>
 					{signUpMessage}
 				</Layout>

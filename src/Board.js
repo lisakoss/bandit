@@ -37,6 +37,7 @@ class MessageBoard extends React.Component {
       <div className="board-container">
 				<h1>board</h1>
 				<a href="/#/createpost"><Button ripple className="create-button">Create Listing</Button></a>
+        <a href="/#/recentlistings"><Button ripple className="create-button">Recent Listings</Button></a>
         <div><MessageList/></div>
       </div>
     );

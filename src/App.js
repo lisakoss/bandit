@@ -59,7 +59,8 @@ class App extends React.Component {
 													</div>
 													<Navigation role="navigation">
 														<a href="/#/profileedit">Edit profile</a>
-														<a href="/#/createpost">Create a post</a>
+														<a href="/#/createpost">Create a listing</a>
+														<a href="/#/recentlistings">Recent listings</a>
 														<div className="nav-container">
 															<SignOut/>
 														</div>
