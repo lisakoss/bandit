@@ -64,7 +64,6 @@ class SignUp extends React.Component {
       .catch(function(error) { //show error if there is a mistake signing up, with error in snackbar
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(thisComponent);
         if (errorCode === 'auth/email-already-in-use') {
           thisComponent.setState({error: 'The email address is already in use.'});
           thisComponent.setState({ isSnackbarActive: true });

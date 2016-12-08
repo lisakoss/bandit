@@ -21,7 +21,6 @@ export class RecentConvoList extends React.Component {
                 messagesArray.push(child);
             });
             this.setState({messages: messagesArray});
-            console.log(this.state);
         });
     }
 
@@ -34,7 +33,6 @@ export class RecentConvoList extends React.Component {
         if (!this.state.people) {
             return null;
         }
-        console.log(this.state);
 
         var peopleItems = this.state.messages.map((message) => {
             return <RecentConvoItem text={message.text}

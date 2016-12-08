@@ -21,8 +21,16 @@ class JobCard extends Component {
   /* Unregister listerns. */
   componentWillUnmount() {
     if(this.unregister) {
-      firebase.database().ref('users').off();
+      firebase.database().ref('users/' + this.props.userId).off();
     }
+  }
+
+  // Gets display name and avatar of next user
+  componentWillReceiveProps(nextProps) {
+    var usersRef = firebase.database().ref('users/' + nextProps.userId);
+    usersRef.on('value', (snapshot) => {
+      this.setState({displayName: snapshot.child('displayName').val(), avatar: snapshot.child('avatar').val()});
+    });
   }
 
   /* Redirect user to the comments section of a particular post. */
@@ -35,8 +43,8 @@ class JobCard extends Component {
     var avatar = (this.state.avatar);
     var lastEdited = '';
     var listingImage = '';
-    var id = "/#/posts/" + this.props.postId;
-    var listingUserId = "/#/profile/" + this.props.userId;
+    var id = "#/posts/" + this.props.postId;
+    var listingUserId = "#/profile/" + this.props.userId;
     var tagsArray = this.props.tags.split(" ");
     var tagsString = '';
 

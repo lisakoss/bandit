@@ -49,6 +49,8 @@ class Search extends React.Component {
     if(this.unregister) {
       this.unregister();
     }
+    firebase.database().ref('posts').off();
+    firebase.database().ref('users').off();
   }
 
   // Checks if post contains searchTerm
