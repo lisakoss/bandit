@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 import JobCard from './JobCard';
 
 class SearchResults extends Component {
@@ -31,18 +30,15 @@ class SearchResults extends Component {
                  time={result.time}
                  timeEdited={result.timeEdited}
                  title={result.title}
-                 type={result.wanted}
+                 type={result.type}
                  userId={result.userId}
+                 postId={result.postId}
                  message={result.message} />
       )
     });
 
     return (
-      <div className="category-flex">
-        {
-          resultItems
-        }
-      </div>
+      <div className="category-flex" role="region">{resultItems}</div>
     );
   }
 }

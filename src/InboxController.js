@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button, List, ListItem, ListItemContent, ListItemAction, Icon, TextField } from 'react-mdl';
 import firebase from 'firebase';
 
 //returns list of people recently messaged
@@ -43,7 +42,7 @@ export class RecentConvoList extends React.Component {
         });
 
         return (
-            <div>{peopleItems}</div>
+            <div role="article">{peopleItems}</div>
         );
     }
 }
@@ -51,7 +50,7 @@ export class RecentConvoList extends React.Component {
 class RecentConvoItem extends React.Component {
     render() {
         return (
-            <div><span>{this.props.text}</span></div>
+            <div role="region"><span>{this.props.text}</span></div>
         )
     }
 }

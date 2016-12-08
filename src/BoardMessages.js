@@ -273,7 +273,7 @@ export class MessageBox extends React.Component {
                 <p><strong>Instrument/Skills</strong>: the instrument or skills required for your listing.</p>
                 <p><strong>Job Title</strong>: the title of the job with skills you're offering or looking for.</p>
                 <p><strong>Listing Image</strong>: image displayed on the outside of your listing; <em>optional</em>.</p>
-                <p><strong>Tags</strong>: tag your listing with relevant words to make it easier for others to find your listing via searching; <em>optional</em>.</p>
+                <p><strong>Tags</strong>: tag your listing with relevant words to make it easier for others to find your listing via searching; <em>optional</em>. <strong>Separate each tag by a space.</strong></p>
                 <p><strong>Listing Description</strong>: describe in detail what you can offer or what you're looking for from someone else.</p>
                 <p><strong>Listing Type</strong>: choose if you're looking for someone to fill a position (wanted) or if you're looking for a position (offering); <em>cannot be edited later</em>.</p>
               </div>
@@ -377,9 +377,8 @@ class MessageItem extends React.Component {
 
     // Add #'s to each word given as a tag.
     tagsArray.forEach(function(word) {
-      var noHashtagWord = word;
       word = '#' + word;
-      tagsString += '<a href="#/search/' + noHashtagWord + '">' + word + '</a> ';
+      tagsString += word + ' ';
     });
 
     // Set the HTML so that the links work properly.

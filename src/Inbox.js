@@ -1,7 +1,5 @@
 import React from 'react';
-import { Button } from 'react-mdl';
 import firebase from 'firebase';
-import { MessageBox, RecentConvoList } from './InboxController';
 import { hashHistory } from 'react-router';
 import { InboxController } from './InboxController'
 
@@ -23,14 +21,10 @@ class Inbox extends React.Component {
 
     render() {
         return (
-            <div>
-                <div className="content-container"><h1>inbox</h1></div>
-                <div>
+            <div className="content-container" role="article">
+                <h1>inbox</h1>
+                <div role="region">
                     <InboxController />
-                </div>
-
-                <div>
-
                 </div>
             </div>
         );

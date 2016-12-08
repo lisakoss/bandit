@@ -1,7 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
-import { hashHistory } from 'react-router';
-import { Button, Textfield, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from 'react-mdl';
 import Time from 'react-time';
 
 //complete list of comments for a post
@@ -119,7 +118,6 @@ class CommentItem extends React.Component {
     render() {
         var avatar = this.props.user.avatar;
         var profileUrl = "/#/profile/" + this.props.userId;
-
         var ComponentToRender = null;
         var currentUser = firebase.auth().currentUser.uid;
 
