@@ -108,7 +108,7 @@ class CommentItem extends React.Component {
             var postRef = firebase.database().ref('posts/' + this.props.postId + '/messages/' + messageId);
             postRef.remove()
                 .then(function () {
-                    console.log("Deleted message");
+                    //console.log("Deleted message");
                 });
             this.setState({ openDialog: false });
         } else {
@@ -122,8 +122,6 @@ class CommentItem extends React.Component {
         var profileUrl = "#/profile/" + this.props.userId;
         var ComponentToRender = null;
         var currentUser = firebase.auth().currentUser.uid;
-        console.log("____");
-        console.log(this.props.message.text);
 
         if (this.props.userId === currentUser) { //only shows button if current user posted it
             ComponentToRender =
@@ -165,7 +163,6 @@ class CommentItem extends React.Component {
             editedTime = snapshot.val();
         });
         var showEdited = null;
-        console.log(editedTime);
         if (editedTime !== null) {
             showEdited = <span>(edited at: <Time value={editedTime} relative /> )</span>
         }

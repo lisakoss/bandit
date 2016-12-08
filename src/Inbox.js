@@ -8,10 +8,8 @@ class Inbox extends React.Component {
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                console.log('Auth state changed: logged in as', user.email);
                 this.setState({ userId: user.uid });
             } else {
-                console.log('Auth state changed: logged out');
                 this.setState({ userId: null }); //null out the saved state
                 const path = '/login';
                 hashHistory.push(path);

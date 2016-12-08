@@ -44,7 +44,6 @@ class App extends React.Component {
 		var drawerContent = null;
 		var drawerTitle = null;
 
-		//console.log(this.state);
 
 		if(this.state.userId !== null) {
 
